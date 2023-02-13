@@ -53,4 +53,9 @@ public class UserService {
     private AppUser getAppUserByEmail(String email){
         return userRepository.getAppUserByEmail(email);
     }
+
+
+    public AppUser getAppUserById(Long userId) {
+       return userRepository.getAppUserById(userId);
+    }
 }
