@@ -1,6 +1,7 @@
 package com.zkiss.proman.controller;
 
-import com.zkiss.proman.modal.DTO.RegisterUserRequest;
+import com.zkiss.proman.modal.DTO.UserLoginRequest;
+import com.zkiss.proman.modal.DTO.UserRegisterRequest;
 import com.zkiss.proman.service.SessionService;
 import com.zkiss.proman.service.UserService;
 
@@ -32,22 +33,33 @@ public class UserController {
 
     //TODO Consultation about methods not just changing state but returning object
     @PostMapping("/register")
-    public ResponseEntity<List<String>> registerUser(@RequestBody RegisterUserRequest userRequest) {
+    public ResponseEntity<List<String>> registerUser(@RequestBody UserRegisterRequest userRequest) {
         try{
             userService.registerUser(userRequest);
             return ResponseEntity.ok().build();
         }catch (org.springframework.dao.DataIntegrityViolationException ignore){
-            return createResponseEntityWithErrorMessages(userRequest);
+            return createResponseEntityWithErrorMessagesForUserRegister(userRequest);
         }
     }
 
-    private ResponseEntity<List<String>> createResponseEntityWithErrorMessages(RegisterUserRequest userRequest){
+    private ResponseEntity<List<String>> createResponseEntityWithErrorMessagesForUserRegister(UserRegisterRequest userRequest){
        List<String> errorMessage = userService.gatherErrorMessagesForRegisterUser(userRequest);
        return ResponseEntity.status(400).body(errorMessage);
     }
 
     @PostMapping("/login")
-    public void loginUser(){
-
+    public ResponseEntity<String> loginUser(@RequestBody UserLoginRequest loginRequest){
+        if(userService.login(loginRequest)){
+            putUserIdToSession(loginRequest);
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.status(401).body("Wrong E-mail/Password combination");
+        }
     }
+
+    private void putUserIdToSession(UserLoginRequest loginRequest){
+        Long userId = userService.getIdByEmail(loginRequest.getEmail());
+        sessionService.put("userId", userId);
+    }
+
 }

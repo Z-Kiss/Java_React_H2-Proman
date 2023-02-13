@@ -4,7 +4,7 @@ import com.zkiss.proman.modal.RoleType;
 import lombok.Data;
 
 @Data
-public class RegisterUserRequest {
+public class UserRegisterRequest {
 
     private String name;
 

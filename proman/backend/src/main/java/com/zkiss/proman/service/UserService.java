@@ -1,7 +1,8 @@
 package com.zkiss.proman.service;
 
 import com.zkiss.proman.modal.AppUser;
-import com.zkiss.proman.modal.DTO.RegisterUserRequest;
+import com.zkiss.proman.modal.DTO.UserLoginRequest;
+import com.zkiss.proman.modal.DTO.UserRegisterRequest;
 import com.zkiss.proman.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void registerUser(RegisterUserRequest user) {
+    public void registerUser(UserRegisterRequest user) {
         userRepository.save(new AppUser(user));
     }
 
-    public List<String> gatherErrorMessagesForRegisterUser(RegisterUserRequest userRequest){
+    public List<String> gatherErrorMessagesForRegisterUser(UserRegisterRequest userRequest){
         List<String> errorMessages = new ArrayList<>();
-        if(userRequest.hasAllInformation()){
+        if(userRequest.hasNoNullField()){
             if (userRepository.existsByEmailOrName(userRequest.getEmail(), userRequest.getName())){
                 if(userRepository.existsByName(userRequest.getName())){
                     errorMessages.add("Username already exist");
@@ -37,5 +38,19 @@ public class UserService {
             errorMessages.add("Missing User Information");
         }
         return errorMessages;
+    }
+
+    //Not final solution
+    public boolean login(UserLoginRequest loginRequest) {
+        return userRepository.existsByEmailAndPassword(loginRequest.getEmail(), loginRequest.getPassword());
+    }
+
+    public Long getIdByEmail(String email) {
+        AppUser user = getAppUserByEmail(email);
+        return user.getId();
+    }
+
+    private AppUser getAppUserByEmail(String email){
+        return userRepository.getAppUserByEmail(email);
     }
 }
