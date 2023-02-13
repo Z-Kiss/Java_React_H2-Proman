@@ -60,6 +60,21 @@ public class UserController {
         sessionService.put("userId", userId);
     }
 
+    @GetMapping("/login/guest")
+    public ResponseEntity<String> loginGuest(){
+        if(sessionService.get("userId") == null){
+            putGuestIdToSession();
+            return ResponseEntity.ok().build();
+        }else {
+           return ResponseEntity.status(400).body("Already logged in");
+        }
+    }
+
+    private void putGuestIdToSession(){
+        sessionService.put("userId",-1L);
+    }
+
+
     @GetMapping("/logout")
     public void userLogout(){
         sessionService.clear();
