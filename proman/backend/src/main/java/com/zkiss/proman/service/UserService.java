@@ -1,8 +1,8 @@
 package com.zkiss.proman.service;
 
 import com.zkiss.proman.modal.AppUser;
-import com.zkiss.proman.modal.DTO.UserLoginRequest;
-import com.zkiss.proman.modal.DTO.UserRegisterRequest;
+import com.zkiss.proman.modal.DTO.userDTO.UserLoginRequest;
+import com.zkiss.proman.modal.DTO.userDTO.UserRegisterRequest;
 import com.zkiss.proman.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

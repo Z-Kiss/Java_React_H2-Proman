@@ -1,6 +1,6 @@
 package com.zkiss.proman.modal;
 
-import com.zkiss.proman.modal.DTO.UserRegisterRequest;
+import com.zkiss.proman.modal.DTO.userDTO.UserRegisterRequest;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
