@@ -1,7 +1,9 @@
 package com.zkiss.proman.controller;
 
+import com.zkiss.proman.modal.AppUser;
 import com.zkiss.proman.modal.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.modal.DTO.userDTO.UserRegisterRequest;
+import com.zkiss.proman.modal.DTO.userDTO.UserUpdateRequest;
 import com.zkiss.proman.service.SessionService;
 import com.zkiss.proman.service.UserService;
 
@@ -78,5 +80,11 @@ public class UserController {
     @GetMapping("/logout")
     public void userLogout(){
         sessionService.clear();
+    }
+
+    @PostMapping("/update")
+    public void userUpdate(@RequestBody AppUser user){
+        user.setId(sessionService.get("userId"));
+        userService.updateUser(user);
     }
 }

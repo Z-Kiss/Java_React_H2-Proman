@@ -3,6 +3,7 @@ package com.zkiss.proman.service;
 import com.zkiss.proman.modal.AppUser;
 import com.zkiss.proman.modal.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.modal.DTO.userDTO.UserRegisterRequest;
+import com.zkiss.proman.modal.DTO.userDTO.UserUpdateRequest;
 import com.zkiss.proman.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.List;
 public class UserService {
 
     private UserRepository userRepository;
+
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -57,5 +59,19 @@ public class UserService {
 
     public AppUser getAppUserById(Long userId) {
        return userRepository.getAppUserById(userId);
+    }
+
+    public void updateUser(AppUser updatedUser) {
+        AppUser user = userRepository.getAppUserById(updatedUser.getId());
+        updateUserFields(updatedUser, user);
+        userRepository.save(user);
+    }
+
+    private void updateUserFields(AppUser updatedUser, AppUser user){
+        if(updatedUser.getName() != null){user.setName(updatedUser.getName());}
+        if(updatedUser.getEmail() != null){user.setEmail(updatedUser.getEmail());}
+        if(updatedUser.getPassword() != null){user.setPassword(updatedUser.getPassword());}
+        if(updatedUser.getRole() != null){user.setRole(updatedUser.getRole());}
+        if(updatedUser.getBoards() != null){user.setBoards(updatedUser.getBoards());}
     }
 }

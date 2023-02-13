@@ -26,14 +26,14 @@ public class BoardService {
     }
 
     public void createBoard(BoardCreateRequest createRequest) {
-        if(sessionService.get("userId") == -1L){
+        if (sessionService.get("userId") == -1L) {
             boardRepository.save(new Board(createRequest, null));
-        }else {
-            AppUser user =userService.getAppUserById(sessionService.get("userId"));
+        } else {
+            AppUser user = userService.getAppUserById(sessionService.get("userId"));
             Board board = new Board(createRequest, user);
             boardRepository.save(board);
             user.addBoard(board);
-            userRepository.updateUser(user);
+            userService.updateUser(user);
         }
     }
 
