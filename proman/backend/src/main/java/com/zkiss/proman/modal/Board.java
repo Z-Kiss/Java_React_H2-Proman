@@ -1,6 +1,8 @@
 package com.zkiss.proman.modal;
 
+import com.zkiss.proman.modal.DTO.boardDTO.BoardCreateRequest;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +20,7 @@ public class Board {
 
     private String boardName;
 
-    private String color;
+    private String boardColor;
 
     private boolean favorite;
 
@@ -29,5 +31,9 @@ public class Board {
     @JoinColumn(name = "APP_USER_ID" )
     private AppUser appUser;
 
-
+    public Board(BoardCreateRequest createRequest, AppUser appUser) {
+        this.boardName = createRequest.getName();
+        this.boardColor = createRequest.getColor();
+        this.appUser = appUser;
+    }
 }
