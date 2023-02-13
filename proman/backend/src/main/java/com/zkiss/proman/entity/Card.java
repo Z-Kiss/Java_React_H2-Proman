@@ -19,8 +19,12 @@ public class Card {
 
     private String cardDescription;
 
-    private int order;
+    private int cardOrder;
 
     private String color;
+
+    @ManyToOne
+    @JoinColumn(name = "COLUMN_ID")
+    private BoardColumn boardColumn;
 
 }

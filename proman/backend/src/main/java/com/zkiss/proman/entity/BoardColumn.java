@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,5 +22,12 @@ public class BoardColumn {
     private int columnOrder;
 
     private String color;
+
+    @ManyToOne
+    @JoinColumn(name = "BOARD_ID")
+    private Board board;
+
+    @OneToMany(mappedBy = "boardColumn")
+    private Set<Card> cards;
 
 }
