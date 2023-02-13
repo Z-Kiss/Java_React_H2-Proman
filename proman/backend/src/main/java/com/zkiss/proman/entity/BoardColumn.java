@@ -1,4 +1,4 @@
-package entity;
+package com.zkiss.proman.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

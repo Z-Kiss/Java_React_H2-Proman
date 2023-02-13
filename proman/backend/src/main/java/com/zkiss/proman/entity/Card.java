@@ -1,21 +1,26 @@
-package entity;
+package com.zkiss.proman.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class Board {
+public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "BOARD_ID")
+    @Column(name = "CARD_ID")
     private Long id;
 
-    private String boardName;
+    private String cardTitle;
+
+    private String cardDescription;
+
+    private int order;
 
     private String color;
+
 }
