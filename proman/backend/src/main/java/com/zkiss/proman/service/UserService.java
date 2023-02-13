@@ -18,26 +18,24 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<String> registerUser(RegisterUserRequest user) {
-        List<String> response = new ArrayList<>();
-        if(user.hasAllInformation()){
-            if (userRepository.existsByEmailOrName(user.getEmail(), user.getName())){
-                if(userRepository.existsByName(user.getName())){
-                    response.add("Username already exist");
-                }
-                if(userRepository.existsByEmail(user.getEmail())){
-                    response.add("Email already registered");
-                }
-            }else {
-                userRepository.save(new AppUser(user));
-            }
-        }else {
-            response.add("Missing User Information");
-        }
-
-
-
-        return response;
+    public void registerUser(RegisterUserRequest user) {
+        userRepository.save(new AppUser(user));
     }
 
+    public List<String> gatherErrorMessagesForRegisterUser(RegisterUserRequest userRequest){
+        List<String> errorMessages = new ArrayList<>();
+        if(userRequest.hasAllInformation()){
+            if (userRepository.existsByEmailOrName(userRequest.getEmail(), userRequest.getName())){
+                if(userRepository.existsByName(userRequest.getName())){
+                    errorMessages.add("Username already exist");
+                }
+                if(userRepository.existsByEmail(userRequest.getEmail())){
+                    errorMessages.add("Email already registered");
+                }
+            }
+        }else {
+            errorMessages.add("Missing User Information");
+        }
+        return errorMessages;
+    }
 }
