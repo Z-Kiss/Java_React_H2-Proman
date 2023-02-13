@@ -1,22 +1,26 @@
-package modal;
+package entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class BoardColumn {
+public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "COLUMN_ID", nullable = false)
+    @Column(name = "CARD_ID")
     private Long id;
 
-    private String columnName;
+    private String cardTitle;
 
-    private int columnOrder;
+    private String cardDescription;
+
+    private int order;
+
+    private String color;
 
 }

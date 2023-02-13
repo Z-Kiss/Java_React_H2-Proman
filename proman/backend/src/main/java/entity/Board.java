@@ -1,4 +1,4 @@
-package modal;
+package entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,4 +16,6 @@ public class Board {
     private Long id;
 
     private String boardName;
+
+    private String color;
 }
