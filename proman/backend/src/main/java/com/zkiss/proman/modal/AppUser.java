@@ -2,6 +2,7 @@ package com.zkiss.proman.modal;
 
 import com.zkiss.proman.modal.DTO.userDTO.UserRegisterRequest;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,4 +38,9 @@ public class AppUser {
         this.password = userRequest.getPassword();
         this.role = userRequest.getRole();
     }
+
+    public void addBoard(Board board){
+        boards.add(board);
+    }
+
 }
