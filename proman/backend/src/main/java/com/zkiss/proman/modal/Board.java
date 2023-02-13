@@ -1,11 +1,10 @@
-package com.zkiss.proman.entity;
+package com.zkiss.proman.modal;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -24,7 +23,7 @@ public class Board {
     private boolean favorite;
 
     @OneToMany(mappedBy = "board")
-    private Set<BoardColumn> boardColumn;
+    private Set<BoardColumn> boardColumn = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "APP_USER_ID" )

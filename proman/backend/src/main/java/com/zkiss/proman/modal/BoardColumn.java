@@ -1,11 +1,10 @@
-package com.zkiss.proman.entity;
+package com.zkiss.proman.modal;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -28,6 +27,6 @@ public class BoardColumn {
     private Board board;
 
     @OneToMany(mappedBy = "boardColumn")
-    private Set<Card> cards;
+    private Set<Card> cards = new HashSet<>();
 
 }
