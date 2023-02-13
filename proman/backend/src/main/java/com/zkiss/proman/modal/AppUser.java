@@ -1,6 +1,6 @@
 package com.zkiss.proman.modal;
 
-import com.zkiss.proman.modal.DTO.RegisterUserRequest;
+import com.zkiss.proman.modal.DTO.UserRegisterRequest;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ public class AppUser {
     @OneToMany(mappedBy = "appUser")
     private Set<Board> boards = new HashSet<>();
 
-    public AppUser(RegisterUserRequest userRequest){
+    public AppUser(UserRegisterRequest userRequest){
         this.name = userRequest.getName();
         this.email = userRequest.getEmail();
         this.password = userRequest.getPassword();
