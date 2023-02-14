@@ -21,12 +21,12 @@ public class Card {
     private String cardTitle;
 
     private String cardDescription;
-
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int cardOrder;
 
     private String color;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "COLUMN_ID")
     @JsonIgnore
     private BoardColumn boardColumn;

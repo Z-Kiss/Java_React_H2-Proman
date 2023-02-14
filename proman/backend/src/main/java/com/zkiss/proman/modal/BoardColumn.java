@@ -23,12 +23,12 @@ public class BoardColumn {
     private Long id;
 
     private String columnTitle;
-
-    private int columnOrder;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Integer columnOrder;
 
     private String color;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "BOARD_ID")
     @JsonIgnore
     private Board board;
@@ -40,6 +40,14 @@ public class BoardColumn {
         this.color = createRequest.getBoardColumnColor();
         this.columnTitle = createRequest.getBoardColumnTitle();
         this.board = board;
+    }
+
+    public void update(BoardColumn boardColumn){
+        if(boardColumn.getBoard() != null){this.setBoard(boardColumn.getBoard());}
+        if(boardColumn.getColumnOrder() != null){this.setColumnOrder(boardColumn.getColumnOrder());}
+        if(boardColumn.getColumnTitle() != null){this.setColumnTitle(boardColumn.getColumnTitle());}
+        if(boardColumn.getColor() != null){this.setColor(boardColumn.getColor());}
+        if(boardColumn.getCards() != null){this.setCards(boardColumn.getCards());}
     }
 
 }
