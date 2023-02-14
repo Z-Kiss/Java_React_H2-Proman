@@ -28,6 +28,6 @@ public class CardService {
     public void update(Card updatedCard) {
         Card card = cardRepository.getCardById(updatedCard.getId());
         card.update(updatedCard);
-
+        cardRepository.save(card);
     }
 }
