@@ -29,9 +29,6 @@ public class AppUser {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
-    @OneToMany(mappedBy = "appUser")
-    private Set<Board> boards = new HashSet<>();
-
     public AppUser(UserRegisterRequest userRequest){
         this.name = userRequest.getName();
         this.email = userRequest.getEmail();
@@ -39,16 +36,12 @@ public class AppUser {
         this.role = userRequest.getRole();
     }
 
-    public void addBoard(Board board){
-        boards.add(board);
-    }
 
     public void update(AppUser updatedUser){
         if(updatedUser.getName() != null){this.setName(updatedUser.getName());}
         if(updatedUser.getEmail() != null){this.setEmail(updatedUser.getEmail());}
         if(updatedUser.getPassword() != null){this.setPassword(updatedUser.getPassword());}
         if(updatedUser.getRole() != null){this.setRole(updatedUser.getRole());}
-        if(updatedUser.getBoards() != null){this.setBoards(updatedUser.getBoards());}
     }
 
 
