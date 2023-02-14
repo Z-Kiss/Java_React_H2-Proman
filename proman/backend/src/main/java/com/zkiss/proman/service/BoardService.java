@@ -3,6 +3,7 @@ package com.zkiss.proman.service;
 import com.zkiss.proman.modal.AppUser;
 import com.zkiss.proman.modal.Board;
 import com.zkiss.proman.modal.DTO.boardDTO.BoardCreateRequest;
+import com.zkiss.proman.modal.DTO.boardDTO.BoardDeleteRequest;
 import com.zkiss.proman.repository.BoardRepository;
 import com.zkiss.proman.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -60,5 +61,9 @@ public class BoardService {
 
     public Board getBoardById(Long boardId) {
         return boardRepository.getBoardById(boardId);
+    }
+
+    public void deleteBoard(BoardDeleteRequest deleteRequest) {
+        boardRepository.deleteById(deleteRequest.getBoardId());
     }
 }

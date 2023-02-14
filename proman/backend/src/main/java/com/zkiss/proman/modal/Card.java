@@ -21,8 +21,8 @@ public class Card {
     private String cardTitle;
 
     private String cardDescription;
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int cardOrder;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer cardOrder;
 
     private String color;
 

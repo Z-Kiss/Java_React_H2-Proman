@@ -23,7 +23,8 @@ public class BoardColumn {
     private Long id;
 
     private String columnTitle;
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer columnOrder;
 
     private String color;
@@ -33,13 +34,14 @@ public class BoardColumn {
     @JsonIgnore
     private Board board;
 
-    @OneToMany(mappedBy = "boardColumn")
+    @OneToMany(mappedBy = "boardColumn", cascade = CascadeType.ALL)
     private Set<Card> cards = new HashSet<>();
 
     public BoardColumn(BoardColumnCreateRequest createRequest, Board board){
         this.color = createRequest.getBoardColumnColor();
         this.columnTitle = createRequest.getBoardColumnTitle();
         this.board = board;
+        this.columnOrder = board.getBoardColumns().size();
     }
 
     public void update(BoardColumn boardColumn){

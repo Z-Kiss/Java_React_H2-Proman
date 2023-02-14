@@ -25,7 +25,7 @@ public class Board {
 
     private boolean favorite;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private Set<BoardColumn> boardColumns = new HashSet<>();
 
     @ManyToOne

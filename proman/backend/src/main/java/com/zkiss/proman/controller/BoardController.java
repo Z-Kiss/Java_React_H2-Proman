@@ -2,6 +2,7 @@ package com.zkiss.proman.controller;
 
 import com.zkiss.proman.modal.Board;
 import com.zkiss.proman.modal.DTO.boardDTO.BoardCreateRequest;
+import com.zkiss.proman.modal.DTO.boardDTO.BoardDeleteRequest;
 import com.zkiss.proman.service.BoardService;
 import com.zkiss.proman.service.SessionService;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,12 @@ public class BoardController {
     @PostMapping("/create")
     public void createBoard(@RequestBody BoardCreateRequest createRequest){
         boardService.createBoard(createRequest);
+    }
+
+    @DeleteMapping
+    public void deleteBoard(@RequestBody BoardDeleteRequest deleteRequest){
+        System.out.println(deleteRequest);
+        boardService.deleteBoard(deleteRequest);
     }
 
     @GetMapping("/get-all-boards")
