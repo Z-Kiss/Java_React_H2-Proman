@@ -38,4 +38,8 @@ public class BoardColumnService {
     public void delete(BoardColumnDeleteRequest deleteRequest) {
         boardColumnRepository.deleteById(deleteRequest.getBoardColumnId());
     }
+
+    public BoardColumn getBoardColumnById(Long boardColumnId) {
+        return boardColumnRepository.getBoardColumnById(boardColumnId);
+    }
 }

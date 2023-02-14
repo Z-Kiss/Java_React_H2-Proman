@@ -52,4 +52,7 @@ public class BoardColumn {
         if(boardColumn.getCards() != null){this.setCards(boardColumn.getCards());}
     }
 
+    public void addCard(Card card) {
+        cards.add(card);
+    }
 }
