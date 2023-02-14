@@ -2,14 +2,15 @@ package com.zkiss.proman.modal;
 
 import com.zkiss.proman.modal.DTO.userDTO.UserRegisterRequest;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+//@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class AppUser {

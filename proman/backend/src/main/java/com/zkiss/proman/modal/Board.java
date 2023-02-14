@@ -3,14 +3,14 @@ package com.zkiss.proman.modal;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zkiss.proman.modal.DTO.boardDTO.BoardCreateRequest;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+//@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Board {
@@ -26,7 +26,7 @@ public class Board {
     private boolean favorite;
 
     @OneToMany(mappedBy = "board")
-    private Set<BoardColumn> boardColumn = new HashSet<>();
+    private Set<BoardColumn> boardColumns = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "APP_USER_ID" )
@@ -37,5 +37,16 @@ public class Board {
         this.boardName = createRequest.getName();
         this.boardColor = createRequest.getColor();
         this.appUser = appUser;
+    }
+
+    public void addBoardColumn(BoardColumn boardColumn){
+        boardColumns.add(boardColumn);
+    }
+
+    public void update(Board board){
+        if(board.getBoardName() != null){this.setBoardName(board.getBoardName());}
+        if(board.getBoardColor() != null){this.setBoardColor(board.getBoardColor());}
+        if(board.getBoardColumns() != null){this.setBoardColumns(board.getBoardColumns());}
+        this.setFavorite(board.isFavorite());
     }
 }

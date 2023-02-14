@@ -1,10 +1,15 @@
 package com.zkiss.proman.modal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+//@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Card {
@@ -23,6 +28,7 @@ public class Card {
 
     @ManyToOne
     @JoinColumn(name = "COLUMN_ID")
+    @JsonIgnore
     private BoardColumn boardColumn;
 
 }
