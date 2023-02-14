@@ -7,6 +7,8 @@ import com.zkiss.proman.repository.BoardRepository;
 import com.zkiss.proman.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BoardService {
 
@@ -32,10 +34,20 @@ public class BoardService {
             AppUser user = userService.getAppUserById(sessionService.get("userId"));
             Board board = new Board(createRequest, user);
             boardRepository.save(board);
-            user.addBoard(board);
-            userService.updateUser(user);
+
         }
     }
 
 
+    public List<Board> getAllBoardsByUser(Long userId) {
+        return boardRepository.getBoardsByAppUser_Id(userId);
+    }
+
+    public List<Board> getAllBoardsByGuest() {
+       return boardRepository.getBoardsByAppUser_Id(null);
+    }
+
+    public List<Board> getAllBoards() {
+        return boardRepository.findAll();
+    }
 }

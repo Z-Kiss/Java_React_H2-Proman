@@ -1,5 +1,6 @@
 package com.zkiss.proman.modal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zkiss.proman.modal.DTO.boardDTO.BoardCreateRequest;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -29,6 +30,7 @@ public class Board {
 
     @ManyToOne
     @JoinColumn(name = "APP_USER_ID" )
+    @JsonIgnore
     private AppUser appUser;
 
     public Board(BoardCreateRequest createRequest, AppUser appUser) {

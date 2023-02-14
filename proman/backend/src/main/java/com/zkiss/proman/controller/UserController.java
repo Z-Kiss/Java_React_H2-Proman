@@ -82,7 +82,8 @@ public class UserController {
         sessionService.clear();
     }
 
-    @PostMapping("/update")
+    //TODO figure out the secure way
+    @PutMapping("/update")
     public void userUpdate(@RequestBody AppUser user){
         user.setId(sessionService.get("userId"));
         userService.updateUser(user);
