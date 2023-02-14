@@ -3,7 +3,6 @@ package com.zkiss.proman.service;
 import com.zkiss.proman.modal.AppUser;
 import com.zkiss.proman.modal.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.modal.DTO.userDTO.UserRegisterRequest;
-import com.zkiss.proman.modal.DTO.userDTO.UserUpdateRequest;
 import com.zkiss.proman.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +42,7 @@ public class UserService {
     }
 
     //Not final solution
+    //TODO SecureLogin
     public boolean login(UserLoginRequest loginRequest) {
         return userRepository.existsByEmailAndPassword(loginRequest.getEmail(), loginRequest.getPassword());
     }
@@ -63,15 +63,8 @@ public class UserService {
 
     public void updateUser(AppUser updatedUser) {
         AppUser user = userRepository.getAppUserById(updatedUser.getId());
-        updateUserFields(updatedUser, user);
+        user.update(updatedUser);
         userRepository.save(user);
     }
 
-    private void updateUserFields(AppUser updatedUser, AppUser user){
-        if(updatedUser.getName() != null){user.setName(updatedUser.getName());}
-        if(updatedUser.getEmail() != null){user.setEmail(updatedUser.getEmail());}
-        if(updatedUser.getPassword() != null){user.setPassword(updatedUser.getPassword());}
-        if(updatedUser.getRole() != null){user.setRole(updatedUser.getRole());}
-        if(updatedUser.getBoards() != null){user.setBoards(updatedUser.getBoards());}
-    }
 }

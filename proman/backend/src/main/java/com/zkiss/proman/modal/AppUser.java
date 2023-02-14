@@ -43,4 +43,13 @@ public class AppUser {
         boards.add(board);
     }
 
+    public void update(AppUser updatedUser){
+        if(updatedUser.getName() != null){this.setName(updatedUser.getName());}
+        if(updatedUser.getEmail() != null){this.setEmail(updatedUser.getEmail());}
+        if(updatedUser.getPassword() != null){this.setPassword(updatedUser.getPassword());}
+        if(updatedUser.getRole() != null){this.setRole(updatedUser.getRole());}
+        if(updatedUser.getBoards() != null){this.setBoards(updatedUser.getBoards());}
+    }
+
+
 }
