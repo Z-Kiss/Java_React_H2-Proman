@@ -39,7 +39,7 @@ public class BoardService {
     }
 
 
-    public List<Board> getAllBoardsByUser(Long userId) {
+    public List<Board> getAllBoardsByUserId(Long userId) {
         return boardRepository.getBoardsByAppUser_Id(userId);
     }
 
@@ -49,5 +49,16 @@ public class BoardService {
 
     public List<Board> getAllBoards() {
         return boardRepository.findAll();
+    }
+
+
+    public void updateBoard(Board updatedBoard) {
+        Board board = getBoardById(updatedBoard.getId());
+        board.update(updatedBoard);
+        boardRepository.save(board);
+    }
+
+    public Board getBoardById(Long boardId) {
+        return boardRepository.getBoardById(boardId);
     }
 }

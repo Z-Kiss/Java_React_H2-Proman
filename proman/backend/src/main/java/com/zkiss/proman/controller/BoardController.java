@@ -4,7 +4,6 @@ import com.zkiss.proman.modal.Board;
 import com.zkiss.proman.modal.DTO.boardDTO.BoardCreateRequest;
 import com.zkiss.proman.service.BoardService;
 import com.zkiss.proman.service.SessionService;
-import org.apache.catalina.connector.Response;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class BoardController {
 
     @GetMapping("/get-all-boards-by-user")
     public List<Board> getAllBoardsByUser(){
-        return boardService.getAllBoardsByUser(sessionService.get("userId"));
+        return boardService.getAllBoardsByUserId(sessionService.get("userId"));
     }
 
     @GetMapping("/get-all-guest-boards")

@@ -12,4 +12,6 @@ import java.util.Set;
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
     List<Board> getBoardsByAppUser_Id(Long id);
+
+    Board getBoardById(Long id);
 }
