@@ -14,19 +14,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/boardcolumn")
 public class BoardColumnController {
 
-
     private BoardColumnService boardColumnService;
 
-    private SessionService sessionService;
 
     public BoardColumnController(BoardColumnService boardColumnService, SessionService sessionService) {
         this.boardColumnService = boardColumnService;
-        this.sessionService = sessionService;
     }
 
     @PostMapping("/create")
-    public void createNewBoardColumn(@RequestBody BoardColumnCreateRequest createRequest){
-        boardColumnService.registerBoardColumn(createRequest);
+    public ResponseEntity<String> createNewBoardColumn(@RequestBody BoardColumnCreateRequest createRequest){
+        if(createRequest.hasNoNullField()){
+            boardColumnService.registerBoardColumn(createRequest);
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.status(401).body("Missing BoardColumn Information");
+        }
     }
 
     @PostMapping("/update")
