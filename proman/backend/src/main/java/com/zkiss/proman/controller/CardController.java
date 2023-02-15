@@ -1,13 +1,11 @@
 package com.zkiss.proman.controller;
 
 import com.zkiss.proman.modal.Card;
-import com.zkiss.proman.modal.DTO.boardDTO.CardCreateRequest;
+import com.zkiss.proman.modal.DTO.cardDTO.CardCreateRequest;
+import com.zkiss.proman.modal.DTO.cardDTO.CardDeleteRequest;
 import com.zkiss.proman.service.CardService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/card")
@@ -32,6 +30,11 @@ public class CardController {
     @PostMapping("/update")
     public void updateCard(@RequestBody Card card){
         cardService.update(card);
+    }
+
+    @DeleteMapping
+    public void deleteCard(@RequestBody CardDeleteRequest deleteRequest){
+        cardService.delete(deleteRequest.getCardId());
     }
 
 }

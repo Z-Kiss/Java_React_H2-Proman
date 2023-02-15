@@ -1,4 +1,4 @@
-package com.zkiss.proman.modal.DTO.boardDTO;
+package com.zkiss.proman.modal.DTO.cardDTO;
 
 import com.zkiss.proman.modal.DTO.Validator;
 import lombok.Data;
