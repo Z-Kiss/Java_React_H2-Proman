@@ -29,7 +29,7 @@ public class BoardService {
     }
 
     public void createBoard(BoardCreateRequest createRequest) {
-        if (sessionService.get("userId") == -1L) {
+        if (sessionService.get("userId") == null) {
             boardRepository.save(new Board(createRequest, null));
         } else {
             AppUser user = userService.getAppUserById(sessionService.get("userId"));
