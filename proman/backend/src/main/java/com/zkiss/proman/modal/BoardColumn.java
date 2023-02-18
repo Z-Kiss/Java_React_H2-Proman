@@ -1,9 +1,8 @@
 package com.zkiss.proman.modal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zkiss.proman.modal.DTO.boardDTO.BoardColumnCreateRequest;
+import com.zkiss.proman.modal.DTO.boardcolumnDTO.BoardColumnCreateRequest;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
