@@ -1,19 +1,22 @@
 import {useEffect, useState} from "react";
+import UserButtons from "./UserButtons";
 
-export default function Navbar(){
+export default function Navbar() {
     const [loggedInUser, setLoggedInUser] = useState("");
 
-    async function initLoggedInUser(){
+    async function initLoggedInUser() {
         const response = await fetch("/user")
         setLoggedInUser(await response.json());
-        console.log(loggedInUser)
     }
 
-    useEffect( () => {
-        initLoggedInUser();
-    },[])
 
-    return(
+    useEffect(() => {
+        initLoggedInUser();
+    }, [])
+
+
+
+    return (
         <div id={"nav-container"}>
 
             <div id={"nav-board-btn"}>
@@ -29,8 +32,7 @@ export default function Navbar(){
                 </div>
             </div>
             <div id={"nav-login-btn"}>
-                <button>Login</button>
-                <button>Register</button>
+                <UserButtons />
             </div>
         </div>
     )

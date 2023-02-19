@@ -79,7 +79,10 @@ public class UserController {
 
     @GetMapping
     public String loggedInUser(){
-        String loggedInUserName = userService.getUserNameById(sessionService.get("userId"));
+        String loggedInUserName = null;
+        if(sessionService.get("userId") != null){
+           loggedInUserName = userService.getUserNameById(sessionService.get("userId"));
+        }
         return gson.toJson(loggedInUserName);
     }
 }
