@@ -67,4 +67,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public String getUserNameById(Long userId) {
+        return userRepository.getAppUserById(userId).getName();
+    }
 }

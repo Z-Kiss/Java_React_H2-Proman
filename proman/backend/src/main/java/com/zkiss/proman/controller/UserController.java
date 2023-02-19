@@ -1,5 +1,6 @@
 package com.zkiss.proman.controller;
 
+import com.google.gson.Gson;
 import com.zkiss.proman.modal.AppUser;
 import com.zkiss.proman.modal.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.modal.DTO.userDTO.UserRegisterRequest;
@@ -17,6 +18,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    private Gson gson = new Gson();
 
     private UserService userService;
 
@@ -72,5 +75,11 @@ public class UserController {
     public void userUpdate(@RequestBody AppUser user){
         user.setId(sessionService.get("userId"));
         userService.updateUser(user);
+    }
+
+    @GetMapping
+    public String loggedInUser(){
+        String loggedInUserName = userService.getUserNameById(sessionService.get("userId"));
+        return gson.toJson(loggedInUserName);
     }
 }
