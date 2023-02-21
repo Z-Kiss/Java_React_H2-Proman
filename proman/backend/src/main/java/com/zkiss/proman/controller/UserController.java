@@ -23,7 +23,7 @@ public class UserController {
 
     private UserService userService;
 
-    private SessionService sessionService;
+     private SessionService sessionService;
 
 
 

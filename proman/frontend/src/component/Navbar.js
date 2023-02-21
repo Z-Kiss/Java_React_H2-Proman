@@ -14,6 +14,7 @@ function NavScrollExample({props}) {
     async function initLoggedInUser() {
         const response = await fetch("/user")
         if(response.status === 200){
+            console.log(await response.json())
             setLoggedInUser(await response.json());
         }else {
             console.log("nope")

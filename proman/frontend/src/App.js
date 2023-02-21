@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 export default function App() {
     const [modalContent, setModalContent] = useState(null)
     const [show, setShow] = useState(false);
-    const [loggedInUser, setLoggedInUser] = useState(undefined);
+    const [loggedInUser, setLoggedInUser] = useState(null);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);

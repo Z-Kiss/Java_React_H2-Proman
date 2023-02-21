@@ -15,7 +15,7 @@ export default function UserButtons({props}) {
 
     function logout() {
         fetch("/user/logout");
-        setLoggedInUser("");
+        setLoggedInUser(null);
     }
     function openLoginModal(){
         setModalContent("login");
@@ -31,7 +31,7 @@ export default function UserButtons({props}) {
 
 
 
-    return (loggedInUser !== undefined
+    return (loggedInUser !== null
             ?
 
             <>
