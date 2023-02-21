@@ -24,7 +24,9 @@ export default function App() {
         }
     }
 
-    useEffect(initBoards(),[])
+    useEffect(() => {
+        initBoards()
+    },[])
 
     const props = {
         modalContent: modalContent,
