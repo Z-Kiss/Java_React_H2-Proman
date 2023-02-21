@@ -36,6 +36,7 @@ public class UserController {
     //TODO Consultation about methods not just changing state but returning object
     @PostMapping("/register")
     public ResponseEntity<List<String>> registerUser(@RequestBody UserRegisterRequest userRequest) {
+        System.out.println(userRequest);
         try{
             userService.registerUser(userRequest);
             return ResponseEntity.ok().build();
@@ -53,9 +54,10 @@ public class UserController {
     public ResponseEntity<String> loginUser(@RequestBody UserLoginRequest loginRequest){
         if(userService.login(loginRequest)){
             putUserIdToSession(loginRequest);
-            return ResponseEntity.ok().build();
+            String appUserName = userService.getUserNameById(sessionService.get("userId"));
+            return ResponseEntity.ok().body(gson.toJson(appUserName));
         }else {
-            return ResponseEntity.status(401).body("Wrong E-mail/Password combination");
+            return ResponseEntity.status(401).body(gson.toJson("Wrong E-mail/Password combination"));
         }
     }
 

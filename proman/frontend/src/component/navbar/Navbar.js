@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import UserButtons from "./UserButtons";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 
 function NavScrollExample({props}) {
 
@@ -14,7 +14,6 @@ function NavScrollExample({props}) {
     async function initLoggedInUser() {
         const response = await fetch("/user")
         if(response.status === 200){
-            console.log(await response.json())
             setLoggedInUser(await response.json());
         }else {
             console.log("nope")

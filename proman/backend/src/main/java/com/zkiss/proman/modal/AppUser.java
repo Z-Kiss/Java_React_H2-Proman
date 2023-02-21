@@ -34,7 +34,7 @@ public class AppUser {
         this.name = userRequest.getName();
         this.email = userRequest.getEmail();
         this.password = userRequest.getPassword();
-        this.role = userRequest.getRole();
+        this.role = RoleType.USER;
     }
 
 

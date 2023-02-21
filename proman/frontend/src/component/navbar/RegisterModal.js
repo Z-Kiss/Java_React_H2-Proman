@@ -1,14 +1,11 @@
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import React, {createRef, useState} from "react";
-
-import {createPortal} from "react-dom";
-
+import React from "react";
 
 
 export function RegisterModal({props, payload, handleChange}) {
-    const {handleClose, setLoggedInUser} = props
+    const {handleClose} = props
 
      const registerUser = async (e) => {
         e.preventDefault()
@@ -17,8 +14,9 @@ export function RegisterModal({props, payload, handleChange}) {
             method:"POST",
             body:JSON.stringify(payload)
         })
+
          if(response.status === 200){
-             setLoggedInUser(await response.json())
+            console.log("ok")
          }else {
              console.log("nope")
          }
