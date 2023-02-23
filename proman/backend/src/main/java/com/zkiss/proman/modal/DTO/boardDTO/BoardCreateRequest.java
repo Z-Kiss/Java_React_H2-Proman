@@ -9,4 +9,6 @@ public class BoardCreateRequest implements Validator {
     private String name;
 
     private String color;
+
+    private String textColor;
 }

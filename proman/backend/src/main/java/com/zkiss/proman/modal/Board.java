@@ -19,9 +19,11 @@ public class Board {
     @Column(name = "BOARD_ID")
     private Long id;
 
-    private String boardName;
+    private String title;
 
-    private String boardColor;
+    private String bgColor;
+
+    private String textColor;
 
     private boolean favorite;
 
@@ -34,8 +36,9 @@ public class Board {
     private AppUser appUser;
 
     public Board(BoardCreateRequest createRequest, AppUser appUser) {
-        this.boardName = createRequest.getName();
-        this.boardColor = createRequest.getColor();
+        this.title = createRequest.getName();
+        this.bgColor = createRequest.getColor();
+        this.textColor= createRequest.getTextColor();
         this.appUser = appUser;
     }
 
@@ -44,8 +47,9 @@ public class Board {
     }
 
     public void update(Board board){
-        if(board.getBoardName() != null){this.setBoardName(board.getBoardName());}
-        if(board.getBoardColor() != null){this.setBoardColor(board.getBoardColor());}
+        if(board.getTitle() != null){this.setTitle(board.getTitle());}
+        if(board.getBgColor() != null){this.setBgColor(board.getBgColor());}
+        if(board.getTextColor() != null){this.setTextColor(board.getTextColor());}
         if(board.getBoardColumns() != null){this.setBoardColumns(board.getBoardColumns());}
         this.setFavorite(board.isFavorite());
     }

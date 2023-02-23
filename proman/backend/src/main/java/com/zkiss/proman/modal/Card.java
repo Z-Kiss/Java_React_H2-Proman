@@ -18,13 +18,15 @@ public class Card {
     @Column(name = "CARD_ID")
     private Long id;
 
-    private String cardTitle;
+    private String title;
 
     private String cardDescription;
 
     private Integer cardOrder;
 
-    private String color;
+    private String bgColor;
+
+    private String textColor;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "COLUMN_ID")
@@ -34,16 +36,18 @@ public class Card {
     public Card(CardCreateRequest createRequest,BoardColumn boardColumn) {
         this.boardColumn = boardColumn;
         this.cardOrder = boardColumn.getCards().size();
-        this.cardTitle = createRequest.getCardTitle();
+        this.title = createRequest.getTitle();
         this.cardDescription = createRequest.getCardDescription();
-        this.color = createRequest.getCardColor();
+        this.bgColor = createRequest.getColor();
+        this.textColor = createRequest.getTextColor();
     }
 
     public void update(Card updatedCard) {
         if(updatedCard.getCardDescription() != null){this.setCardDescription(updatedCard.getCardDescription());}
-        if(updatedCard.getCardTitle() != null){this.setCardTitle(updatedCard.getCardTitle());}
+        if(updatedCard.getTitle() != null){this.setTitle(updatedCard.getTitle());}
         if(updatedCard.getCardOrder() != null){this.setCardOrder(updatedCard.getCardOrder());}
-        if(updatedCard.getColor() != null){this.setColor(updatedCard.getColor());}
+        if(updatedCard.getBgColor() != null){this.setBgColor(updatedCard.getBgColor());}
+        if(updatedCard.getTextColor() != null){this.setTextColor(updatedCard.getTextColor());}
         if(updatedCard.getBoardColumn() != null){this.setBoardColumn(updatedCard.getBoardColumn());}
     }
 }

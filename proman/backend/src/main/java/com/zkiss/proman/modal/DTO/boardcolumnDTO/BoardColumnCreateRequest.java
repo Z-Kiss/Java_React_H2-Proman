@@ -8,7 +8,9 @@ public class BoardColumnCreateRequest implements Validator {
 
     private Long boardId;
 
-    private String boardColumnTitle;
+    private String title;
 
-    private String boardColumnColor;
+    private String color;
+
+    private String textColor;
 }

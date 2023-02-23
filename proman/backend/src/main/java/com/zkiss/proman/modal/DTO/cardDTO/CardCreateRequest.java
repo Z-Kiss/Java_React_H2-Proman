@@ -7,9 +7,11 @@ import lombok.Data;
 public class CardCreateRequest implements Validator {
     private Long boardColumnId;
 
-    private String cardTitle;
+    private String title;
 
-    private String cardColor;
+    private String color;
+
+    private String textColor;
 
     private String cardDescription;
 }
