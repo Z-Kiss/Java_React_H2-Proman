@@ -5,8 +5,10 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import UserButtons from "./UserButtons";
 import {useEffect} from "react";
+import CreateTableButton from "../buttons/CreateTableButton";
 
-function NavScrollExample({props}) {
+
+function NavScrollExample({props, createBoardProps}) {
 
 
    const {setLoggedInUser} = props;
@@ -19,6 +21,8 @@ function NavScrollExample({props}) {
             console.log("nope")
         }
     }
+
+
 
     useEffect(() => {
         initLoggedInUser();
@@ -37,8 +41,11 @@ function NavScrollExample({props}) {
                         navbarScroll
                     >
                     </Nav>
+
                     <Container className={"d-flex mx-auto"}>
-                        <Button className={"mx-1"}>Create Table</Button>
+
+                        <CreateTableButton createBoardProps={createBoardProps}/>
+
                         <Form className="d-flex">
                             <Form.Control
                                 type="search"
@@ -48,11 +55,12 @@ function NavScrollExample({props}) {
                             />
                             <Button variant="outline-success">Search</Button>
                         </Form>
-
                     </Container>
+
                     <Container fluid className={"d-flex justify-content-sm-end"}>
                         <UserButtons  props={props}/>
                     </Container>
+
                 </Navbar.Collapse>
             </Container>
         </Navbar>
