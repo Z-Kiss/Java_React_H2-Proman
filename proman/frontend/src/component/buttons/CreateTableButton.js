@@ -11,18 +11,20 @@ export default function CreateBoardButton({createBoardProps}){
 
 
     const pickTextColor = () =>{
-        if (brightBackground.some((color) => (color === payload.color))){
+        if (brightBackground.some((color) => (color === payload.bgColor))){
+
             setPayload(prevState => ({
-                ...prevState,["textColor"]:"text-dark"
-            }))
+                ...prevState,"textColor":"text-dark"}))
         } else {
+
             setPayload(prevState => ({
-                ...prevState,["textColor"]:"text-white"
+                ...prevState,"textColor":"text-white"
             }))
         }
     }
     const createNewBoard = async () =>{
-        pickTextColor();
+
+        console.log(payload)
         const response = await fetch("/board/create",{
             headers:{"Content-Type":"application/json"},
             method:"POST",
@@ -40,6 +42,7 @@ export default function CreateBoardButton({createBoardProps}){
         const {name, value} = e.target;
         setPayload(prevState => ({
             ...prevState,[name]:value}))
+        pickTextColor();
     }
 
     const toggleShow = () => {
@@ -58,21 +61,21 @@ export default function CreateBoardButton({createBoardProps}){
                 <Popover.Header as="h3">Pick a Name and Color</Popover.Header>
                 <Popover.Body>
                     <div >
-                        <input required onChange={(e) => handleChange(e)} name={"name"} className={"mb-3 w-75"} type="text"/>
+                        <input required onChange={(e) => handleChange(e)} name={"title"} className={"mb-3 w-75"} type="text"/>
                         <button onClick={createNewBoard} >ok</button>
                     </div>
 
                     <InputGroup >
-                        <InputGroup.Radio value={"bg-primary"} name={"color"} className={"bg-primary checkboxes"} onChange={handleChange}/>
-                        <InputGroup.Radio value={"bg-secondary"} name={"color"} className={"bg-secondary"} onChange={handleChange} />
-                        <InputGroup.Radio value={"bg-success"} name={"color"}  className={"bg-success"} onChange={handleChange} />
-                        <InputGroup.Radio value={"bg-light"} name={"color"}  className={"bg-light"} onChange={handleChange}/>
+                        <InputGroup.Radio value={"bg-primary"} name={"bgColor"} className={"bg-primary checkboxes"} onChange={handleChange}/>
+                        <InputGroup.Radio value={"bg-secondary"} name={"bgColor"} className={"bg-secondary"} onChange={handleChange} />
+                        <InputGroup.Radio value={"bg-success"} name={"bgColor"}  className={"bg-success"} onChange={handleChange} />
+                        <InputGroup.Radio value={"bg-light"} name={"bgColor"}  className={"bg-light"} onChange={handleChange}/>
                     </InputGroup>
                     <InputGroup >
-                        <InputGroup.Radio value={"bg-danger"} name={"color"}  className={"bg-danger"} onChange={handleChange} />
-                        <InputGroup.Radio value={"bg-warning"} name={"color"}  className={"bg-warning"} onChange={handleChange} />
-                        <InputGroup.Radio value={"bg-info"} name={"color"}  className={"bg-info"} onChange={handleChange} />
-                        <InputGroup.Radio value={"bg-dark"} name={"color"}  className={"bg-dark"} onChange={handleChange} />
+                        <InputGroup.Radio value={"bg-danger"} name={"bgColor"}  className={"bg-danger"} onChange={handleChange} />
+                        <InputGroup.Radio value={"bg-warning"} name={"bgColor"}  className={"bg-warning"} onChange={handleChange} />
+                        <InputGroup.Radio value={"bg-info"} name={"bgColor"}  className={"bg-info"} onChange={handleChange} />
+                        <InputGroup.Radio value={"bg-dark"} name={"bgColor"}  className={"bg-dark"} onChange={handleChange} />
                     </InputGroup>
 
                 </Popover.Body>

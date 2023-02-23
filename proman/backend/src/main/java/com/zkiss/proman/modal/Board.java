@@ -36,8 +36,8 @@ public class Board {
     private AppUser appUser;
 
     public Board(BoardCreateRequest createRequest, AppUser appUser) {
-        this.title = createRequest.getName();
-        this.bgColor = createRequest.getColor();
+        this.title = createRequest.getTitle();
+        this.bgColor = createRequest.getBgColor();
         this.textColor= createRequest.getTextColor();
         this.appUser = appUser;
     }
