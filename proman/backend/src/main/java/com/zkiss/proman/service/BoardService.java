@@ -33,6 +33,7 @@ public class BoardService {
             boardRepository.save(new Board(createRequest, null));
         } else {
             AppUser user = userService.getAppUserById(sessionService.get("userId"));
+
             Board board = new Board(createRequest, user);
             boardRepository.save(board);
 

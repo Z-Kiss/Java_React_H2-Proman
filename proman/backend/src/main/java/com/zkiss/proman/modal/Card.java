@@ -38,7 +38,7 @@ public class Card {
         this.cardOrder = boardColumn.getCards().size();
         this.title = createRequest.getTitle();
         this.cardDescription = createRequest.getCardDescription();
-        this.bgColor = createRequest.getColor();
+        this.bgColor = createRequest.getBgColor();
         this.textColor = createRequest.getTextColor();
     }
 

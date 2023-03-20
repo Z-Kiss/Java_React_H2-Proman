@@ -18,7 +18,7 @@ public class CardService {
     }
 
     public void registerCard(CardCreateRequest createRequest) {
-        BoardColumn boardColumn = boardColumnService.getBoardColumnById(createRequest.getBoardColumnId());
+        BoardColumn boardColumn = boardColumnService.getBoardColumnById(createRequest.getId());
         Card card = new Card(createRequest, boardColumn);
         cardRepository.save(card);
         boardColumn.addCard(card);

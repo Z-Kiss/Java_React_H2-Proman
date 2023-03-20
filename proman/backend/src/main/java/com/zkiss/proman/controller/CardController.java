@@ -19,6 +19,7 @@ public class CardController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createCard(@RequestBody CardCreateRequest createRequest){
+        System.out.println(createRequest);
         if(createRequest.hasNoNullField()){
             cardService.registerCard(createRequest);
             return ResponseEntity.ok().build();

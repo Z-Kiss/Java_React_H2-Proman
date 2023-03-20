@@ -39,7 +39,7 @@ public class BoardColumn {
     private Set<Card> cards = new HashSet<>();
 
     public BoardColumn(BoardColumnCreateRequest createRequest, Board board){
-        this.bgColor = createRequest.getColor();
+        this.bgColor = createRequest.getBgColor();
         this.textColor = createRequest.getTextColor();
         this.title = createRequest.getTitle();
         this.board = board;

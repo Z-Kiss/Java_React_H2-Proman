@@ -5,11 +5,11 @@ import lombok.Data;
 
 @Data
 public class CardCreateRequest implements Validator {
-    private Long boardColumnId;
+    private Long id;
 
     private String title;
 
-    private String color;
+    private String bgColor;
 
     private String textColor;
 

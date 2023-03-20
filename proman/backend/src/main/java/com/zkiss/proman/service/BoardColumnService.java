@@ -22,7 +22,7 @@ public class BoardColumnService {
     }
 
     public void registerBoardColumn(BoardColumnCreateRequest createRequest) {
-        Board board = boardService.getBoardById(createRequest.getBoardId());
+        Board board = boardService.getBoardById(createRequest.getId());
         BoardColumn boardColumn = new BoardColumn(createRequest, board);
         boardColumnRepository.save(boardColumn);
         board.addBoardColumn(boardColumn);

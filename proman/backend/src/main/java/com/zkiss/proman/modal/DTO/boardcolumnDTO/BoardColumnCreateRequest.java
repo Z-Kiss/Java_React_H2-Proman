@@ -6,11 +6,13 @@ import lombok.Data;
 @Data
 public class BoardColumnCreateRequest implements Validator {
 
-    private Long boardId;
+    private Long id;
+
 
     private String title;
 
-    private String color;
+    private String bgColor;
 
     private String textColor;
+
 }

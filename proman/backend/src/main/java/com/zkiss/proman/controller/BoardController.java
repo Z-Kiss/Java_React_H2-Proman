@@ -5,6 +5,7 @@ import com.zkiss.proman.modal.DTO.boardDTO.BoardCreateRequest;
 import com.zkiss.proman.modal.DTO.boardDTO.BoardDeleteRequest;
 import com.zkiss.proman.service.BoardService;
 import com.zkiss.proman.service.SessionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +24,15 @@ public class BoardController {
     }
 
     @PostMapping("/create")
-    public void createBoard(@RequestBody BoardCreateRequest createRequest){
-        boardService.createBoard(createRequest);
+    public ResponseEntity<String> createBoard(@RequestBody BoardCreateRequest createRequest){
+
+        if(createRequest.hasNoNullField()){
+            boardService.createBoard(createRequest);
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.status(400).body("Missing Board Information");
+        }
+
     }
 
     @DeleteMapping
