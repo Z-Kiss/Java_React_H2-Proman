@@ -1,24 +1,30 @@
 import {Card, ListGroup} from "react-bootstrap";
 import Column from "./Column";
 import CreateComponentButton from "../buttons/CreateComponentButton";
-import {DndProvider, useDrop} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
+import {useRef} from "react";
+
+
 
 export default function Board(props){
 
     const {board, createColumnProps, createCardProps} = props
 
-    const [{isOver}, drop] = useDrop(() => ({
-        accept:"column",
-        drop: (item,event) => handleDrop(item, event),
-        collect: (monitor) => ({
-        isOver:!!monitor.isOver()})
-    }));
+    const columnRef = useRef(null);
 
-    const handleDrop = (item,event) => {
-        console.log(item)
-        console.log(event)
+    const itIsBeforeColumn = (e) =>{
+        const columnWidth = columnRef.current.getBoundingClientRect().width;
+        const halfDivWidth = columnWidth / 2;
+        const mouseXPos = e.nativeEvent.offsetX;
 
+        return (mouseXPos <= halfDivWidth);
+    }
+
+    const handleDrop = (e) =>{
+        console.log(itIsBeforeColumn(e))
+    }
+
+    const handleDrag = (e) =>{
+        e.preventDefault();
     }
 
     return(
@@ -29,12 +35,12 @@ export default function Board(props){
             <CreateComponentButton createComponentProps={createColumnProps} parentComponentId={board.id} />
         </Card.Header>
 
-        <Card.Body ref={drop} className={"d-flex flex-row "}>
+        <Card.Body onDrop={handleDrop} onDragOver={handleDrag} className={"d-flex flex-row "}>
 
                 {board.boardColumns
                     .sort((column1, column2) => (column1.columnOrder > column2.columnOrder ? 1 : -1))
                     .map((column) =>
-                        <Column key={column.id} column={column} createCardProps={createCardProps} />
+                        <Column  key={column.id} column={column} columnRef={columnRef} createCardProps={createCardProps} />
                     )}
 
 
