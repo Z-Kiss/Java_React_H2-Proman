@@ -3,6 +3,7 @@ import Navbar from "./component/navbar/Navbar";
 import ModalContainer from "./component/navbar/ModalContainer";
 import {useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css'
 import Boards from "./component/board/Table";
 
 
@@ -11,7 +12,6 @@ export default function App() {
     const [show, setShow] = useState(false);
     const [loggedInUser, setLoggedInUser] = useState(null);
     const [boards, setBoards] = useState([])
-    const brightBackground = ["bg-light","bg-warning","bg-info"]
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -32,8 +32,14 @@ export default function App() {
         }
     }
 
-
-
+    const createNewObject = async (payload,url) =>{
+        const response = await fetch(url,{
+            headers:{"Content-Type":"application/json"},
+            method:"POST",
+            body:JSON.stringify(payload)
+        })
+        return response;
+    }
 
     useEffect(() => {
         if(loggedInUser === null){
@@ -53,8 +59,32 @@ export default function App() {
         handleShow: handleShow,
         handleClose: handleClose,
     }
+
+    const createComponentProps = {
+        initBoardsUser: initBoardsUser,
+        createNewObject: createNewObject,
+    }
+
     const createBoardProps ={
-        initBoardsUser: initBoardsUser
+        createComponent:createComponentProps,
+        placement:"bottom",
+        buttonStyle:"primary",
+        buttonTitle:"Create Board",
+        url:"/board/create"
+    }
+    const createColumnProps ={
+        createComponent:createComponentProps,
+        placement:"right",
+        buttonStyle:"outline-dark",
+        buttonTitle:"Add Column",
+        url:"/boardcolumn/create"
+    }
+    const createCardProps ={
+        createComponent:createComponentProps,
+        placement:"left",
+        buttonStyle:"outline-dark btn-sm",
+        buttonTitle:"+",
+        url:"/card/create"
     }
 
     return (
@@ -62,7 +92,7 @@ export default function App() {
 
           <Navbar props={props} createBoardProps={createBoardProps} />
           <ModalContainer props={props}  />
-          <Boards boards={boards} props={props} />
+          <Boards boards={boards} props={props} createColumnProps={createColumnProps} createCardProps={createCardProps} />
 
       </>
     )

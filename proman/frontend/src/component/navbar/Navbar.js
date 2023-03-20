@@ -5,7 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import UserButtons from "./UserButtons";
 import {useEffect} from "react";
-import CreateTableButton from "../buttons/CreateTableButton";
+import CreateComponentButton from "../buttons/CreateComponentButton";
 
 
 function NavScrollExample({props, createBoardProps}) {
@@ -44,7 +44,7 @@ function NavScrollExample({props, createBoardProps}) {
 
                     <Container className={"d-flex mx-auto"}>
 
-                        <CreateTableButton createBoardProps={createBoardProps}/>
+                        <CreateComponentButton createComponentProps={createBoardProps} />
 
                         <Form className="d-flex">
                             <Form.Control

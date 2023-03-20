@@ -27,30 +27,33 @@ export function RegisterModal({props, payload, handleChange}) {
             <Modal.Header closeButton>
                 <Modal.Title>Register</Modal.Title>
             </Modal.Header>
+            <Form onSubmit={registerUser}>
             <Modal.Body>
-                <Form>
+
                     <Form.Group className="mb-3" controlId="formBasicText">
                         <Form.Label>Name</Form.Label>
-                        <Form.Control name={"name"} type="text" placeholder="Enter Name" onChange={handleChange}/>
+                        <Form.Control name={"name"} required={true} type="text" placeholder="Enter Name" onChange={handleChange}/>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control name={"email"} type="email" placeholder="Enter email" onChange={handleChange}/>
+                        <Form.Control name={"email"} required={true} type="email" placeholder="Enter email" onChange={handleChange}/>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control name={"password"} type="password" placeholder="Password" onChange={handleChange} />
+                        <Form.Control name={"password"} required={true} type="password" placeholder="Password" onChange={handleChange} />
                     </Form.Group>
-                </Form>
+
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button onClick={(e) => registerUser(e)} variant="primary">Submit</Button>
+                <Button  variant="primary">Submit</Button>
+                {/*onClick={(e) => registerUser(e)}*/}
             </Modal.Footer>
+            </Form>
     </>)
 
 
