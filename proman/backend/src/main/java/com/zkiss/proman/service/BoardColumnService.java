@@ -30,6 +30,7 @@ public class BoardColumnService {
     }
 
     public void update(BoardColumn updatedBoardColumn) {
+        System.out.println(updatedBoardColumn);
         BoardColumn boardColumn = boardColumnRepository.getBoardColumnById(updatedBoardColumn.getId());
         boardColumn.update(updatedBoardColumn);
         boardColumnRepository.save(boardColumn);

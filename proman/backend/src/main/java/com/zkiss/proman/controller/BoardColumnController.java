@@ -15,7 +15,7 @@ public class BoardColumnController {
     private BoardColumnService boardColumnService;
 
 
-    public BoardColumnController(BoardColumnService boardColumnService, SessionService sessionService) {
+    public BoardColumnController(BoardColumnService boardColumnService) {
         this.boardColumnService = boardColumnService;
     }
 
@@ -29,8 +29,9 @@ public class BoardColumnController {
         }
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public void updateBoardColumn(@RequestBody BoardColumn boardColumn){
+        System.out.println(boardColumn);
         boardColumnService.update(boardColumn);
     }
 

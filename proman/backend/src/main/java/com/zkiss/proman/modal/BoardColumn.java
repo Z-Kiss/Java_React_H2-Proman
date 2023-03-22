@@ -58,4 +58,15 @@ public class BoardColumn {
     public void addCard(Card card) {
         cards.add(card);
     }
+
+    @Override
+    public String toString() {
+        return "BoardColumn{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", columnOrder=" + columnOrder +
+                ", bgColor='" + bgColor + '\'' +
+                ", textColor='" + textColor + '\'' +
+                '}';
+    }
 }

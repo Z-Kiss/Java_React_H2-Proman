@@ -91,13 +91,51 @@ export default function App() {
 
 
     const columnOrderManager = (columnId, whereToPlace, orderOfColumnToDrop, isItBefore, boardId) => {
-        const newState = boards.map(board => {
+
+        const newBoardState = columnOrderHandler(columnId, whereToPlace, orderOfColumnToDrop, isItBefore, boardId)
+
+        const updatedBoard = newBoardState.find(board => board.id === boardId);
+        const result = columnOrderUpdater(boardId, updatedBoard.boardColumns)
+        if (result){
+            setBoards(newBoardState)
+        }
+
+
+
+    }
+
+    const columnOrderUpdater = (boardId, boardColumns ) => {
+        const promises = []
+        // boardColumns.forEach(boardColumn =>promises.push(updateOneColumn(boardId,boardColumn)));
+        boardColumns.forEach(boardColumn =>updateOneColumn(boardColumn));
+        return promises.every(promise => promise === 200)
+    }
+
+    const payloadGenerator = (boardColumn) =>{
+        const payload = {
+            id:boardColumn.id,
+            columnOrder: boardColumn.columnOrder
+        }
+
+        return payload
+    }
+
+    const updateOneColumn = async (boardColumn) =>{
+        const resp = await fetch("boardcolumn/update",{
+            method: "PUT",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify(payloadGenerator(boardColumn))
+        })
+        return resp.status
+    }
+
+    const columnOrderHandler = (columnId, whereToPlace, orderOfColumnToDrop, isItBefore, boardId) => {
+        return  boards.map(board => {
             if (board.id === boardId) {
                 return {...board, boardColumns: reArrangeColumn(whereToPlace, isItBefore, orderOfColumnToDrop, board.boardColumns)}
             }
             return board
         })
-        setBoards(newState)
 
     }
 
@@ -105,7 +143,7 @@ export default function App() {
 
         const columnToDrop = boardColumns.splice(orderOfColumnToDrop,1);
 
-        boardColumns.splice(correctWhereToPlace(whereToPlace, isItBefore), 0, columnToDrop[0])
+        boardColumns.splice(correctWhereToPlace(whereToPlace, isItBefore, orderOfColumnToDrop), 0, columnToDrop[0])
 
         return  boardColumns.map(column => {
             return {...column, columnOrder: boardColumns.indexOf(column)}
@@ -114,13 +152,10 @@ export default function App() {
 
     }
 
-    const correctWhereToPlace = (whereToPlace, isItBefore) =>{
-        if (whereToPlace == 0){
-            return 0
-        } else {
-            whereToPlace -= 1
+    const correctWhereToPlace = (whereToPlace, isItBefore, orderOfColumnToDrop) =>{
+            if(whereToPlace > orderOfColumnToDrop){
+                whereToPlace -= 1}
             return isItBefore ? whereToPlace : whereToPlace +1
-        }
     }
 
 
