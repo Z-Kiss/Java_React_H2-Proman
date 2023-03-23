@@ -3,6 +3,7 @@ package com.zkiss.proman.controller;
 import com.zkiss.proman.modal.Card;
 import com.zkiss.proman.modal.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.modal.DTO.cardDTO.CardDeleteRequest;
+import com.zkiss.proman.modal.DTO.cardDTO.CardsBoardColumnUpdateRequest;
 import com.zkiss.proman.service.CardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,6 @@ public class CardController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createCard(@RequestBody CardCreateRequest createRequest){
-        System.out.println(createRequest);
         if(createRequest.hasNoNullField()){
             cardService.registerCard(createRequest);
             return ResponseEntity.ok().build();
@@ -28,9 +28,14 @@ public class CardController {
         }
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update-single-card")
     public void updateCard(@RequestBody Card card){
         cardService.update(card);
+    }
+
+    @PutMapping("/update-cards")
+    public void updateCardsBoardColumn(@RequestBody CardsBoardColumnUpdateRequest updateRequest){
+        cardService.update(updateRequest);
     }
 
     @DeleteMapping

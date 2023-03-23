@@ -3,6 +3,7 @@ package com.zkiss.proman.service;
 import com.zkiss.proman.modal.BoardColumn;
 import com.zkiss.proman.modal.Card;
 import com.zkiss.proman.modal.DTO.cardDTO.CardCreateRequest;
+import com.zkiss.proman.modal.DTO.cardDTO.CardsBoardColumnUpdateRequest;
 import com.zkiss.proman.repository.CardRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,17 @@ public class CardService {
         card.update(updatedCard);
         cardRepository.save(card);
     }
+
+    public void update(CardsBoardColumnUpdateRequest updateRequest){
+        BoardColumn boardColumn = boardColumnService.getBoardColumnById(updateRequest.getBoardColumnId());
+        Card updatedCard = updateRequest.getCard();
+        updatedCard.setBoardColumn(boardColumn);
+        Card card = cardRepository.getCardById(updatedCard.getId());
+        card.update(updatedCard);
+        cardRepository.save(card);
+    }
+
+
 
     public void delete(Long cardId) {
         cardRepository.deleteById(cardId);
