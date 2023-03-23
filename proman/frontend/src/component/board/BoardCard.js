@@ -13,16 +13,18 @@ export default function BoardCard({card, parentComponentId, cardOrderManager}){
     }
 
     const handleCardDrop = (e) =>{
+        const columnFromId = parseInt(e.dataTransfer.getData("parentComponentId"));
+        const columnToId = parentComponentId;
 
         const cardId = parseInt(e.dataTransfer.getData("cardId"));
         const cardToDrop = parseInt(e.dataTransfer.getData("cardOrder"));
+
         const whereToDrop = card.cardOrder;
         const isItBefore = itIsOverCard(e);
-        console.log(cardToDrop, whereToDrop)
 
-        if (e.dataTransfer.getData("parentComponentId") === parentComponentId.toString()
-            && e.dataTransfer.getData("type") === "card") {
-            cardOrderManager(cardId, whereToDrop, cardToDrop, isItBefore, parentComponentId)
+
+        if (e.dataTransfer.getData("type") === "card") {
+            cardOrderManager(cardId, whereToDrop, cardToDrop, isItBefore, columnFromId, columnToId)
         }
     }
 
@@ -38,6 +40,9 @@ export default function BoardCard({card, parentComponentId, cardOrderManager}){
     }
 
     return(
-        <ListGroup.Item ref={cardRef} draggable onDragStart={handleDrag} onDragOver={handleDragOver} onDrop={handleCardDrop} className={card.bgColor + " " + card.textColor} key={card.id * 100}>{card.title}</ListGroup.Item>
+        <ListGroup.Item gp={3} ref={cardRef} draggable onDragStart={handleDrag} onDragOver={handleDragOver} onDrop={handleCardDrop}
+                        className={ card.bgColor + " " + card.textColor } key={card.id * 100}>{ card.title}</ListGroup.Item>
     )
 }
+
+// variant={card.bgColor.slice(3)} className={ "dark" } for Lighter card Color

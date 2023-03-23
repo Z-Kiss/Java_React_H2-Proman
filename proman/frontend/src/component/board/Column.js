@@ -25,6 +25,7 @@ export default function Column(props){
     }
 
     const handleColumnDrop = (e) =>{
+
         const columnId = parseInt(e.dataTransfer.getData("columnId"));
         const columnToDrop = parseInt(e.dataTransfer.getData("columnOrder"));
         const whereToDrop = column.columnOrder;
@@ -48,7 +49,7 @@ export default function Column(props){
                 {column.title}
                 <CreateComponentButton createComponentProps={createCardProps} parentComponentId={column.id} />
             </Card.Header>
-            <Card.Body onDragOver={handleDragOver}>
+            <Card.Body onDragOver={handleDragOver} >
 
                 <ListGroup>
                     {column.cards

@@ -1,7 +1,7 @@
 import * as React from 'react'
+import {useEffect, useState} from 'react'
 import Navbar from "./component/navbar/Navbar";
 import ModalContainer from "./component/navbar/ModalContainer";
-import {useEffect, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import Boards from "./component/board/Table";
@@ -82,7 +82,7 @@ export default function App() {
     }
     const createCardProps = {
         createComponent: createComponentProps,
-        placement: "left",
+        placement: "right",
         buttonStyle: "outline-dark btn-sm",
         buttonTitle: "+",
         url: "/card/create"
@@ -126,23 +126,26 @@ export default function App() {
 
     }
 
-    const columnOrderUpdater = (boardId, boardColumns) => {
+    const columnOrderUpdater = async (boardId, boardColumns) => {
         const promises = []
 
-        boardColumns.forEach(boardColumn => updateOneColumn(boardColumn));
-        return promises.every(promise => promise === 200)
+        for (const boardColumn of boardColumns) {
+            promises.push(await updateOneColumn(boardColumn));
+        }
+
+        return promises.every(promise => promise.isFulfilled)
+
     }
 
     const updateOneColumn = async (boardColumn) => {
-        const resp = await fetch("boardcolumn/update", {
+        return await fetch("boardcolumn/update", {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(payloadGenerator(boardColumn))
-        })
-        return resp.status
+            body: JSON.stringify(columnPayloadGenerator(boardColumn))
+        });
     }
 
-    const payloadGenerator = (boardColumn) => {
+    const columnPayloadGenerator = (boardColumn) => {
         const payload = {
             id: boardColumn.id,
             columnOrder: boardColumn.columnOrder
@@ -158,17 +161,68 @@ export default function App() {
         return isItBefore ? whereToPlace : whereToPlace + 1
     }
 
-    const cardOrderManager = (cardId, whereToPlace, orderOfCardToDrop, isItBefore, boardColumnId) => {
-        const newBoardState = cardOrderHandler(cardId, whereToPlace, orderOfCardToDrop, isItBefore, boardColumnId)
-        console.log(newBoardState[0].boardColumns[0].cards)
-        setBoards(newBoardState)
+    const cardOrderManager = (cardId, whereToPlace, orderOfCardToDrop, isItBefore, columnFromId, columnToId) => {
+
+        let newBoardState = [...boards];
+
+        if (columnFromId !== columnToId) {
+            newBoardState = changeColumnOfCard(newBoardState, orderOfCardToDrop, columnFromId, columnToId, whereToPlace, isItBefore)
+
+        } else {
+            newBoardState = cardOrderHandler(newBoardState, cardId, whereToPlace, orderOfCardToDrop, isItBefore, columnFromId)
+
+        }
+
+        const fulfilled = cardsOrderUpdater(newBoardState,columnFromId,columnToId)
+
+        if(fulfilled){
+            setBoards(newBoardState)
+        }
+
+
     }
 
-    const cardOrderHandler = (cardId, whereToPlace, orderOfCardToDrop, isItBefore, boardColumnId) => {
-        return boards.map(board => {
+    const changeColumnOfCard = (newBoardState, orderOfCardToDrop, columnFromId, columnToId, whereToPlace, isItBefore) => {
+        let cardToSwitch = undefined;
+        newBoardState = newBoardState.map(board => {
+
+            return {
+                ...board, boardColumns: board.boardColumns.map(boardColumn => {
+                    if (boardColumn.id === columnFromId) {
+
+                        cardToSwitch = boardColumn.cards.splice(orderOfCardToDrop, 1)
+
+                        return {...boardColumn, cards: correctCardOrder(boardColumn.cards)}
+                    }
+                    return boardColumn;
+                })
+            }
+        })
+        return newBoardState.map(board => {
+
+            return {
+                ...board, boardColumns: board.boardColumns.map(boardColumn => {
+                    if (boardColumn.id === columnToId) {
+
+                        boardColumn.cards.splice(correctWhereToPlace(whereToPlace, isItBefore, orderOfCardToDrop), 0, cardToSwitch[0])
+
+                        return {...boardColumn, cards: correctCardOrder(boardColumn.cards)}
+                    }
+                    return boardColumn;
+                })
+
+            }
+        })
+
+
+    }
+
+    const cardOrderHandler = (newBoardState, cardId, whereToPlace, orderOfCardToDrop, isItBefore, boardColumnId) => {
+        return newBoardState.map(board => {
             return {
                 ...board, boardColumns: board.boardColumns.map(boardColumn => {
                     if (boardColumn.id === boardColumnId) {
+
                         const newCards = reArrangeCard(whereToPlace, isItBefore, orderOfCardToDrop, boardColumn.cards)
 
                         return {...boardColumn, cards: newCards}
@@ -181,14 +235,76 @@ export default function App() {
     }
 
     const reArrangeCard = (whereToPlace, isItBefore, orderOfCardToDrop, cards) => {
-        const cardToDrop = cards.splice(orderOfCardToDrop, 1);
 
+        const cardToDrop = cards.splice(orderOfCardToDrop, 1);
 
         cards.splice(correctWhereToPlace(whereToPlace, isItBefore, orderOfCardToDrop), 0, cardToDrop[0])
 
+        return correctCardOrder(cards)
+    }
+
+    const correctCardOrder = (cards) => {
         return cards.map(card => {
             return {...card, cardOrder: cards.indexOf(card)}
+
         })
+    }
+
+    const cardsOrderUpdater = (newBoardState, columnFromId, columnToId) => {
+        const promises = []
+
+        newBoardState.forEach(board => {
+
+            board.boardColumns.forEach(async boardColumn => {
+
+                if (boardColumn.id === columnFromId) {
+                    for (const card of boardColumn.cards) {
+                        promises.push(await updateOneCard(card, boardColumn.id));
+                    }
+                } else if (boardColumn.id === columnToId){
+                    for (const card of boardColumn.cards) {
+                        promises.push(await updateCardAndColumns(card, boardColumn.id));
+                    }
+                }
+            })
+        })
+        return promises.every(promise => promise.isFulfilled )
+    }
+
+
+    const updateOneCard = async (card, boardColumnId) => {
+        const resp = await fetch("/card/update-single-card", {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(cardPayloadGenerator(card))
+        })
+        return resp.status
+    }
+
+    const updateCardAndColumns = async (card, boardColumnId) => {
+        const resp = await fetch("/card/update-cards", {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(cardPayloadGeneratorWithBoardColumn(card, boardColumnId))
+        })
+        return resp.status
+    }
+
+
+    const cardPayloadGenerator = (card) => {
+        return {
+            id: card.id,
+            cardOrder: card.cardOrder,
+        }
+    }
+
+    const cardPayloadGeneratorWithBoardColumn = (card, boardColumnId) =>{
+        return {
+            boardColumnId: boardColumnId,
+            card:{id: card.id,
+                cardOrder: card.cardOrder,}
+
+        }
     }
 
     return (

@@ -8,6 +8,7 @@ export function RegisterModal({props, payload, handleChange}) {
     const {handleClose} = props
 
      const registerUser = async (e) => {
+        console.log("haha")
         e.preventDefault()
         const response = await fetch("/user/register",{
             headers:{"Content-Type":"application/json"},
@@ -50,8 +51,8 @@ export function RegisterModal({props, payload, handleChange}) {
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button  variant="primary">Submit</Button>
-                {/*onClick={(e) => registerUser(e)}*/}
+                <Button type={"submit"}  variant="primary">Submit</Button>
+
             </Modal.Footer>
             </Form>
     </>)

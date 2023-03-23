@@ -13,7 +13,7 @@ export default function CreateComponentButton(props){
     const [payload, setPayload] = useState({"bgColor":"bg-primary"});
     const [show, setShow] = useState(false);
 
-    const brightBackground = ["bg-light","bg-warning","bg-info"]
+    const brightBackground = ["bg-light","bg-warning"]
 
 
     const addNewComponent = async (e) =>{
