@@ -6,11 +6,12 @@ import {useRef} from "react";
 
 export default function Column(props){
 
-    const {column, createCardProps, parentComponentId, columnOrderManager} = props
+    const {column, createCardProps, parentComponentId, columnOrderManager, cardOrderManager} = props
 
     const columnRef = useRef(null);
 
     const handleDrag = (e) =>{
+        e.dataTransfer.setData("type","column")
         e.dataTransfer.setData("columnId",column.id)
         e.dataTransfer.setData("columnOrder",column.columnOrder)
         e.dataTransfer.setData("parentComponentId", parentComponentId)
@@ -23,36 +24,38 @@ export default function Column(props){
         return (mouseXPos <= halfDivWidth);
     }
 
-    const handleDrop = (e) =>{
+    const handleColumnDrop = (e) =>{
         const columnId = parseInt(e.dataTransfer.getData("columnId"));
         const columnToDrop = parseInt(e.dataTransfer.getData("columnOrder"));
         const whereToDrop = column.columnOrder;
         const isItBefore = itIsBeforeColumn(e);
 
-        if (e.dataTransfer.getData("parentComponentId") === parentComponentId.toString()){
+        if (e.dataTransfer.getData("parentComponentId") === parentComponentId.toString()
+            && e.dataTransfer.getData("type") === "column"){
             columnOrderManager(columnId, whereToDrop, columnToDrop, isItBefore, parentComponentId)
         }
     }
 
     const handleDragOver = (e) =>{
+
         e.preventDefault();
     }
 
 
     return(
-        <Card ref={columnRef} draggable onDragStart={handleDrag} onDrop={handleDrop} onDragOver={handleDragOver} style={{minWidth: "20%"}} >
-            <Card.Header  className={column.bgColor + " bg-gradient " + column.textColor} >
+        <Card  style={{minWidth: "20%"}} >
+            <Card.Header ref={columnRef} draggable onDragStart={handleDrag} onDrop={handleColumnDrop} onDragOver={handleDragOver}  className={column.bgColor + " bg-gradient " + column.textColor} >
                 {column.title}
                 <CreateComponentButton createComponentProps={createCardProps} parentComponentId={column.id} />
             </Card.Header>
-            <Card.Body>
+            <Card.Body onDragOver={handleDragOver}>
 
                 <ListGroup>
                     {column.cards
                         .sort((card1, card2) => (card1.cardOrder > card2.cardOrder ? 1 : -1))
                         .map((card) =>
 
-                        <BoardCard key={card.id} card={card} parentComponentId={column.id}/>
+                        <BoardCard key={card.id} card={card} parentComponentId={column.id} cardOrderManager={cardOrderManager} />
                     )}
                 </ListGroup>
 

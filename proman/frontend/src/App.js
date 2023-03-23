@@ -7,7 +7,6 @@ import './App.css'
 import Boards from "./component/board/Table";
 
 
-
 export default function App() {
     const [modalContent, setModalContent] = useState(null)
     const [show, setShow] = useState(false);
@@ -95,69 +94,102 @@ export default function App() {
         const newBoardState = columnOrderHandler(columnId, whereToPlace, orderOfColumnToDrop, isItBefore, boardId)
 
         const updatedBoard = newBoardState.find(board => board.id === boardId);
+
         const result = columnOrderUpdater(boardId, updatedBoard.boardColumns)
-        if (result){
+        if (result) {
             setBoards(newBoardState)
         }
 
+    }
+    const columnOrderHandler = (columnId, whereToPlace, orderOfColumnToDrop, isItBefore, boardId) => {
+        return boards.map(board => {
+            if (board.id === boardId) {
+                return {
+                    ...board,
+                    boardColumns: reArrangeColumn(whereToPlace, isItBefore, orderOfColumnToDrop, board.boardColumns)
+                }
+            }
+            return board
+        })
 
+    }
+    const reArrangeColumn = (whereToPlace, isItBefore, orderOfColumnToDrop, boardColumns) => {
+
+        const columnToDrop = boardColumns.splice(orderOfColumnToDrop, 1);
+
+
+        boardColumns.splice(correctWhereToPlace(whereToPlace, isItBefore, orderOfColumnToDrop), 0, columnToDrop[0])
+
+        return boardColumns.map(column => {
+            return {...column, columnOrder: boardColumns.indexOf(column)}
+        })
 
     }
 
-    const columnOrderUpdater = (boardId, boardColumns ) => {
+    const columnOrderUpdater = (boardId, boardColumns) => {
         const promises = []
-        // boardColumns.forEach(boardColumn =>promises.push(updateOneColumn(boardId,boardColumn)));
-        boardColumns.forEach(boardColumn =>updateOneColumn(boardColumn));
+
+        boardColumns.forEach(boardColumn => updateOneColumn(boardColumn));
         return promises.every(promise => promise === 200)
     }
 
-    const payloadGenerator = (boardColumn) =>{
+    const updateOneColumn = async (boardColumn) => {
+        const resp = await fetch("boardcolumn/update", {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(payloadGenerator(boardColumn))
+        })
+        return resp.status
+    }
+
+    const payloadGenerator = (boardColumn) => {
         const payload = {
-            id:boardColumn.id,
+            id: boardColumn.id,
             columnOrder: boardColumn.columnOrder
         }
 
         return payload
     }
 
-    const updateOneColumn = async (boardColumn) =>{
-        const resp = await fetch("boardcolumn/update",{
-            method: "PUT",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify(payloadGenerator(boardColumn))
-        })
-        return resp.status
+    const correctWhereToPlace = (whereToPlace, isItBefore, orderOfColumnToDrop) => {
+        if (whereToPlace > orderOfColumnToDrop) {
+            whereToPlace -= 1
+        }
+        return isItBefore ? whereToPlace : whereToPlace + 1
     }
 
-    const columnOrderHandler = (columnId, whereToPlace, orderOfColumnToDrop, isItBefore, boardId) => {
-        return  boards.map(board => {
-            if (board.id === boardId) {
-                return {...board, boardColumns: reArrangeColumn(whereToPlace, isItBefore, orderOfColumnToDrop, board.boardColumns)}
+    const cardOrderManager = (cardId, whereToPlace, orderOfCardToDrop, isItBefore, boardColumnId) => {
+        const newBoardState = cardOrderHandler(cardId, whereToPlace, orderOfCardToDrop, isItBefore, boardColumnId)
+        console.log(newBoardState[0].boardColumns[0].cards)
+        setBoards(newBoardState)
+    }
+
+    const cardOrderHandler = (cardId, whereToPlace, orderOfCardToDrop, isItBefore, boardColumnId) => {
+        return boards.map(board => {
+            return {
+                ...board, boardColumns: board.boardColumns.map(boardColumn => {
+                    if (boardColumn.id === boardColumnId) {
+                        const newCards = reArrangeCard(whereToPlace, isItBefore, orderOfCardToDrop, boardColumn.cards)
+
+                        return {...boardColumn, cards: newCards}
+                    }
+                    return boardColumn
+                })
             }
-            return board
         })
 
     }
 
-    const reArrangeColumn = (whereToPlace, isItBefore, orderOfColumnToDrop, boardColumns) =>{
+    const reArrangeCard = (whereToPlace, isItBefore, orderOfCardToDrop, cards) => {
+        const cardToDrop = cards.splice(orderOfCardToDrop, 1);
 
-        const columnToDrop = boardColumns.splice(orderOfColumnToDrop,1);
 
-        boardColumns.splice(correctWhereToPlace(whereToPlace, isItBefore, orderOfColumnToDrop), 0, columnToDrop[0])
+        cards.splice(correctWhereToPlace(whereToPlace, isItBefore, orderOfCardToDrop), 0, cardToDrop[0])
 
-        return  boardColumns.map(column => {
-            return {...column, columnOrder: boardColumns.indexOf(column)}
+        return cards.map(card => {
+            return {...card, cardOrder: cards.indexOf(card)}
         })
-
-
     }
-
-    const correctWhereToPlace = (whereToPlace, isItBefore, orderOfColumnToDrop) =>{
-            if(whereToPlace > orderOfColumnToDrop){
-                whereToPlace -= 1}
-            return isItBefore ? whereToPlace : whereToPlace +1
-    }
-
 
     return (
         <>
@@ -165,7 +197,8 @@ export default function App() {
             <Navbar props={props} createBoardProps={createBoardProps}/>
             <ModalContainer props={props}/>
             <Boards boards={boards} props={props} createColumnProps={createColumnProps}
-                    createCardProps={createCardProps} columnOrderManager={columnOrderManager}/>
+                    createCardProps={createCardProps} columnOrderManager={columnOrderManager}
+                    cardOrderManager={cardOrderManager}/>
 
         </>
     )
