@@ -31,7 +31,6 @@ public class BoardColumnController {
 
     @PutMapping("/update")
     public void updateBoardColumn(@RequestBody BoardColumn boardColumn){
-        System.out.println(boardColumn);
         boardColumnService.update(boardColumn);
     }
 
