@@ -42,6 +42,16 @@ public class Card {
         this.textColor = createRequest.getTextColor();
     }
 
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", cardOrder=" + cardOrder +
+                ", boardColumn=" + boardColumn +
+                '}';
+    }
+
     public void update(Card updatedCard) {
         if(updatedCard.getCardDescription() != null){this.setCardDescription(updatedCard.getCardDescription());}
         if(updatedCard.getTitle() != null){this.setTitle(updatedCard.getTitle());}
