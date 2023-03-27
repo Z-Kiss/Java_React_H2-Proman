@@ -272,7 +272,7 @@ export default function App() {
     }
 
 
-    const updateOneCard = async (card, boardColumnId) => {
+    const updateOneCard = async (card) => {
         const resp = await fetch("/card/update-single-card", {
             method: "PUT",
             headers: {"Content-Type": "application/json"},

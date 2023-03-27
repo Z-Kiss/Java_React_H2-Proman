@@ -1,7 +1,7 @@
-package com.zkiss.proman.modal;
+package com.zkiss.proman.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zkiss.proman.modal.DTO.cardDTO.CardCreateRequest;
+import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

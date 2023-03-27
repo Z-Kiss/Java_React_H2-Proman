@@ -1,6 +1,5 @@
-package com.zkiss.proman.modal.DTO;
+package com.zkiss.proman.model.DTO;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
 

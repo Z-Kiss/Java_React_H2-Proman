@@ -1,4 +1,4 @@
-package com.zkiss.proman.modal.DTO.boardcolumnDTO;
+package com.zkiss.proman.model.DTO.boardcolumnDTO;
 
 import lombok.Data;
 

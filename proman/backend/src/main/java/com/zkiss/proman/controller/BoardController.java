@@ -1,8 +1,8 @@
 package com.zkiss.proman.controller;
 
-import com.zkiss.proman.modal.Board;
-import com.zkiss.proman.modal.DTO.boardDTO.BoardCreateRequest;
-import com.zkiss.proman.modal.DTO.boardDTO.BoardDeleteRequest;
+import com.zkiss.proman.model.Board;
+import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
+import com.zkiss.proman.model.DTO.boardDTO.BoardDeleteRequest;
 import com.zkiss.proman.service.BoardService;
 import com.zkiss.proman.service.SessionService;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.zkiss.proman.modal.DTO.cardDTO;
+package com.zkiss.proman.model.DTO.cardDTO;
 
 import lombok.Data;
 

@@ -1,9 +1,9 @@
 package com.zkiss.proman.controller;
 
-import com.zkiss.proman.modal.Card;
-import com.zkiss.proman.modal.DTO.cardDTO.CardCreateRequest;
-import com.zkiss.proman.modal.DTO.cardDTO.CardDeleteRequest;
-import com.zkiss.proman.modal.DTO.cardDTO.CardsBoardColumnUpdateRequest;
+import com.zkiss.proman.model.Card;
+import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
+import com.zkiss.proman.model.DTO.cardDTO.CardDeleteRequest;
+import com.zkiss.proman.model.DTO.cardDTO.CardsBoardColumnUpdateRequest;
 import com.zkiss.proman.service.CardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

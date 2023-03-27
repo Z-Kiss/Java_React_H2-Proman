@@ -1,9 +1,9 @@
 package com.zkiss.proman.service;
 
-import com.zkiss.proman.modal.Board;
-import com.zkiss.proman.modal.BoardColumn;
-import com.zkiss.proman.modal.DTO.boardcolumnDTO.BoardColumnCreateRequest;
-import com.zkiss.proman.modal.DTO.boardcolumnDTO.BoardColumnDeleteRequest;
+import com.zkiss.proman.model.Board;
+import com.zkiss.proman.model.BoardColumn;
+import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
+import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnDeleteRequest;
 import com.zkiss.proman.repository.BoardColumnRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

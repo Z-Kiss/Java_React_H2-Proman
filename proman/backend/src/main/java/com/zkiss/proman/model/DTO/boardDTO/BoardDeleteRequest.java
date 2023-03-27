@@ -1,4 +1,4 @@
-package com.zkiss.proman.modal.DTO.boardDTO;
+package com.zkiss.proman.model.DTO.boardDTO;
 
 import lombok.Data;
 

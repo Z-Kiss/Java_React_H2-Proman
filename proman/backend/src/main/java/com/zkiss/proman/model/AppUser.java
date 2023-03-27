@@ -1,12 +1,8 @@
-package com.zkiss.proman.modal;
+package com.zkiss.proman.model;
 
-import com.zkiss.proman.modal.DTO.userDTO.UserRegisterRequest;
+import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Set;
 
 //@Data
 @Getter
