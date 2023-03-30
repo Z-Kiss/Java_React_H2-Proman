@@ -6,7 +6,7 @@ import CreateComponentButton from "../buttons/CreateComponentButton";
 
 export default function Board(props){
 
-    const {board, createColumnProps, createCardProps, columnOrderManager, cardOrderManager} = props
+    const {board, createColumnProps, createCardProps} = props
 
 
 
@@ -23,9 +23,7 @@ export default function Board(props){
                 {board.boardColumns
                     .sort((column1, column2) => (column1.columnOrder > column2.columnOrder ? 1 : -1))
                     .map((column) =>
-                        <Column  key={column.id} column={column} createCardProps={createCardProps}
-                                 parentComponentId={board.id} columnOrderManager={columnOrderManager}
-                                 cardOrderManager={cardOrderManager}/>
+                        <Column  key={column.id} column={{...column}} createCardProps={createCardProps} parentComponentId={board.id}/>
                     )}
 
 
