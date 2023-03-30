@@ -19,12 +19,6 @@ const DragAndDropContext = createContext({});
 
 const DragAndDropProvider = ({children, currentState, setState}) => {
 
-    // let copyOfState;
-    //
-    // const initializeDnd = () => {
-    //     copyOfState = [...currentState]
-    // }
-
 
     const isItCard = (componentType) => {
         return componentType === "card";
@@ -41,7 +35,7 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
     const componentArranger = (changeProps) => {
 
 
-        const {DraggedComponentProps, DropZoneComponentProps, componentType} = changeProps;
+        const {DraggedComponentProps, DropZoneComponentProps, componentType, boardId} = changeProps;
 
         const {idOfDraggedComponent, idOfDraggedParentComponent, indexOfDraggedComponent} = DraggedComponentProps;
 
@@ -51,23 +45,24 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
         let copyOfState = [...currentState];
         let updatedDatabase = false;
 
-        if (isItCard(componentType)) {
-
-            if (needToChangeParentComponent(idOfDraggedParentComponent, idOfDropZoneParentComponent)) {
-                changeParentsOfComponent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace);
-            } else {
+        if (needToChangeParentComponent(idOfDraggedParentComponent, idOfDropZoneParentComponent)) {
+            changeParentsOfComponent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace);
+            cardUpdaterForCardsWithChangedParents(copyOfState, idOfDropZoneParentComponent, boardId)
+        } else {
+            if (isItCard(componentType)) {
                 copyOfState = arrangeCards(copyOfState, idOfDropZoneParentComponent, indexWhereToPlace, indexOfDraggedComponent);
+                cardUpdater(copyOfState, idOfDropZoneParentComponent, boardId)
+            } else if (isItColumn(componentType)) {
+                copyOfState = arrangeColumns(copyOfState, idOfDropZoneParentComponent, indexWhereToPlace, indexOfDraggedComponent);
+                boardColumnUpdater(copyOfState, idOfDropZoneParentComponent)
             }
-
-            cardUpdater(copyOfState, idOfDropZoneParentComponent)
-        } else if (isItColumn(componentType)) {
-            copyOfState = arrangeColumns(copyOfState, idOfDropZoneParentComponent, indexWhereToPlace, indexOfDraggedComponent);
         }
-
-
         setState(copyOfState);
     }
 
+    //*********Array manipulator methods***********
+
+    //Card changer functions
     const changeParentsOfComponent = (copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace) => {
         const childrenToChangeParent = takeChildrenFromParent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent);
         giveChildrenToParent(copyOfState, idOfDropZoneParentComponent, indexWhereToPlace, childrenToChangeParent);
@@ -127,6 +122,8 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
             }
         })
     }
+
+    //Column changer functions
     const arrangeColumns = (copyOfState, idOfDraggedParentComponent, indexWhereToPlace, indexOfDraggedComponent) => {
         return copyOfState.map(board => {
             if (board.id === idOfDraggedParentComponent) {
@@ -138,6 +135,8 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
             return board
         })
     }
+
+    // Util functions
     const arrangeArray = (indexWhereToPlace, indexOfDraggedComponent, arrayToArrange, componentKey) => {
         const componentToChangePlace = getComponentByIndex(arrayToArrange, indexOfDraggedComponent)
 
@@ -162,42 +161,64 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
         });
     };
 
-    const cardUpdater = (copyOfState, idOfDropZoneParentComponent) =>{
-        const cardsToUpdate = getsCardsThatNeedsUpdate(copyOfState, idOfDropZoneParentComponent);
-        console.log(cardsToUpdate)
-        updateCardsInDatabase(cardsToUpdate);
-    }
-    const getsCardsThatNeedsUpdate = (copyOfState, idOfDropZoneParentComponent) => {
 
-        console.log(boardColumn)
-        return boardColumn.cards
+    //*******Update methods*********
+
+    // Card updaters
+    const cardUpdaterForCardsWithChangedParents = (copyOfState, idOfDropZoneParentComponent, boardId) =>{
+        const cardsToUpdate = getsCardsThatNeedsUpdate(copyOfState, idOfDropZoneParentComponent, boardId);
+        updateCardsWithChangedParentsInDatabase(cardsToUpdate, idOfDropZoneParentComponent);
+    }
+    const getsCardsThatNeedsUpdate = (copyOfState, idOfDropZoneParentComponent, boardId) => {
+        const board = copyOfState.find(board => board.id === boardId)
+        const boardColumn = board.boardColumns.find(boardColumn => boardColumn.id === idOfDropZoneParentComponent)
+        return [...boardColumn.cards]
+    }
+    const updateCardsWithChangedParentsInDatabase = async (cards, idOfDropZoneComponent) => {
+        for (const card of cards) {
+            updateComponentInDatabase("card/update-cards",cardWithChangedParentsPayloadGenerator(card, idOfDropZoneComponent))
+        }
+    }
+    const cardUpdater = (copyOfState, idOfDropZoneParentComponent, boardId) => {
+        const cardsToUpdate = getsCardsThatNeedsUpdate(copyOfState, idOfDropZoneParentComponent, boardId);
+        updateCards(cardsToUpdate);
+    }
+    const updateCards = (cards) => {
+        cards.forEach(card => updateComponentInDatabase("card/update-single-card", cardPayloadGenerator(card)));
+    }
+
+    //Column updaters
+    const boardColumnUpdater = (copyOfState, idOfDropZoneParent) => {
+        const board = getBoardColumnsThatNeedsUpdate(copyOfState, idOfDropZoneParent);
+        updateBoardColumnsInDatabase([...board.boardColumns]);
+    }
+    const getBoardColumnsThatNeedsUpdate = (copyOfState,idOfDropZoneParentComponent) =>{
+        return copyOfState.find(board => board.id === idOfDropZoneParentComponent);
     }
     const updateBoardColumnsInDatabase = (boardColumns) => {
-        let result = [];
-        for (let boardColumn in boardColumns) {
-            result.push(updateComponentInDatabase("/boardcolumn/update", boardColumnPayloadGenerator(boardColumn)))
-        }
-        console.log(result)
+
+        // for (const boardColumn in boardColumns) {
+        //     updateComponentInDatabase("/boardcolumn/update", boardColumnPayloadGenerator(boardColumn))
+        // }
+        boardColumns.forEach(boardColumn =>
+            updateComponentInDatabase("/boardcolumn/update", boardColumnPayloadGenerator(boardColumn)));
     }
 
-    const updateCardsInDatabase = async (cards) => {
-        console.log(cards)
-        let result = [];
-        for (let card in cards) {
-            console.log(card)
-            result.push(await updateComponentInDatabase("/boardcolumn/update", cardPayloadGenerator(card)))
-        }
-        console.log(result)
-    }
-
-
+    //Payload Generators
     const boardColumnPayloadGenerator = (component) => {
+
         return {
             id: component.id,
             columnOrder: component.columnOrder
         }
     }
-    const cardPayloadGenerator = (component, idOfDropZoneComponent) => {
+    const cardPayloadGenerator = (component) => {
+        return {
+            id: component.id,
+            cardOrder: component.cardOrder
+        }
+    }
+    const cardWithChangedParentsPayloadGenerator = (component, idOfDropZoneComponent) => {
         return {
             boardColumnId: idOfDropZoneComponent,
             card: {
@@ -207,15 +228,12 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
         }
     }
 
+    //Fetch
     const updateComponentInDatabase = async (url, payload) => {
-
         await fetch(url, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)
-        }).then((response) => {
-            console.log(response.status)
-            return response.status === 200
         })
     }
 
@@ -228,8 +246,6 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
 
 }
 
-// export const useCopyOfState = () => useContext(DragAndDropContext).copyOfState;
 
-// export const useInitDnd = () => useContext(DragAndDropContext).initializeDnd;
 export const useComponentArranger = () => useContext(DragAndDropContext).componentArranger;
 export default DragAndDropProvider;

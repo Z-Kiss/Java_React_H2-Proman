@@ -79,7 +79,7 @@ export default function Column(props){
                         .filter(Boolean)
                         .map((card) =>
 
-                        <BoardCard key={card.id} card={{...card}} parentComponentId={column.id} />
+                        <BoardCard key={card.id} card={{...card}} parentComponentId={column.id} boardId={parentComponentId} />
                     )}
                 </ListGroup>
 

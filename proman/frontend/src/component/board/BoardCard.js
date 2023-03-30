@@ -2,7 +2,7 @@ import {ListGroup} from "react-bootstrap";
 import {useRef} from "react";
 import { useComponentArranger } from "../../context/DragAndDropProvider";
 
-export default function BoardCard({card, parentComponentId}){
+export default function BoardCard({card, parentComponentId, boardId}){
 
     const cardRef = useRef(null);
 
@@ -38,7 +38,8 @@ export default function BoardCard({card, parentComponentId}){
                 idOfDraggedParentComponent: parseInt(e.dataTransfer.getData("parentComponentId")),
                 indexOfDraggedComponent: parseInt(e.dataTransfer.getData("cardOrder"))
             },
-            componentType:e.dataTransfer.getData("type")
+            componentType:e.dataTransfer.getData("type"),
+            boardId: boardId
         };
 
     }
