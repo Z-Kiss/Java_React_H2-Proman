@@ -1,7 +1,7 @@
 package com.zkiss.proman.repository;
 
 
-import com.zkiss.proman.modal.AppUser;
+import com.zkiss.proman.model.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<AppUser, Long>{

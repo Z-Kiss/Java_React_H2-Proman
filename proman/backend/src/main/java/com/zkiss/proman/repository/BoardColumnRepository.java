@@ -1,6 +1,6 @@
 package com.zkiss.proman.repository;
 
-import com.zkiss.proman.modal.BoardColumn;
+import com.zkiss.proman.model.BoardColumn;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

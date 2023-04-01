@@ -1,10 +1,8 @@
-package com.zkiss.proman.modal.DTO.userDTO;
+package com.zkiss.proman.model.DTO.userDTO;
 
-import com.zkiss.proman.modal.Board;
-import com.zkiss.proman.modal.DTO.Validator;
-import com.zkiss.proman.modal.RoleType;
+import com.zkiss.proman.model.Board;
+import com.zkiss.proman.model.RoleType;
 import lombok.Data;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.Set;
 @Data

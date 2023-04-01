@@ -1,10 +1,9 @@
 package com.zkiss.proman.controller;
 
 import com.google.gson.Gson;
-import com.zkiss.proman.modal.AppUser;
-import com.zkiss.proman.modal.DTO.userDTO.UserLoginRequest;
-import com.zkiss.proman.modal.DTO.userDTO.UserRegisterRequest;
-import com.zkiss.proman.modal.DTO.userDTO.UserUpdateRequest;
+import com.zkiss.proman.model.AppUser;
+import com.zkiss.proman.model.DTO.userDTO.UserLoginRequest;
+import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
 import com.zkiss.proman.service.SessionService;
 import com.zkiss.proman.service.UserService;
 
@@ -33,10 +32,9 @@ public class UserController {
         this.sessionService = sessionService;
     }
 
-    //TODO Consultation about methods not just changing state but returning object
+
     @PostMapping("/register")
     public ResponseEntity<List<String>> registerUser(@RequestBody UserRegisterRequest userRequest) {
-        System.out.println(userRequest);
         try{
             userService.registerUser(userRequest);
             return ResponseEntity.ok().build();

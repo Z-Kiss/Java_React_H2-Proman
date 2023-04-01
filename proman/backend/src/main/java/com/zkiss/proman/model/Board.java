@@ -1,7 +1,7 @@
-package com.zkiss.proman.modal;
+package com.zkiss.proman.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zkiss.proman.modal.DTO.boardDTO.BoardCreateRequest;
+import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import jakarta.persistence.*;
 import lombok.*;
 

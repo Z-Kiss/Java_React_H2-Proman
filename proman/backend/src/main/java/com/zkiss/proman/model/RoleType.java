@@ -1,4 +1,4 @@
-package com.zkiss.proman.modal;
+package com.zkiss.proman.model;
 
 public enum RoleType {
     ADMIN,

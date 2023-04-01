@@ -1,6 +1,6 @@
-package com.zkiss.proman.modal.DTO.boardDTO;
+package com.zkiss.proman.model.DTO.boardDTO;
 
-import com.zkiss.proman.modal.DTO.Validator;
+import com.zkiss.proman.model.DTO.Validator;
 import lombok.Data;
 
 @Data
