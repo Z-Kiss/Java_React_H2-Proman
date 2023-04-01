@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect, useState} from "react";
+import {createContext, useContext} from "react";
 // const [idOfDraggedComponent,
 //     idOfDraggedParentComponent,
 //     indexOfDraggedComponent,
@@ -37,16 +37,19 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
 
         const {DraggedComponentProps, DropZoneComponentProps, componentType, boardId} = changeProps;
 
-        const {idOfDraggedComponent, idOfDraggedParentComponent, indexOfDraggedComponent} = DraggedComponentProps;
+        const {idOfDraggedParentComponent, indexOfDraggedComponent} = DraggedComponentProps;
 
-        const {idOfDropZoneComponent, idOfDropZoneParentComponent, indexWhereToPlace} = DropZoneComponentProps;
+        const {idOfDropZoneParentComponent, indexWhereToPlace} = DropZoneComponentProps;
 
 
         let copyOfState = [...currentState];
         let updatedDatabase = false;
-
+        console.log("idOFdraggedParent",idOfDraggedParentComponent, indexOfDraggedComponent,"idOfDropZone", idOfDropZoneParentComponent, indexWhereToPlace)
         if (needToChangeParentComponent(idOfDraggedParentComponent, idOfDropZoneParentComponent)) {
+
+            console.log("happening")
             changeParentsOfComponent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace);
+
             cardUpdaterForCardsWithChangedParents(copyOfState, idOfDropZoneParentComponent, boardId)
         } else {
             if (isItCard(componentType)) {

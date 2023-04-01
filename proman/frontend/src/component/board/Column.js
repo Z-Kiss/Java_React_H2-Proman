@@ -43,10 +43,29 @@ export default function Column(props){
                 idOfDraggedParentComponent: parseInt(e.dataTransfer.getData("parentComponentId")),
                 indexOfDraggedComponent: parseInt(e.dataTransfer.getData("columnOrder"))
             },
-            componentType:e.dataTransfer.getData("type")
+            componentType:e.dataTransfer.getData("type"),
+            boardId: parentComponentId
         };
 
     }
+    const propGeneratorForColumnBody = (e) => {
+        return {
+            DropZoneComponentProps: {
+
+                idOfDropZoneParentComponent: column.id,
+                indexWhereToPlace: 0
+            },
+            DraggedComponentProps: {
+                idOfDraggedComponent: parseInt(e.dataTransfer.getData("cardId")),
+                idOfDraggedParentComponent: parseInt(e.dataTransfer.getData("parentComponentId")),
+                indexOfDraggedComponent: parseInt(e.dataTransfer.getData("cardOrder"))
+            },
+            componentType:e.dataTransfer.getData("type"),
+            boardId:parentComponentId
+        };
+
+    }
+
     const handleDrag = (e) =>{
         e.dataTransfer.setData("type","column");
         e.dataTransfer.setData("columnId",column.id);
@@ -57,6 +76,13 @@ export default function Column(props){
     const handleDrop = (e) =>{
         if(e.dataTransfer.getData("type") === "column" && column.id !== parseInt(e.dataTransfer.getData("columnId"))) {
             componentArranger(propGenerator(e));
+        }
+    }
+
+    const handleDropOnColumnBody = (e) => {
+        if(e.dataTransfer.getData("type") === "card"){
+            console.log("happening")
+            componentArranger(propGeneratorForColumnBody(e))
         }
     }
 
@@ -71,7 +97,7 @@ export default function Column(props){
                 {column.title}
                 <CreateComponentButton createComponentProps={createCardProps} parentComponentId={column.id} />
             </Card.Header>
-            <Card.Body onDragOver={handleDragOver} >
+            <Card.Body style={{minHeight: "60px"}} onDragOver={handleDragOver} onDrop={handleDropOnColumnBody} >
 
                 <ListGroup>
                     {column.cards
