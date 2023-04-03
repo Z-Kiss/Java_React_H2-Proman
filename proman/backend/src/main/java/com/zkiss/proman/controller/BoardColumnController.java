@@ -36,6 +36,7 @@ public class BoardColumnController {
 
     @DeleteMapping
     public void deleteBoardColumn(@RequestBody BoardColumnDeleteRequest deleteRequest){
+
         boardColumnService.delete(deleteRequest);
     }
 

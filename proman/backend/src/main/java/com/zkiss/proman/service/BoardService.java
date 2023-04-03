@@ -65,6 +65,6 @@ public class BoardService {
     }
 
     public void deleteBoard(BoardDeleteRequest deleteRequest) {
-        boardRepository.deleteById(deleteRequest.getBoardId());
+        boardRepository.deleteById(deleteRequest.getId());
     }
 }

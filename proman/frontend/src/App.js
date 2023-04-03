@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import Boards from "./component/board/Table";
 import DragAndDropProvider from "./context/DragAndDropProvider";
+import DeleteComponentProvider from "./context/DeleteComponentProvider";
 
 
 
@@ -52,7 +53,7 @@ export default function App() {
         } else {
             initBoardsUser();
         }
-    }, [loggedInUser])
+    },[loggedInUser])
 
 
 
@@ -97,11 +98,13 @@ export default function App() {
 
     return (
         <>
-            <DragAndDropProvider currentState={boards} setState={setBoards}>
-            <Navbar props={props} createBoardProps={createBoardProps}/>
-            <ModalContainer props={props}/>
-            <Boards boards={[...boards]} props={props} createColumnProps={createColumnProps} createCardProps={createCardProps}/>
-            </DragAndDropProvider>
+            <DeleteComponentProvider currentState={boards} setState={setBoards}>
+                <DragAndDropProvider currentState={boards} setState={setBoards}>
+                    <Navbar props={props} createBoardProps={createBoardProps}/>
+                    <ModalContainer props={props}/>
+                    <Boards boards={[...boards]} props={props} createColumnProps={createColumnProps} createCardProps={createCardProps}/>
+                </DragAndDropProvider>
+            </DeleteComponentProvider>
         </>
     )
 }

@@ -28,7 +28,7 @@ public class Card {
 
     private String textColor;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "COLUMN_ID")
     @JsonIgnore
     private BoardColumn boardColumn;

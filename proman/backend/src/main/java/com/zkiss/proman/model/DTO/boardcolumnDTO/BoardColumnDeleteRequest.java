@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class BoardColumnDeleteRequest {
 
-    private Long boardColumnId;
+    private Long id;
 }

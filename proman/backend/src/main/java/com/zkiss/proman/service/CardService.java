@@ -3,6 +3,7 @@ package com.zkiss.proman.service;
 import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.Card;
 import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
+import com.zkiss.proman.model.DTO.cardDTO.CardDeleteRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardsBoardColumnUpdateRequest;
 import com.zkiss.proman.repository.CardRepository;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class CardService {
 
 
 
-    public void delete(Long cardId) {
-        cardRepository.deleteById(cardId);
+    public void delete(CardDeleteRequest deleteRequest) {
+        cardRepository.deleteById(deleteRequest.getId());
     }
 }

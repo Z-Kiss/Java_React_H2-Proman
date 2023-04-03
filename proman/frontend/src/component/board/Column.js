@@ -3,6 +3,7 @@ import BoardCard from "./BoardCard";
 import CreateComponentButton from "../buttons/CreateComponentButton";
 import {useRef} from "react";
 import { useComponentArranger } from "../../context/DragAndDropProvider"
+import DeleteComponentButton from "../buttons/DeleteComponentButton";
 
 
 export default function Column(props){
@@ -24,13 +25,13 @@ export default function Column(props){
 
         return isItBefore ? indexWhereToPlace : indexWhereToPlace + 1
     }
-
     const itIsBeforeColumn = (e) =>{
         const columnWidth = columnRef.current.getBoundingClientRect().width;
         const halfDivWidth = columnWidth / 2;
         const mouseXPos = e.nativeEvent.offsetX;
         return (mouseXPos <= halfDivWidth);
     }
+
     const propGenerator = (e) => {
         return {
             DropZoneComponentProps: {
@@ -93,9 +94,14 @@ export default function Column(props){
 
     return(
         <Card  style={{minWidth: "20%"}} >
-            <Card.Header ref={columnRef} draggable onDragStart={handleDrag} onDrop={handleDrop} onDragOver={handleDragOver}  className={column.bgColor + " bg-gradient " + column.textColor} >
-                {column.title}
-                <CreateComponentButton createComponentProps={createCardProps} parentComponentId={column.id} />
+            <Card.Header ref={columnRef} draggable onDragStart={handleDrag} onDrop={handleDrop} onDragOver={handleDragOver}
+                         className={column.bgColor + " bg-gradient " + column.textColor + " w-auto d-flex flex-row justify-content-between align-items-center align-content-center"} >
+                <p>{column.title}</p>
+                <div>
+                    <DeleteComponentButton parentComponentId={parentComponentId} componentId={column.id} componentType={"boardcolumn"} />
+                    <CreateComponentButton createComponentProps={createCardProps} parentComponentId={column.id} />
+                </div>
+
             </Card.Header>
             <Card.Body style={{minHeight: "60px"}} onDragOver={handleDragOver} onDrop={handleDropOnColumnBody} >
 

@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class CardDeleteRequest {
-    private Long cardId;
+    private Long id;
 }
