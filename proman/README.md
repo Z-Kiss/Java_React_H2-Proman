@@ -22,16 +22,9 @@ This will run the Backend and the Frontend at the same time.
 
 ### **Prerequisites**
 
-    -Node.js
-### How to install: https://nodejs.org/en/download ###
-    -Maven
-### How to install: https://maven.apache.org/install.html
-    
-    -Install Dependencies from pom.xml 
 
-    -Run StartApplication.sh (it will start the Backend Spring Boot server and Frontend React server together)
-
-
+    -npm
+    -npm install npm@latest -g
 
 ### **Implemented Features**
 
