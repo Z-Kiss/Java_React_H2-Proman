@@ -30,7 +30,7 @@ public class BoardColumn {
 
     private String textColor;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "BOARD_ID")
     @JsonIgnore
     private Board board;

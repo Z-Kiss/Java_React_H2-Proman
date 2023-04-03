@@ -37,7 +37,6 @@ public class BoardController {
 
     @DeleteMapping
     public void deleteBoard(@RequestBody BoardDeleteRequest deleteRequest){
-        System.out.println(deleteRequest);
         boardService.deleteBoard(deleteRequest);
     }
 

@@ -41,7 +41,7 @@ public class CardController {
 
     @DeleteMapping
     public void deleteCard(@RequestBody CardDeleteRequest deleteRequest){
-        cardService.delete(deleteRequest.getCardId());
+        cardService.delete(deleteRequest);
     }
 
 }

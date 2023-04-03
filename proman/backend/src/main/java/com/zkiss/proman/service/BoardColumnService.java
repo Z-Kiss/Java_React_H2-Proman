@@ -36,7 +36,7 @@ public class BoardColumnService {
     }
 
     public void delete(BoardColumnDeleteRequest deleteRequest) {
-        boardColumnRepository.deleteById(deleteRequest.getBoardColumnId());
+        boardColumnRepository.deleteById(deleteRequest.getId());
     }
 
     public BoardColumn getBoardColumnById(Long boardColumnId) {
