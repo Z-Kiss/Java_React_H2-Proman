@@ -1,6 +1,8 @@
 import {Card} from "react-bootstrap";
 import Column from "./Column";
 import CreateComponentButton from "../buttons/CreateComponentButton";
+import DeleteComponentButton from "../buttons/DeleteComponentButton";
+
 
 
 
@@ -15,7 +17,10 @@ export default function Board(props){
 
         <Card.Header  className={board.bgColor + " " +board.textColor +" bg-gradient w-auto d-flex flex-row justify-content-between align-items-center align-content-center "}>
             <p><b>{board.title}</b></p>
-            <CreateComponentButton createComponentProps={createColumnProps} parentComponentId={board.id} />
+            <div>
+                <DeleteComponentButton componentId={board.id} componentType={"board"}/>
+                <CreateComponentButton createComponentProps={createColumnProps} parentComponentId={board.id} />
+            </div>
         </Card.Header>
 
         <Card.Body  className={"d-flex flex-row "}>

@@ -10,7 +10,7 @@ export default function CreateComponentButton(props){
 
     const {createNewObject, initBoardsUser} = createComponent
 
-    const [payload, setPayload] = useState({"bgColor":"bg-primary"});
+    const [payload, setPayload] = useState({bgColor:"bg-primary"});
     const [show, setShow] = useState(false);
 
     const brightBackground = ["bg-light","bg-warning"]
@@ -18,10 +18,12 @@ export default function CreateComponentButton(props){
 
     const addNewComponent = async (e) =>{
         e.preventDefault();
+
         const response = await createNewObject(payload,url)
+
         if(response.status === 200){
             initBoardsUser();
-            setPayload({"bgColor":"bg-primary"})
+            setPayload({bgColor: "bg-primary"})
         }
         setShow(false);
     }
@@ -30,10 +32,9 @@ export default function CreateComponentButton(props){
 
     const handleChange = e =>{
 
-
         if(parentComponentId !== undefined){
             setPayload(prevState => ({
-                ...prevState,"id":parentComponentId}))
+                ...prevState,id: parentComponentId}))
         }
 
         const {name, value} = e.target;
@@ -48,12 +49,12 @@ export default function CreateComponentButton(props){
         if (brightBackground.some((color) => (color === payload.bgColor))){
 
             setPayload(prevState => ({
-                ...prevState,"textColor":"text-dark"
+                ...prevState,textColor: "text-dark"
             }))
         } else {
 
             setPayload(prevState => ({
-                ...prevState,"textColor":"text-white"
+                ...prevState,textColor: "text-white"
             }))
         }
     }
@@ -81,7 +82,7 @@ export default function CreateComponentButton(props){
                         </Form.Group>
 
                             <InputGroup>
-                                <InputGroup.Radio checked={true} value={"bg-primary"} name={"bgColor"} className={"bg-primary checkboxes"} onChange={handleChange}/>
+                                <InputGroup.Radio autoFocus value={"bg-primary"} name={"bgColor"} className={"bg-primary checkboxes"} onChange={handleChange}/>
                                 <InputGroup.Radio value={"bg-secondary"} name={"bgColor"} className={"bg-secondary"} onChange={handleChange} />
                                 <InputGroup.Radio value={"bg-success"} name={"bgColor"}  className={"bg-success"} onChange={handleChange} />
                                 <InputGroup.Radio value={"bg-light"} name={"bgColor"}  className={"bg-light"} onChange={handleChange}/>
