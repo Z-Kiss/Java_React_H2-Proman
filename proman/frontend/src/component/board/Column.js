@@ -52,7 +52,6 @@ export default function Column(props){
     const propGeneratorForColumnBody = (e) => {
         return {
             DropZoneComponentProps: {
-
                 idOfDropZoneParentComponent: column.id,
                 indexWhereToPlace: 0
             },
@@ -72,6 +71,7 @@ export default function Column(props){
         e.dataTransfer.setData("columnId",column.id);
         e.dataTransfer.setData("columnOrder",column.columnOrder);
         e.dataTransfer.setData("parentComponentId", parentComponentId);
+
     }
 
     const handleDrop = (e) =>{
@@ -81,8 +81,8 @@ export default function Column(props){
     }
 
     const handleDropOnColumnBody = (e) => {
-        if(e.dataTransfer.getData("type") === "card"){
-            console.log("happening")
+        if(e.dataTransfer.getData("type") === "card" && column.cards.length === 0){
+
             componentArranger(propGeneratorForColumnBody(e))
         }
     }
