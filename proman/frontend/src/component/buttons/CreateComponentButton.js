@@ -2,27 +2,28 @@ import Button from "react-bootstrap/Button";
 import {InputGroup, OverlayTrigger, Popover} from "react-bootstrap";
 import { useState} from "react";
 import Form from "react-bootstrap/Form";
+import {useCreateNewComponent} from "../../context/CreateComponentProvider";
 export default function CreateComponentButton(props){
+
+
 
     const {createComponentProps, parentComponentId} = props;
 
-    const {createComponent, placement,  buttonStyle, buttonTitle, url } = createComponentProps
-
-    const {createNewObject, initBoardsUser} = createComponent
+    const {placement, buttonStyle, buttonTitle, url} = createComponentProps
 
     const [payload, setPayload] = useState({bgColor:"bg-primary"});
     const [show, setShow] = useState(false);
 
     const brightBackground = ["bg-light","bg-warning"]
 
+    const creteNewComponent = useCreateNewComponent();
 
     const addNewComponent = async (e) =>{
         e.preventDefault();
 
-        const response = await createNewObject(payload,url)
+        const response = await creteNewComponent(payload,url)
 
         if(response.status === 200){
-            initBoardsUser();
             setPayload({bgColor: "bg-primary"})
         }
         setShow(false);

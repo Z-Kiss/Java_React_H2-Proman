@@ -4,12 +4,16 @@ import CreateComponentButton from "../buttons/CreateComponentButton";
 import {useRef} from "react";
 import { useComponentArranger } from "../../context/DragAndDropProvider"
 import DeleteComponentButton from "../buttons/DeleteComponentButton";
+import {useCreateCardProps} from "../../context/CreateComponentProvider";
 
 
 export default function Column(props){
 
-    const {column, createCardProps, parentComponentId} = props
+    const {column, parentComponentId} = props
+
     const componentArranger = useComponentArranger();
+
+    const createCardProps = useCreateCardProps();
 
     const columnRef = useRef(null);
 
