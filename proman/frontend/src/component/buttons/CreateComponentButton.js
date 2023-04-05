@@ -21,11 +21,8 @@ export default function CreateComponentButton(props){
     const addNewComponent = async (e) =>{
         e.preventDefault();
 
-        const response = await creteNewComponent(payload,url)
+        creteNewComponent(payload,url)
 
-        if(response.status === 200){
-            setPayload({bgColor: "bg-primary"})
-        }
         setShow(false);
     }
 

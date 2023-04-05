@@ -3,6 +3,7 @@ package com.zkiss.proman.controller;
 import com.zkiss.proman.model.Board;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import com.zkiss.proman.model.DTO.boardDTO.BoardDeleteRequest;
+import com.zkiss.proman.model.DTO.boardDTO.CreateBoardResponse;
 import com.zkiss.proman.service.BoardService;
 import com.zkiss.proman.service.SessionService;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,13 @@ public class BoardController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createBoard(@RequestBody BoardCreateRequest createRequest){
+    public ResponseEntity<CreateBoardResponse> createBoard(@RequestBody BoardCreateRequest createRequest){
 
         if(createRequest.hasNoNullField()){
-            boardService.createBoard(createRequest);
-            return ResponseEntity.ok().build();
+            Board board = boardService.createBoard(createRequest);
+            return ResponseEntity.ok().body(new CreateBoardResponse("board",board));
         }else {
-            return ResponseEntity.status(400).body("Missing Board Information");
+            return ResponseEntity.status(400).build();
         }
 
     }

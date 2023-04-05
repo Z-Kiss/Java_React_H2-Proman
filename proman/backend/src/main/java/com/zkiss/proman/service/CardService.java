@@ -5,6 +5,7 @@ import com.zkiss.proman.model.Card;
 import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardDeleteRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardsBoardColumnUpdateRequest;
+import com.zkiss.proman.model.DTO.cardDTO.CreateCardResponse;
 import com.zkiss.proman.repository.CardRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +20,15 @@ public class CardService {
         this.cardRepository = cardRepository;
     }
 
-    public void registerCard(CardCreateRequest createRequest) {
+    public CreateCardResponse registerCard(CardCreateRequest createRequest) {
         BoardColumn boardColumn = boardColumnService.getBoardColumnById(createRequest.getId());
         Card card = new Card(createRequest, boardColumn);
+
         cardRepository.save(card);
         boardColumn.addCard(card);
         boardColumnService.update(boardColumn);
+
+        return new CreateCardResponse("card", boardColumn.getId(), card);
     }
 
     public void update(Card updatedCard) {

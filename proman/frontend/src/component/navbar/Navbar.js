@@ -13,7 +13,7 @@ function NavScrollExample({props}) {
 
     const createBoardProps = useCreateBoardProps()
 
-    console.log(createBoardProps)
+
 
     const {setLoggedInUser} = props;
 

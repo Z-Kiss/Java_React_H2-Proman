@@ -3,6 +3,8 @@ package com.zkiss.proman.controller;
 import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnDeleteRequest;
+import com.zkiss.proman.model.DTO.boardDTO.CreateBoardResponse;
+import com.zkiss.proman.model.DTO.boardcolumnDTO.CreateBoardColumnResponse;
 import com.zkiss.proman.service.BoardColumnService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,18 +21,17 @@ public class BoardColumnController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createNewBoardColumn(@RequestBody BoardColumnCreateRequest createRequest){
+    public ResponseEntity<CreateBoardColumnResponse> createNewBoardColumn(@RequestBody BoardColumnCreateRequest createRequest){
         if(createRequest.hasNoNullField()){
-            boardColumnService.registerBoardColumn(createRequest);
-            return ResponseEntity.ok().build();
+            CreateBoardColumnResponse response = boardColumnService.registerBoardColumn(createRequest);
+            return ResponseEntity.ok().body(response);
         }else {
-            return ResponseEntity.status(401).body("Missing BoardColumn Information");
+            return ResponseEntity.status(401).build();
         }
     }
 
     @PutMapping("/update")
     public void updateBoardColumn(@RequestBody BoardColumn boardColumn){
-
         boardColumnService.update(boardColumn);
     }
 

@@ -28,16 +28,19 @@ public class BoardService {
         this.userRepository = userRepository;
     }
 
-    public void createBoard(BoardCreateRequest createRequest) {
+    public Board createBoard(BoardCreateRequest createRequest) {
+        Board board;
         if (sessionService.get("userId") == null) {
-            boardRepository.save(new Board(createRequest, null));
+            board = new Board(createRequest, null);
+            boardRepository.save(board);
         } else {
             AppUser user = userService.getAppUserById(sessionService.get("userId"));
 
-            Board board = new Board(createRequest, user);
-            boardRepository.save(board);
+            board = new Board(createRequest, user);
 
+            boardRepository.save(board);
         }
+        return board;
     }
 
 

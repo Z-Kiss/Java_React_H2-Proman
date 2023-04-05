@@ -2,13 +2,16 @@ import {Card} from "react-bootstrap";
 import Column from "./Column";
 import CreateComponentButton from "../buttons/CreateComponentButton";
 import DeleteComponentButton from "../buttons/DeleteComponentButton";
+import {useCreateColumnProps} from "../../context/CreateComponentProvider";
 
 
 
 
 export default function Board(props){
 
-    const {board, createColumnProps, createCardProps} = props
+    const {board} = props;
+
+    const createColumnProps = useCreateColumnProps();
 
 
 
@@ -28,8 +31,9 @@ export default function Board(props){
                 {board.boardColumns
                     .sort((column1, column2) => (column1.columnOrder > column2.columnOrder ? 1 : -1))
                     .map((column) =>
-                        <Column  key={column.id} column={{...column}} createCardProps={createCardProps} parentComponentId={board.id}/>
+                        <Column  key={column.id} column={{...column}}  parentComponentId={board.id}/>
                     )}
+
 
 
         </Card.Body>

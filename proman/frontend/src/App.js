@@ -7,14 +7,13 @@ import './App.css'
 import Boards from "./component/board/Table";
 import DragAndDropProvider from "./context/DragAndDropProvider";
 import DeleteComponentProvider from "./context/DeleteComponentProvider";
-import CreateComponentButton from "./component/buttons/CreateComponentButton";
 import CreateComponentProvider from "./context/CreateComponentProvider";
 
 
 
 
 export default function App() {
-    const [modalContent, setModalContent] = useState(null)
+    const [modalContent, setModalContent] = useState(null);
     const [show, setShow] = useState(false);
     const [loggedInUser, setLoggedInUser] = useState(null);
     const [boards, setBoards] = useState([])
@@ -24,17 +23,17 @@ export default function App() {
     const handleShow = () => setShow(true);
 
     const initBoardsGuest = async () => {
-        const response = await fetch("board/get-all-guest-boards")
+        const response = await fetch("/board/get-all-guest-boards")
         if (response.status === 200) {
-            setBoards(await response.json())
+            setBoards(await response.json());
         } else {
             console.log("nope")
         }
     }
     const initBoardsUser = async () => {
-        const response = await fetch("board/get-all-boards-by-user")
+        const response = await fetch("/board/get-all-boards-by-user")
         if (response.status === 200) {
-            setBoards(await response.json())
+            setBoards(await response.json());
         } else {
             console.log("nope")
         }
@@ -68,13 +67,13 @@ export default function App() {
     return (
         <>
             <CreateComponentProvider currentState={boards} setState={setBoards}>
-            <DeleteComponentProvider currentState={boards} setState={setBoards}>
-            <DragAndDropProvider currentState={boards} setState={setBoards}>
-                    <Navbar props={props}/>
-                    <ModalContainer props={props}/>
-                    <Boards boards={[...boards]} props={props} />
-            </DragAndDropProvider>
-            </DeleteComponentProvider>
+                <DeleteComponentProvider currentState={boards} setState={setBoards}>
+                    <DragAndDropProvider currentState={boards} setState={setBoards}>
+                            <Navbar props={props}/>
+                            <ModalContainer props={props}/>
+                            <Boards boards={[...boards]} props={props} />
+                    </DragAndDropProvider>
+                </DeleteComponentProvider>
             </CreateComponentProvider>
         </>
     )
