@@ -1,6 +1,6 @@
 # **Proman**
 
-Trello like List making Application to help Agile work style.
+Trello like List making Application to help Agile work style. Currently in Development phase, I continiously working on it.
 
 ### **Built With**
 
@@ -70,12 +70,6 @@ This will run the Backend and the Frontend at the same time.
     - You can Delete any Boards, Columns and Cards by clicking to the Icon.
     This change only happening on the Frontend if the sent DELETE Request response were OK.
 
-
-### ***Features to Implement***
-
-    - Rename Board, Column, Card
-    
-    - Spring Security
 
 
 
