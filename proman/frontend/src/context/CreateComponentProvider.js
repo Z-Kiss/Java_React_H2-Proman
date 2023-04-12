@@ -49,7 +49,7 @@ const CreateComponentProvider = ({children, copyOfState, setState}) => {
     }
     const createColumnInDatabase = async (payload) => {
 
-        let response = await fetch("/boardcolumn/create", {
+        let response = await fetch("/board-column/create", {
             headers: {"Content-Type": "application/json"},
             method: "POST",
             body: JSON.stringify(payload)
@@ -63,7 +63,7 @@ const CreateComponentProvider = ({children, copyOfState, setState}) => {
 
     }
     const updateStateWithNewColumn = (props) => {
-        //boardId is the Id of the Board that contains the boardColumn
+        //boardId is the id of the Board that contains the boardColumn
 
         const {boardId, boardColumn} = props;
 
@@ -97,7 +97,7 @@ const CreateComponentProvider = ({children, copyOfState, setState}) => {
         }
     }
     const updateStateWithNewCard = (props) => {
-        //boardColumnId is the Id of the BoardColumn that contains the Card
+        //boardColumnId is the id of the BoardColumn that contains the Card
 
         const {boardColumnId, card} = props;
 

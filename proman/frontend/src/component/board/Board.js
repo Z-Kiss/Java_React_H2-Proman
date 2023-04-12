@@ -11,6 +11,7 @@ export default function Board({board}){
 
 
     return(
+
     <Card  className={" w-auto m-4"}>
 
         <Card.Header  className={board.bgColor + " " +board.textColor +" bg-gradient w-auto d-flex flex-row justify-content-between align-items-center align-content-center "}>
@@ -24,7 +25,6 @@ export default function Board({board}){
         <Card.Body  className={"d-flex flex-row "}>
 
                 {board.boardColumns
-                    .sort((column1, column2) => (column1.columnOrder > column2.columnOrder ? 1 : -1))
                     .map((column) =>
                         <Column  key={column.id} column={{...column}}  parentComponentId={board.id}/>
                     )}

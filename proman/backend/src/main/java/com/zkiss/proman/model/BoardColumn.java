@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 //@Data
@@ -35,8 +37,9 @@ public class BoardColumn {
     @JsonIgnore
     private Board board;
 
+    @OrderColumn(name = "cardOrder")
     @OneToMany(mappedBy = "boardColumn", cascade = CascadeType.ALL)
-    private Set<Card> cards = new HashSet<>();
+    private List<Card> cards = new ArrayList<>();
 
     public BoardColumn(BoardColumnCreateRequest createRequest, Board board){
         this.bgColor = createRequest.getBgColor();
