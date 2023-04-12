@@ -28,7 +28,7 @@ public class CardService {
         boardColumn.addCard(card);
         boardColumnService.update(boardColumn);
 
-        return new CreateCardResponse("card", boardColumn.getId(), card);
+        return new CreateCardResponse(boardColumn.getId(), card);
     }
 
     public void update(Card updatedCard) {

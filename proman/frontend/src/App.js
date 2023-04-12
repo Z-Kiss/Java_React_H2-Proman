@@ -1,13 +1,14 @@
 import * as React from 'react'
 import {useEffect, useState} from 'react'
 import Navbar from "./component/navbar/Navbar";
-import ModalContainer from "./component/navbar/ModalContainer";
+import ModalContainer from "./component/modal/ModalContainer";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import Boards from "./component/board/Table";
 import DragAndDropProvider from "./context/DragAndDropProvider";
 import DeleteComponentProvider from "./context/DeleteComponentProvider";
 import CreateComponentProvider from "./context/CreateComponentProvider";
+import PayloadGeneratorProvider from "./context/PayloadGeneratorProvider";
 
 
 
@@ -66,15 +67,17 @@ export default function App() {
 
     return (
         <>
-            <CreateComponentProvider currentState={boards} setState={setBoards}>
-                <DeleteComponentProvider currentState={boards} setState={setBoards}>
-                    <DragAndDropProvider currentState={boards} setState={setBoards}>
-                            <Navbar props={props}/>
-                            <ModalContainer props={props}/>
-                            <Boards boards={[...boards]} props={props} />
-                    </DragAndDropProvider>
-                </DeleteComponentProvider>
-            </CreateComponentProvider>
+            <PayloadGeneratorProvider>
+                <CreateComponentProvider copyOfState={[...boards]} setState={setBoards}>
+                    <DeleteComponentProvider currentState={boards} setState={setBoards}>
+                        <DragAndDropProvider currentState={boards} setState={setBoards}>
+                                <Navbar props={props}/>
+                                <ModalContainer props={props}/>
+                                <Boards boards={[...boards]} props={props} />
+                        </DragAndDropProvider>
+                    </DeleteComponentProvider>
+                </CreateComponentProvider>
+            </PayloadGeneratorProvider>
         </>
     )
 }

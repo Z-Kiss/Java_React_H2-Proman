@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CreateBoardColumnResponse {
-    String componentType;
 
     Long boardId;
 

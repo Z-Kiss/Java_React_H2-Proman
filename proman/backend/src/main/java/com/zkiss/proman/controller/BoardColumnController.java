@@ -22,6 +22,7 @@ public class BoardColumnController {
 
     @PostMapping("/create")
     public ResponseEntity<CreateBoardColumnResponse> createNewBoardColumn(@RequestBody BoardColumnCreateRequest createRequest){
+        System.out.println(createRequest);
         if(createRequest.hasNoNullField()){
             CreateBoardColumnResponse response = boardColumnService.registerBoardColumn(createRequest);
             return ResponseEntity.ok().body(response);

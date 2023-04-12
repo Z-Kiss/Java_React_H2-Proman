@@ -31,7 +31,7 @@ public class BoardColumnService {
         board.addBoardColumn(boardColumn);
         boardService.updateBoard(board);
 
-        return new CreateBoardColumnResponse("boardcolumn", board.getId(), boardColumn);
+        return new CreateBoardColumnResponse(board.getId(), boardColumn);
     }
 
     public void update(BoardColumn updatedBoardColumn) {

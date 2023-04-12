@@ -22,7 +22,7 @@ const DeleteComponentProvider = ({children, currentState, setState}) =>{
             }
             default: return
         }
-        console.log("haha")
+
         updateDatabase(componentType,componentId);
         setState(copyOfState);
     }

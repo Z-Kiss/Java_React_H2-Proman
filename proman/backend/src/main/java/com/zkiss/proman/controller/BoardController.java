@@ -29,7 +29,7 @@ public class BoardController {
 
         if(createRequest.hasNoNullField()){
             Board board = boardService.createBoard(createRequest);
-            return ResponseEntity.ok().body(new CreateBoardResponse("board",board));
+            return ResponseEntity.ok().body(new CreateBoardResponse(board));
         }else {
             return ResponseEntity.status(400).build();
         }

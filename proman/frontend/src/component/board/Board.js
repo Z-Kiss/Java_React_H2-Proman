@@ -1,18 +1,13 @@
 import {Card} from "react-bootstrap";
 import Column from "./Column";
-import CreateComponentButton from "../buttons/CreateComponentButton";
 import DeleteComponentButton from "../buttons/DeleteComponentButton";
-import {useCreateColumnProps} from "../../context/CreateComponentProvider";
+import CreateColumnButton from "../buttons/CreateColumnButton";
 
 
 
 
-export default function Board(props){
 
-    const {board} = props;
-
-    const createColumnProps = useCreateColumnProps();
-
+export default function Board({board}){
 
 
     return(
@@ -22,7 +17,7 @@ export default function Board(props){
             <p><b>{board.title}</b></p>
             <div>
                 <DeleteComponentButton componentId={board.id} componentType={"board"}/>
-                <CreateComponentButton createComponentProps={createColumnProps} parentComponentId={board.id} />
+                <CreateColumnButton parentComponentId={board.id} />
             </div>
         </Card.Header>
 
