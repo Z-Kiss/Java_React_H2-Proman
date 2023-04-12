@@ -1,4 +1,4 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext} from "react";
 
 
 const PayloadGeneratorContext = createContext({});
@@ -6,17 +6,14 @@ const PayloadGeneratorContext = createContext({});
 const PayloadGeneratorProvider = ({children}) =>{
 
     const payloadGeneratorForNewObjects = (e, parentComponentId, payloadOfNewObject, setPayloadOfNewObject) =>{
-        console.log(parentComponentId)
+
         const brightBackground = ["bg-light","bg-warning"]
 
-        if(parentComponentId !== undefined){
-            setPayloadOfNewObject(prevState => ({
-                ...prevState,id: parentComponentId}))}
+        if(notBoard(parentComponentId)) {recordParentComponentId(setPayloadOfNewObject, parentComponentId);}
 
         const {name, value} = e.target;
 
-        setPayloadOfNewObject(prevState => ({
-            ...prevState,[name]:value}))
+        recordAttributeOfNewObject(setPayloadOfNewObject,name, value)
 
         pickTextColor(brightBackground, payloadOfNewObject, setPayloadOfNewObject)
 
@@ -24,6 +21,16 @@ const PayloadGeneratorProvider = ({children}) =>{
 
     const notBoard = (parentComponentId) =>{
         return parentComponentId !== undefined
+    }
+
+    const recordParentComponentId = (setPayloadOfNewObject, parentComponentId) =>{
+        setPayloadOfNewObject(prevState => ({
+            ...prevState,id: parentComponentId}))
+    }
+
+    const recordAttributeOfNewObject = (setPayloadOfNewObject,name, value) =>{
+        setPayloadOfNewObject(prevState => ({
+            ...prevState,[name]:value}))
     }
 
     const pickTextColor = (brightBackground,payloadOfNewObject, setPayloadOfNewObject) =>{
