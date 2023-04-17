@@ -1,10 +1,9 @@
 import {Card, ListGroup} from "react-bootstrap";
 import BoardCard from "./BoardCard";
-import CreateComponentButton from "../buttons/CreateComponentButton";
 import {useRef} from "react";
 import { useComponentArranger } from "../../context/DragAndDropProvider"
 import DeleteComponentButton from "../buttons/DeleteComponentButton";
-import {useCreateCardProps} from "../../context/CreateComponentProvider";
+import CreateCardButton from "../buttons/CreateCardButton";
 
 
 export default function Column(props){
@@ -12,8 +11,6 @@ export default function Column(props){
     const {column, parentComponentId} = props
 
     const componentArranger = useComponentArranger();
-
-    const createCardProps = useCreateCardProps();
 
     const columnRef = useRef(null);
 
@@ -103,7 +100,7 @@ export default function Column(props){
                 <p>{column.title}</p>
                 <div>
                     <DeleteComponentButton parentComponentId={parentComponentId} componentId={column.id} componentType={"boardcolumn"} />
-                    <CreateComponentButton createComponentProps={createCardProps} parentComponentId={column.id} />
+                    <CreateCardButton parentComponentId={column.id} />
                 </div>
 
             </Card.Header>

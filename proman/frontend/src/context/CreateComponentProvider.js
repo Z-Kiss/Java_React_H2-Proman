@@ -1,58 +1,69 @@
-import {createContext, useContext, useEffect, useState} from "react";
-import {border} from "@chakra-ui/react";
+import {createContext, useContext} from "react";
+
 
 
 const CreateComponentContext = createContext({})
 
-const CreateComponentProvider = ({children, currentState, setState}) => {
+const CreateComponentProvider = ({children, copyOfState, setState}) => {
 
+    const createNewBoard = async (payload) => {
 
-    const createNewObject = async (payload, url) => {
-        await fetch(url, {
+        const newBoard = await createBoardInDatabase(payload);
+
+        if (newBoard) {
+            const updatedState = updateStateWithNewBoard(newBoard);
+            setState(updatedState);
+        } else {
+            console.log("nope")
+        }
+
+    }
+    const createBoardInDatabase = async (payload) => {
+        const response = await fetch("/board/create", {
             headers: {"Content-Type": "application/json"},
             method: "POST",
             body: JSON.stringify(payload)
         })
-            .then(response => response.json())
-            .then(response => createComponent(response));
+        if(response.status === 200){
+           return await response.json();
 
-    }
-
-    const createComponent = (props) => {
-        let copyOfState = [...currentState];
-
-        const {componentType} = props;
-        switch (componentType) {
-            case "board": {
-                console.log("board")
-                copyOfState = createBoard(props, copyOfState);
-                break;
-            }
-            case "boardcolumn": {
-                console.log("column")
-                copyOfState = createBoardColumn(props, copyOfState);
-                break;
-            }
-            case "card": {
-                console.log("card")
-                copyOfState = createCard(props, copyOfState);
-                break;
-            }
-            default: {
-                return
-            }
+        }else {
+            console.log("nope")
+            return undefined
         }
-
-        setState(copyOfState);
     }
-
-
-    const createBoard = (props, copyOfState) => {
+    const updateStateWithNewBoard = (props) => {
         const {board} = props
-
         return [...copyOfState, board]
     }
-    const createBoardColumn = (props, copyOfState) => {
+
+    const createNewColumn = async (payload) => {
+        const newColumn = await createColumnInDatabase(payload);
+
+        if (newColumn) {
+            const updatedState = updateStateWithNewColumn(newColumn);
+            setState(updatedState);
+        } else {
+            console.log("nope")
+        }
+    }
+    const createColumnInDatabase = async (payload) => {
+
+        let response = await fetch("/board-column/create", {
+            headers: {"Content-Type": "application/json"},
+            method: "POST",
+            body: JSON.stringify(payload)
+        })
+        if(response.status === 200){
+            return  await response.json();
+        }else {
+            console.log("nope")
+            return undefined
+        }
+
+    }
+    const updateStateWithNewColumn = (props) => {
+        //boardId is the id of the Board that contains the boardColumn
 
         const {boardId, boardColumn} = props;
 
@@ -63,7 +74,30 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
             return board;
         })
     }
-    const createCard = (props, copyOfState) => {
+
+    const createNewCard = async (payload) => {
+        const newCard = await createCardInDatabase(payload);
+        if (newCard) {
+            const updatedState = updateStateWithNewCard(newCard);
+            setState(updatedState);
+        } else {
+            console.log("nope")
+        }
+    }
+    const createCardInDatabase = async (payload) => {
+        let response = await fetch("/card/create", {
+            headers: {"Content-Type": "application/json"},
+            method: "POST",
+            body: JSON.stringify(payload)
+        })
+        if(response.status === 200){
+            return await response.json();
+        }else {
+            console.log("nope")
+        }
+    }
+    const updateStateWithNewCard = (props) => {
+        //boardColumnId is the id of the BoardColumn that contains the Card
 
         const {boardColumnId, card} = props;
 
@@ -83,39 +117,23 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
     }
 
 
-    const createBoardProps = {
-        placement: "bottom",
-        buttonStyle: "primary",
-        buttonTitle: "Create Board",
-        url: "/board/create"
+    const create = {
+        newCard: createNewCard,
+        newColumn: createNewColumn,
+        newBoard: createNewBoard
     }
 
-    const createColumnProps = {
-        placement: "right",
-        buttonStyle: "outline-dark",
-        buttonTitle: "Add Column",
-        url: "/boardcolumn/create"
-    }
 
-    const createCardProps = {
-        placement: "right",
-        buttonStyle: "outline-dark btn-sm",
-        buttonTitle: "+",
-        url: "/card/create"
-    }
+
 
     return (
-        <CreateComponentContext.Provider
-            value={{createNewObject, createBoardProps, createColumnProps, createCardProps}}>
+        <CreateComponentContext.Provider value={{create}}>
             {children}
         </CreateComponentContext.Provider>
     )
 
 }
 
+export const useCreate = () => useContext(CreateComponentContext).create;
 
-export const useCreateBoardProps = () => useContext(CreateComponentContext).createBoardProps;
-export const useCreateColumnProps = () => useContext(CreateComponentContext).createColumnProps;
-export const useCreateCardProps = () => useContext(CreateComponentContext).createCardProps;
-export const useCreateNewComponent = () => useContext(CreateComponentContext).createNewObject;
 export default CreateComponentProvider;

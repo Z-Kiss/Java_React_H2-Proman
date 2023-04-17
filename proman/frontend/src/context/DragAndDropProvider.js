@@ -44,7 +44,7 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
 
         let copyOfState = [...currentState];
         let updatedDatabase = false;
-         //TODO Consultation
+
 
         if (needToChangeParentComponent(idOfDraggedParentComponent, idOfDropZoneParentComponent)) {
             copyOfState = changeParentsOfComponent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace);
@@ -59,6 +59,7 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
                 boardColumnUpdater(copyOfState, idOfDropZoneParentComponent)
             }
         }
+
         setState(copyOfState);
     }
 

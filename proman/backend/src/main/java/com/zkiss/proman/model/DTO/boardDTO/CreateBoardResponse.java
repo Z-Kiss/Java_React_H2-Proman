@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CreateBoardResponse {
-    String componentType;
+
     Board board;
 
 }
