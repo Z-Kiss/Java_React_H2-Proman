@@ -24,7 +24,7 @@ How to install: https://nodejs.org/en/download
 
 ### **Getting Started**
 
-Before you start,3 you need to install the dependencies.
+Before you start, you need to install the dependencies.
 Use this command from the _backend_ directory.
 
     mvn dependency:copy-dependencies
