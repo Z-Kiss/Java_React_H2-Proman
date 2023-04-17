@@ -4,6 +4,8 @@ import com.zkiss.proman.model.Card;
 import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardDeleteRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardsBoardColumnUpdateRequest;
+import com.zkiss.proman.model.DTO.boardDTO.CreateBoardResponse;
+import com.zkiss.proman.model.DTO.cardDTO.CreateCardResponse;
 import com.zkiss.proman.service.CardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +21,12 @@ public class CardController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createCard(@RequestBody CardCreateRequest createRequest){
+    public ResponseEntity<CreateCardResponse> createCard(@RequestBody CardCreateRequest createRequest){
         if(createRequest.hasNoNullField()){
-            cardService.registerCard(createRequest);
-            return ResponseEntity.ok().build();
+            CreateCardResponse response = cardService.registerCard(createRequest);
+            return ResponseEntity.ok().body(response);
         }else {
-            return ResponseEntity.status(401).body("Missing Card Information");
+            return ResponseEntity.status(401).build();
         }
     }
 

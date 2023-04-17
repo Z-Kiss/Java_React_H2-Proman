@@ -1,14 +1,15 @@
 import {Card, ListGroup} from "react-bootstrap";
 import BoardCard from "./BoardCard";
-import CreateComponentButton from "../buttons/CreateComponentButton";
 import {useRef} from "react";
 import { useComponentArranger } from "../../context/DragAndDropProvider"
 import DeleteComponentButton from "../buttons/DeleteComponentButton";
+import CreateCardButton from "../buttons/CreateCardButton";
 
 
 export default function Column(props){
 
-    const {column, createCardProps, parentComponentId} = props
+    const {column, parentComponentId} = props
+
     const componentArranger = useComponentArranger();
 
     const columnRef = useRef(null);
@@ -52,7 +53,6 @@ export default function Column(props){
     const propGeneratorForColumnBody = (e) => {
         return {
             DropZoneComponentProps: {
-
                 idOfDropZoneParentComponent: column.id,
                 indexWhereToPlace: 0
             },
@@ -72,6 +72,7 @@ export default function Column(props){
         e.dataTransfer.setData("columnId",column.id);
         e.dataTransfer.setData("columnOrder",column.columnOrder);
         e.dataTransfer.setData("parentComponentId", parentComponentId);
+
     }
 
     const handleDrop = (e) =>{
@@ -81,8 +82,8 @@ export default function Column(props){
     }
 
     const handleDropOnColumnBody = (e) => {
-        if(e.dataTransfer.getData("type") === "card"){
-            console.log("happening")
+        if(e.dataTransfer.getData("type") === "card" && column.cards.length === 0){
+
             componentArranger(propGeneratorForColumnBody(e))
         }
     }
@@ -99,7 +100,7 @@ export default function Column(props){
                 <p>{column.title}</p>
                 <div>
                     <DeleteComponentButton parentComponentId={parentComponentId} componentId={column.id} componentType={"boardcolumn"} />
-                    <CreateComponentButton createComponentProps={createCardProps} parentComponentId={column.id} />
+                    <CreateCardButton parentComponentId={column.id} />
                 </div>
 
             </Card.Header>

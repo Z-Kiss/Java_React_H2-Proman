@@ -3,25 +3,28 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import UserButtons from "./UserButtons";
+import UserButtons from "../buttons/UserButtons";
 import {useEffect} from "react";
-import CreateComponentButton from "../buttons/CreateComponentButton";
+import CreateBoardButton from "../buttons/CreateBoardButton";
 
 
-function NavScrollExample({props, createBoardProps}) {
+
+function NavScrollExample({props}) {
 
 
-   const {setLoggedInUser} = props;
+
+
+
+    const {setLoggedInUser} = props;
 
     async function initLoggedInUser() {
         const response = await fetch("/user")
-        if(response.status === 200){
+        if (response.status === 200) {
             setLoggedInUser(await response.json());
-        }else {
+        } else {
             console.log("nope")
         }
     }
-
 
 
     useEffect(() => {
@@ -44,7 +47,7 @@ function NavScrollExample({props, createBoardProps}) {
 
                     <Container className={"d-flex mx-auto"}>
 
-                        <CreateComponentButton createComponentProps={createBoardProps} />
+                        <CreateBoardButton />
 
                         <Form className="d-flex">
                             <Form.Control
@@ -58,7 +61,7 @@ function NavScrollExample({props, createBoardProps}) {
                     </Container>
 
                     <Container fluid className={"d-flex justify-content-sm-end"}>
-                        <UserButtons  props={props}/>
+                        <UserButtons props={props}/>
                     </Container>
 
                 </Navbar.Collapse>

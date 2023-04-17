@@ -44,11 +44,10 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
 
         let copyOfState = [...currentState];
         let updatedDatabase = false;
-        console.log("idOFdraggedParent",idOfDraggedParentComponent, indexOfDraggedComponent,"idOfDropZone", idOfDropZoneParentComponent, indexWhereToPlace)
-        if (needToChangeParentComponent(idOfDraggedParentComponent, idOfDropZoneParentComponent)) {
 
-            console.log("happening")
-            changeParentsOfComponent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace);
+
+        if (needToChangeParentComponent(idOfDraggedParentComponent, idOfDropZoneParentComponent)) {
+            copyOfState = changeParentsOfComponent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace);
 
             cardUpdaterForCardsWithChangedParents(copyOfState, idOfDropZoneParentComponent, boardId)
         } else {
@@ -60,6 +59,7 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
                 boardColumnUpdater(copyOfState, idOfDropZoneParentComponent)
             }
         }
+
         setState(copyOfState);
     }
 
@@ -67,12 +67,18 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
 
     //Card changer functions
     const changeParentsOfComponent = (copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace) => {
-        const childrenToChangeParent = takeChildrenFromParent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent);
-        giveChildrenToParent(copyOfState, idOfDropZoneParentComponent, indexWhereToPlace, childrenToChangeParent);
+        //TODO ask
+        const props = takeChildrenFromParent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent);
+
+        copyOfState = props.copyOfState;
+        const childrenToChangeParent = props.takenChildren
+
+        return giveChildrenToParent(copyOfState, idOfDropZoneParentComponent, indexWhereToPlace, childrenToChangeParent);
     }
-    const takeChildrenFromParent = (currentState, idOfDraggedParentComponent, indexOfDraggedComponent) => {
+    const takeChildrenFromParent = (copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent) => {
         let takenChildren;
-        currentState.map(board => {
+
+        copyOfState = copyOfState.map(board => {
 
             return {
                 ...board, boardColumns: board.boardColumns.map(boardColumn => {
@@ -90,7 +96,7 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
             }
         })
 
-        return takenChildren[0];
+        return {takenChildren: takenChildren[0], copyOfState: copyOfState};
     }
     const giveChildrenToParent = (currentState, idOfDropZoneParentComponent, indexWhereToPlace, childComponent) => {
         return currentState.map(board => {
@@ -156,12 +162,15 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
         arrayToArrange.splice(indexOfWhereToPlace, 0, componentToChangePlace)
     }
     const adjustComponentOrderAttribute = (componentToAdjust, componentKey) => {
-        return componentToAdjust.filter(Boolean).map((component, index) => {
+        componentToAdjust =  componentToAdjust.filter(Boolean)
+        componentToAdjust = componentToAdjust.map((component, index) => {
             return {
                 ...component,
                 [componentKey]: index
             };
         });
+
+        return componentToAdjust
     };
 
 
@@ -170,6 +179,7 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
     // Card updaters
     const cardUpdaterForCardsWithChangedParents = (copyOfState, idOfDropZoneParentComponent, boardId) =>{
         const cardsToUpdate = getsCardsThatNeedsUpdate(copyOfState, idOfDropZoneParentComponent, boardId);
+
         updateCardsWithChangedParentsInDatabase(cardsToUpdate, idOfDropZoneParentComponent);
     }
     const getsCardsThatNeedsUpdate = (copyOfState, idOfDropZoneParentComponent, boardId) => {

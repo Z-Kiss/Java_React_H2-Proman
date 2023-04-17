@@ -5,7 +5,9 @@ import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 //@Data
@@ -27,8 +29,9 @@ public class Board {
 
     private boolean favorite;
 
+    @OrderColumn(name = "columnOrder")
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private Set<BoardColumn> boardColumns = new HashSet<>();
+    private List<BoardColumn> boardColumns = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "APP_USER_ID" )

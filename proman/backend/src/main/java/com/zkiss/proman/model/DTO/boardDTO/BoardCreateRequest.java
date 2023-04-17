@@ -12,5 +12,4 @@ public class BoardCreateRequest implements Validator {
 
     private String textColor;
 
-    private int haha;
 }

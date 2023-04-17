@@ -15,7 +15,7 @@ export default function BoardCard({card, parentComponentId, boardId}){
         const indexOfDraggedComponent = parseInt(e.dataTransfer.getData("cardOrder"));
         const isItBefore = itIsOverCard(e);
 
-        if (indexWhereToPlace > indexOfDraggedComponent) {
+        if (indexWhereToPlace > indexOfDraggedComponent && parseInt(e.dataTransfer.getData("parentComponentId")) === parentComponentId) {
             indexWhereToPlace -= 1
         }
         return isItBefore ? indexWhereToPlace : indexWhereToPlace + 1
@@ -53,10 +53,10 @@ export default function BoardCard({card, parentComponentId, boardId}){
     }
 
     const handleDrop = (e) =>{
+
         if(e.dataTransfer.getData("type") === "card" && card.id !== parseInt(e.dataTransfer.getData("cardId"))){
             componentArranger(propGenerator(e));
         }
-
 
     }
 
@@ -68,7 +68,7 @@ export default function BoardCard({card, parentComponentId, boardId}){
     return(
         <ListGroup.Item gp={3} ref={cardRef} draggable onDragStart={handleDrag} onDragOver={handleDragOver} onDrop={handleDrop}
                         className={ card.bgColor + " " + card.textColor + " w-auto d-flex flex-row justify-content-between align-items-center align-content-center" } key={card.id * 100}>
-            { card.title}
+            {card.title}
             <DeleteComponentButton boardId={boardId} parentComponentId={parentComponentId} componentId={card.id} componentType={"card"}/>
         </ListGroup.Item>
     )
