@@ -13,18 +13,27 @@ Trello like List making Application to help Agile work style. Currently in Devel
     -Bootstrap
 
 
+### **Prerequisites**
+
+Maven
+How to innstall: https://maven.apache.org/install.html
+
+Node.js
+How to install: https://nodejs.org/en/download
+
+
 ### **Getting Started**
+
+Before you start,3 you need to install the dependencies.
+Use this command from the _backend_ directory.
+
+    mvn dependency:copy-dependencies
 
 For starting the Application simply run the _StartApplication.sh_
 
 This will run the Backend and the Frontend at the same time.
 
 
-### **Prerequisites**
-
-
-    -npm
-    -npm install npm@latest -g
 
 ### **Implemented Features**
 
