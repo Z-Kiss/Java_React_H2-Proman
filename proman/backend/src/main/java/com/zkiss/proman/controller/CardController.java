@@ -2,9 +2,7 @@ package com.zkiss.proman.controller;
 
 import com.zkiss.proman.model.Card;
 import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
-import com.zkiss.proman.model.DTO.cardDTO.CardDeleteRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardsBoardColumnUpdateRequest;
-import com.zkiss.proman.model.DTO.boardDTO.CreateBoardResponse;
 import com.zkiss.proman.model.DTO.cardDTO.CreateCardResponse;
 import com.zkiss.proman.service.CardService;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +39,9 @@ public class CardController {
         cardService.update(updateRequest);
     }
 
-    @DeleteMapping
-    public void deleteCard(@RequestBody CardDeleteRequest deleteRequest){
-        cardService.delete(deleteRequest);
+    @DeleteMapping("/{id}")
+    public void deleteCard(@PathVariable("id") Long id){
+        cardService.delete(id);
     }
 
 }

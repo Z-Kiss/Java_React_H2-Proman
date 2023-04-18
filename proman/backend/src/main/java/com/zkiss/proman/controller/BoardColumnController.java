@@ -2,7 +2,6 @@ package com.zkiss.proman.controller;
 
 import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
-import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnDeleteRequest;
 
 import com.zkiss.proman.model.DTO.boardcolumnDTO.CreateBoardColumnResponse;
 import com.zkiss.proman.service.BoardColumnService;
@@ -34,10 +33,9 @@ public class BoardColumnController {
         boardColumnService.update(boardColumn);
     }
 
-    @DeleteMapping
-    public void deleteBoardColumn(@RequestBody BoardColumnDeleteRequest deleteRequest){
-
-        boardColumnService.delete(deleteRequest);
+    @DeleteMapping("/{id}")
+    public void deleteBoardColumn(@PathVariable("id") Long id){
+        boardColumnService.delete(id);
     }
 
 
