@@ -1,9 +1,9 @@
 import Button from "react-bootstrap/Button";
 import {OverlayTrigger} from "react-bootstrap";
 import {useState} from "react";
-import {useCreate} from "../../context/CreateComponentProvider";
-import CreatePopover from "../popup/CreatePopover";
-import {usePayloadGenerator} from "../../context/PayloadGeneratorProvider";
+import {useCreate} from "../../../context/CreateComponentProvider";
+import CreatePopover from "../../popup/CreatePopover";
+import {usePayloadGenerator} from "../../../context/PayloadGeneratorProvider";
 export default function CreateBoardButton({parentComponentId}){
 
     const [payload, setPayload] = useState({bgColor:"bg-primary"});

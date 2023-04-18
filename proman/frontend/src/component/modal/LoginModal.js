@@ -43,14 +43,14 @@ export default function LoginModal({props, payload, handleChange}) {
                         <Form.Control name={"password"} required={true} type="password" placeholder="Password" onChange={handleChange}/>
                     </Form.Group>
 
-
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" type={"submit"} >Submit</Button>
-                {/*onClick={(e) => loginUser(e)}*/}
+                <Button variant="primary" type={"submit"} >
+                    Submit
+                </Button>
             </Modal.Footer>
             </Form>
         </>)

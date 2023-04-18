@@ -1,10 +1,10 @@
 import Button from "react-bootstrap/Button";
 import {OverlayTrigger} from "react-bootstrap";
 import {useState} from "react";
-import {useCreate} from "../../context/CreateComponentProvider";
-import CreatePopover from "../popup/CreatePopover";
-import {usePayloadGenerator} from "../../context/PayloadGeneratorProvider";
-export default function CreateColumnButton({parentComponentId}){
+import {useCreate} from "../../../context/CreateComponentProvider";
+import CreatePopover from "../../popup/CreatePopover";
+import {usePayloadGenerator} from "../../../context/PayloadGeneratorProvider";
+export default function CreateCardButton({parentComponentId}){
 
     const [payload, setPayload] = useState({bgColor:"bg-primary"});
     const [show, setShow] = useState(false);
@@ -12,14 +12,14 @@ export default function CreateColumnButton({parentComponentId}){
     const payloadGenerator = usePayloadGenerator()
     const create = useCreate();
 
-    const createNewColumn = async (e) =>{
+    const createNewCard = async (e) =>{
         e.preventDefault();
-        create.newColumn(payload)
+        create.newCard(payload)
         setShow(false);
     }
 
     const handleChange = (e) =>{
-       payloadGenerator.forNewObject(e, parentComponentId, payload, setPayload)
+        payloadGenerator.forNewObject(e, parentComponentId, payload, setPayload)
     }
 
     const toggleShow = () => {
@@ -33,8 +33,8 @@ export default function CreateColumnButton({parentComponentId}){
             placement={"right"}
             show={show}
             onToggle={toggleShow}
-            overlay={CreatePopover(handleChange, createNewColumn)}>
-            <Button variant={"outline-dark"} className={"mx-1"}>{"Add Column"}</Button>
+            overlay={CreatePopover(handleChange, createNewCard)}>
+            <Button variant={"outline-dark btn-sm"} className={"mx-1"}>{"+"}</Button>
         </OverlayTrigger>
 
     )

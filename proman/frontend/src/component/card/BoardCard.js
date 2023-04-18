@@ -1,7 +1,6 @@
 import {ListGroup} from "react-bootstrap";
-import {useRef} from "react";
 import { useComponentArranger } from "../../context/DragAndDropProvider";
-import DeleteComponentButton from "../buttons/DeleteComponentButton";
+import DeleteCardButton from "../buttons/deleteButtons/DeleteCardButton";
 
 export default function BoardCard({card, parentComponentId, boardId}){
 
@@ -69,7 +68,7 @@ export default function BoardCard({card, parentComponentId, boardId}){
         <ListGroup.Item draggable onDragStart={handleDrag} onDragOver={handleDragOver} onDrop={handleDrop}
                         className={ card.bgColor + " " + card.textColor + " w-auto d-flex flex-row justify-content-between align-items-center align-content-center" } key={card.id * 100}>
             {card.title}
-            <DeleteComponentButton boardId={boardId} parentComponentId={parentComponentId} componentId={card.id} componentType={"card"}/>
+            <DeleteCardButton componentId={card.id} parentComponentId={parentComponentId} boardId={boardId} />
         </ListGroup.Item>
     )
 }

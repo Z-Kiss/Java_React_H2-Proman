@@ -6,6 +6,7 @@ export default function BoardBody({board}){
         <Card.Body  className={"d-flex flex-row "}>
 
             {board.boardColumns
+                .filter(Boolean)
                 .map((column) =>
                     <Column  key={column.id} column={{...column}}  parentComponentId={board.id}/>
                 )}

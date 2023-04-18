@@ -5,7 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import UserButtons from "../buttons/UserButtons";
 import {useEffect} from "react";
-import CreateBoardButton from "../buttons/CreateBoardButton";
+import CreateBoardButton from "../buttons/createButtons/CreateBoardButton";
 import SearchField from "./SearchField";
 
 

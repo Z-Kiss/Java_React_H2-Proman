@@ -1,9 +1,4 @@
-import {Card, ListGroup} from "react-bootstrap";
-import BoardCard from "../card/BoardCard";
-import {useRef} from "react";
-import { useComponentArranger } from "../../context/DragAndDropProvider"
-import DeleteComponentButton from "../buttons/DeleteComponentButton";
-import CreateCardButton from "../buttons/CreateCardButton";
+import {Card} from "react-bootstrap";
 import ColumnHeader from "./ColumnHeader";
 import ColumnBody from "./ColumnBody";
 

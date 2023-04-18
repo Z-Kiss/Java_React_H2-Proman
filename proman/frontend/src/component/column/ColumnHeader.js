@@ -1,6 +1,6 @@
 import {Card} from "react-bootstrap";
-import DeleteComponentButton from "../buttons/DeleteComponentButton";
-import CreateCardButton from "../buttons/CreateCardButton";
+import DeleteColumnButton from "../buttons/deleteButtons/DeleteColumnButton"
+import CreateCardButton from "../buttons/createButtons/CreateCardButton";
 import {useComponentArranger} from "../../context/DragAndDropProvider";
 
 export default function ColumnHeader({column, parentComponentId}){
@@ -47,7 +47,6 @@ export default function ColumnHeader({column, parentComponentId}){
     }
 
     const handleDrop = (e) =>{
-        console.log("happenf")
         if(e.dataTransfer.getData("type") === "column" && column.id !== parseInt(e.dataTransfer.getData("columnId"))) {
             componentArranger(propGenerator(e));
         }
@@ -69,7 +68,7 @@ export default function ColumnHeader({column, parentComponentId}){
                      className={column.bgColor + " bg-gradient " + column.textColor + " w-auto d-flex flex-row justify-content-between align-items-center align-content-center"} >
             <p>{column.title}</p>
             <div>
-                <DeleteComponentButton parentComponentId={parentComponentId} componentId={column.id} componentType={"boardcolumn"} />
+                <DeleteColumnButton componentId={column.id} parentComponentId={parentComponentId}/>
                 <CreateCardButton parentComponentId={column.id} />
             </div>
 
