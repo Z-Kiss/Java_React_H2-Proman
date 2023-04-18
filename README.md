@@ -25,9 +25,15 @@ How to install: https://nodejs.org/en/download
 ### **Getting Started**
 
 Before you start, you need to install the dependencies.
+
+For install dependencies of Backend:
 Use this command from the _backend_ directory.
 
     mvn dependency:copy-dependencies
+    
+For install dependencies of Frontend:
+
+    npm install
 
 For starting the Application simply run the _StartApplication.sh_
 
