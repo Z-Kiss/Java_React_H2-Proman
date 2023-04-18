@@ -3,7 +3,6 @@ package com.zkiss.proman.service;
 import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.Card;
 import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
-import com.zkiss.proman.model.DTO.cardDTO.CardDeleteRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardsBoardColumnUpdateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CreateCardResponse;
 import com.zkiss.proman.repository.CardRepository;
@@ -49,7 +48,7 @@ public class CardService {
 
 
 
-    public void delete(CardDeleteRequest deleteRequest) {
-        cardRepository.deleteById(deleteRequest.getId());
+    public void delete(Long id) {
+        cardRepository.deleteById(id);
     }
 }

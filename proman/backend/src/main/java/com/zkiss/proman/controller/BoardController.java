@@ -2,7 +2,6 @@ package com.zkiss.proman.controller;
 
 import com.zkiss.proman.model.Board;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
-import com.zkiss.proman.model.DTO.boardDTO.BoardDeleteRequest;
 import com.zkiss.proman.model.DTO.boardDTO.CreateBoardResponse;
 import com.zkiss.proman.service.BoardService;
 import com.zkiss.proman.service.SessionService;
@@ -36,9 +35,9 @@ public class BoardController {
 
     }
 
-    @DeleteMapping
-    public void deleteBoard(@RequestBody BoardDeleteRequest deleteRequest){
-        boardService.deleteBoard(deleteRequest);
+    @DeleteMapping("/{id}")
+    public void deleteBoard(@PathVariable("id") Long id){
+        boardService.deleteBoard(id);
     }
 
     @GetMapping("/get-all-boards")

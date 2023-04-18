@@ -6,34 +6,38 @@ const DeleteComponentProvider = ({children, currentState, setState}) =>{
 
     let copyOfState = [...currentState];
 
-    const componentDeleter = (boardId, parentComponentId, componentId, componentType) =>{
-        switch (componentType){
-            case "board":{
-                boardDeleter(componentId)
-                break
-            }
-            case "boardcolumn":{
-                columnDeleter(componentId, parentComponentId)
-                break
-            }
-            case "card":{
-                cardDeleter(componentId, parentComponentId, boardId)
-                break
-            }
-            default: return
-        }
 
-        updateDatabase(componentType,componentId);
-        setState(copyOfState);
-    }
+    //Board deleter
 
     const boardDeleter = (componentId) =>{
-        copyOfState = copyOfState.filter(board =>{
+        deleteBoardFromDatabase(componentId)
+        const changedState = deleteBoardFormState(componentId)
+        setState(changedState);
+    }
+    const deleteBoardFormState = (componentId) =>{
+        return copyOfState = copyOfState.filter(board =>{
             return board.id !== componentId
         })
     }
+    const deleteBoardFromDatabase = async (componentId) => {
+        await fetch("board/" + componentId,{
+            method: "DELETE"})
+        }
+
+    // Column Deleter
+
     const columnDeleter = (componentId, parentComponentId) =>{
-        copyOfState = copyOfState.map(board =>{
+        deleteColumnFromDatabase(componentId);
+        const changedState = deleteColumnFromState(componentId,parentComponentId);
+
+        setState(changedState);
+    }
+    const deleteColumnFromDatabase = async (componentId) => {
+        await fetch("board-column/" + componentId,{
+            method: "DELETE"})
+    }
+    const deleteColumnFromState = (componentId, parentComponentId) =>{
+        return copyOfState.map(board =>{
             if (board.id === parentComponentId){
                 return {...board, boardColumns: board.boardColumns.filter(boardColumn =>{
                     return boardColumn.id !== componentId
@@ -43,8 +47,20 @@ const DeleteComponentProvider = ({children, currentState, setState}) =>{
         })
     }
 
+    //Card Deleter
+
     const cardDeleter = (componentId, parentComponentId, boardId) =>{
-        copyOfState = copyOfState.map(board => {
+        deleteCardFromDatabase(componentId);
+        const changedState = deleteCardFromState(componentId, parentComponentId, boardId);
+        setState(changedState);
+    }
+
+    const deleteCardFromDatabase = async (componentId) => {
+        await fetch("card/" + componentId,{
+            method: "DELETE"})
+    }
+    const deleteCardFromState = (componentId, parentComponentId, boardId) =>{
+        return copyOfState = copyOfState.map(board => {
             if(board.id === boardId){
                 return {...board, boardColumns: board.boardColumns.map(boardColumn =>{
                     if(boardColumn.id === parentComponentId){
@@ -60,29 +76,18 @@ const DeleteComponentProvider = ({children, currentState, setState}) =>{
         })
     }
 
-    const updateDatabase = (componentType, componentId) =>{
-        deleteComponent(componentType, componentId);
-        // TODO check if request was ok
+    const deleter = {
+        ofBoard: boardDeleter,
+        ofColumn: columnDeleter,
+        ofCard: cardDeleter
     }
-
-    const deleteComponent = async (componentType,componentId) => {
-        await fetch('\\' + componentType,{
-            method: "DELETE",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({id: componentId})
-        })
-    }
-
-
 
     return (
-        <DeleteComponentContext.Provider value={{componentDeleter}}>
+        <DeleteComponentContext.Provider value={{deleter}}>
             {children}
         </DeleteComponentContext.Provider>)
 }
 
-export const useComponentDeleter = () => useContext(DeleteComponentContext).componentDeleter;
+export const useDeleter = () => useContext(DeleteComponentContext).deleter;
 
 export default DeleteComponentProvider;
