@@ -5,7 +5,6 @@ import DeleteComponentButton from "../buttons/DeleteComponentButton";
 
 export default function BoardCard({card, parentComponentId, boardId}){
 
-    const cardRef = useRef(null);
 
     const componentArranger = useComponentArranger();
 
@@ -22,7 +21,8 @@ export default function BoardCard({card, parentComponentId, boardId}){
     }
 
     const itIsOverCard = (e) =>{
-        const halfCardHeight = cardRef.current.getBoundingClientRect().height / 2;
+        const cardHeight = e.target.getBoundingClientRect().height;
+        const halfCardHeight = cardHeight / 2;
         const mouseYPos = e.nativeEvent.offsetY;
         return (mouseYPos <= halfCardHeight);
     }
@@ -66,7 +66,7 @@ export default function BoardCard({card, parentComponentId, boardId}){
     }
 
     return(
-        <ListGroup.Item gp={3} ref={cardRef} draggable onDragStart={handleDrag} onDragOver={handleDragOver} onDrop={handleDrop}
+        <ListGroup.Item draggable onDragStart={handleDrag} onDragOver={handleDragOver} onDrop={handleDrop}
                         className={ card.bgColor + " " + card.textColor + " w-auto d-flex flex-row justify-content-between align-items-center align-content-center" } key={card.id * 100}>
             {card.title}
             <DeleteComponentButton boardId={boardId} parentComponentId={parentComponentId} componentId={card.id} componentType={"card"}/>
@@ -74,4 +74,3 @@ export default function BoardCard({card, parentComponentId, boardId}){
     )
 }
 
-// variant={card.bgColor.slice(3)} className={ "dark" } for Lighter card Color

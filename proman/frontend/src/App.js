@@ -4,7 +4,7 @@ import Navbar from "./component/navbar/Navbar";
 import ModalContainer from "./component/modal/ModalContainer";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
-import Boards from "./component/board/Table";
+import Boards from "./component/table/Table";
 import DragAndDropProvider from "./context/DragAndDropProvider";
 import DeleteComponentProvider from "./context/DeleteComponentProvider";
 import CreateComponentProvider from "./context/CreateComponentProvider";
