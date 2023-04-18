@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import {OverlayTrigger} from "react-bootstrap";
 import {useState} from "react";
 import {useCreate} from "../../context/CreateComponentProvider";
-import CreatePopOver from "../popup/CreatePopOver";
+import CreatePopover from "../popup/CreatePopover";
 import {usePayloadGenerator} from "../../context/PayloadGeneratorProvider";
 export default function CreateColumnButton({parentComponentId}){
 
@@ -33,7 +33,7 @@ export default function CreateColumnButton({parentComponentId}){
             placement={"right"}
             show={show}
             onToggle={toggleShow}
-            overlay={CreatePopOver(handleChange, createNewColumn)}>
+            overlay={CreatePopover(handleChange, createNewColumn)}>
             <Button variant={"outline-dark"} className={"mx-1"}>{"Add Column"}</Button>
         </OverlayTrigger>
 

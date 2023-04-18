@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import {OverlayTrigger} from "react-bootstrap";
 import {useState} from "react";
 import {useCreate} from "../../context/CreateComponentProvider";
-import CreatePopOver from "../popup/CreatePopOver";
+import CreatePopover from "../popup/CreatePopover";
 import {usePayloadGenerator} from "../../context/PayloadGeneratorProvider";
 export default function CreateBoardButton({parentComponentId}){
 
@@ -33,7 +33,7 @@ export default function CreateBoardButton({parentComponentId}){
             placement={"bottom"}
             show={show}
             onToggle={toggleShow}
-            overlay={CreatePopOver(handleChange, createNewBoard)}>
+            overlay={CreatePopover(handleChange, createNewBoard)}>
             <Button variant={"primary"} className={"mx-1"}>{"Add Board"}</Button>
         </OverlayTrigger>
 
