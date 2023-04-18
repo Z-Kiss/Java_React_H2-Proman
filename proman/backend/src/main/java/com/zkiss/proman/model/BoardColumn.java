@@ -24,6 +24,7 @@ public class BoardColumn {
     private Long id;
 
     private String title;
+
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer columnOrder;

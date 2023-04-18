@@ -3,7 +3,6 @@ package com.zkiss.proman.service;
 import com.zkiss.proman.model.Board;
 import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
-import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnDeleteRequest;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.CreateBoardColumnResponse;
 import com.zkiss.proman.repository.BoardColumnRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +39,8 @@ public class BoardColumnService {
         boardColumnRepository.save(boardColumn);
     }
 
-    public void delete(BoardColumnDeleteRequest deleteRequest) {
-        boardColumnRepository.deleteById(deleteRequest.getId());
+    public void delete(Long id) {
+        boardColumnRepository.deleteById(id);
     }
 
     public BoardColumn getBoardColumnById(Long boardColumnId) {

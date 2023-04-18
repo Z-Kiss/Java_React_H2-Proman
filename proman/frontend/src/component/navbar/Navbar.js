@@ -5,7 +5,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import UserButtons from "../buttons/UserButtons";
 import {useEffect} from "react";
-import CreateBoardButton from "../buttons/CreateBoardButton";
+import CreateBoardButton from "../buttons/createButtons/CreateBoardButton";
+import SearchField from "./SearchField";
 
 
 
@@ -35,29 +36,14 @@ function NavScrollExample({props}) {
     return (
         <Navbar bg="dark" variant={"dark"} expand="lg">
             <Container fluid>
+
                 <Navbar.Brand href="#">Proman</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll"/>
                 <Navbar.Collapse id="navbarScroll">
-                    <Nav
-                        className="me-auto my-2 my-lg-0"
-                        style={{maxHeight: '100px'}}
-                        navbarScroll
-                    >
-                    </Nav>
 
                     <Container className={"d-flex mx-auto"}>
-
                         <CreateBoardButton />
-
-                        <Form className="d-flex">
-                            <Form.Control
-                                type="search"
-                                placeholder="Search for Board"
-                                className="me-2"
-                                aria-label="Search"
-                            />
-                            <Button variant="outline-success">Search</Button>
-                        </Form>
+                        <SearchField/>
                     </Container>
 
                     <Container fluid className={"d-flex justify-content-sm-end"}>
@@ -65,6 +51,7 @@ function NavScrollExample({props}) {
                     </Container>
 
                 </Navbar.Collapse>
+
             </Container>
         </Navbar>
     );

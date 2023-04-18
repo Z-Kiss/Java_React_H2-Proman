@@ -1,11 +1,10 @@
 
-import Board from "./Board";
+import Board from "../board/Board";
 
 
 
 
 export default function  Boards({boards}) {
-
 
     return(boards &&
             <div id={"board-container"} className={"d-flex flex-column mx-auto w-75"} >

@@ -4,7 +4,9 @@ import {createContext, useContext} from "react";
 
 const CreateComponentContext = createContext({})
 
-const CreateComponentProvider = ({children, copyOfState, setState}) => {
+const CreateComponentProvider = ({children, currentState, setState}) => {
+
+    let copyOfState = [...currentState]
 
     const createNewBoard = async (payload) => {
 
@@ -26,7 +28,6 @@ const CreateComponentProvider = ({children, copyOfState, setState}) => {
         })
         if(response.status === 200){
            return await response.json();
-
         }else {
             console.log("nope")
             return undefined
