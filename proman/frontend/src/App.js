@@ -30,7 +30,7 @@ export default function App() {
         setBoards(await getBoards.ofGuest());
     }
 
-    useEffect(() => {
+    useEffect((initGuestBoards, initUserBoards) => {
         if (loggedInUser === null) {
             initGuestBoards()
         } else {

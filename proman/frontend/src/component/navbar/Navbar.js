@@ -28,7 +28,7 @@ function NavScrollExample({props}) {
     }
 
 
-    useEffect(() => {
+    useEffect((initLoggedInUser) => {
         initLoggedInUser();
     }, [])
 
