@@ -56,8 +56,9 @@ const DeleteComponentProvider = ({children, currentState, setState}) =>{
     }
 
     const deleteCardFromDatabase = async (componentId) => {
-        await fetch("card/" + componentId,{
+        const response = await fetch("card/" + componentId,{
             method: "DELETE"})
+
     }
     const deleteCardFromState = (componentId, parentComponentId, boardId) =>{
         return copyOfState = copyOfState.map(board => {

@@ -58,7 +58,6 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
         if(response.status === 200){
             return  await response.json();
         }else {
-            console.log("nope")
             return undefined
         }
 
@@ -94,7 +93,7 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
         if(response.status === 200){
             return await response.json();
         }else {
-            console.log("nope")
+            return undefined
         }
     }
     const updateStateWithNewCard = (props) => {
