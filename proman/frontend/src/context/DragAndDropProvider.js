@@ -1,18 +1,4 @@
 import {createContext, useContext} from "react";
-// const [idOfDraggedComponent,
-//     idOfDraggedParentComponent,
-//     indexOfDraggedComponent,
-//     indexWhereToPlaceDraggedComponent] = DraggedComponentProps
-//
-// const [idOfDropZoneComponent,
-//     idOfDropZoneParentComponent,
-//     indexOfDropZoneComponent,
-//     indexWhereToPlaceDropZoneComponent] = DropZoneComponentProps
-//TODO should I pack out the variables?
-//[Dragged, DropZone] = name
-// prop in Props
-//idOf[name]Component,idOf[name]ParentComponent,indexOf[name]Component,indexWhereToPlace[name]Component
-//TODO ask If correctOrderAttribute is needed or not?
 
 
 const DragAndDropContext = createContext({});
@@ -67,7 +53,7 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
 
     //Card changer functions
     const changeParentsOfComponent = (copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace) => {
-        //TODO ask
+
         const props = takeChildrenFromParent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent);
 
         copyOfState = props.copyOfState;
@@ -210,11 +196,8 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
     }
     const updateBoardColumnsInDatabase = (boardColumns) => {
 
-        // for (const boardColumn in boardColumns) {
-        //     updateComponentInDatabase("/boardcolumn/update", boardColumnPayloadGenerator(boardColumn))
-        // }
         boardColumns.forEach(boardColumn =>
-            updateComponentInDatabase("/boardcolumn/update", boardColumnPayloadGenerator(boardColumn)));
+            updateComponentInDatabase("/board-column/update", boardColumnPayloadGenerator(boardColumn)));
     }
 
     //Payload Generators

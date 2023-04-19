@@ -35,7 +35,6 @@ public class CardController {
 
     @PutMapping("/update-cards")
     public void updateCardsBoardColumn(@RequestBody CardsBoardColumnUpdateRequest updateRequest){
-        System.out.println(updateRequest);
         cardService.update(updateRequest);
     }
 
