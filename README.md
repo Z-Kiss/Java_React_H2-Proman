@@ -85,16 +85,3 @@ This will run the Backend and the Frontend at the same time.
 
     - You can Delete any Boards, Columns and Cards by clicking to the Icon.
     This change only happening on the Frontend if the sent DELETE Request response were OK.
-
-
-### ***Future plans***
-
-#### **Implementing features**
-
-    - Rename Board, Column, Card
-    - Spring Security
-    
-### **Refactor**
-    
-    - Get rid of the multiple Providers and create a "God State Provider"
-    - Handle if HTTP request not succseed
