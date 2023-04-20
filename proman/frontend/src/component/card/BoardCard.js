@@ -2,14 +2,12 @@ import {ListGroup} from "react-bootstrap";
 import { useComponentArranger } from "../../context/DragAndDropProvider";
 import DeleteCardButton from "../buttons/deleteButtons/DeleteCardButton";
 
-export default function BoardCard({card, parentComponentId, boardId}){
-
+export default function BoardCard({card, parentComponentId, boardId, bgColor, textColor}){
 
     const componentArranger = useComponentArranger();
 
     const calculateWhereToPlace = (e) =>{
         let indexWhereToPlace = card.cardOrder;
-
         const indexOfDraggedComponent = parseInt(e.dataTransfer.getData("cardOrder"));
         const isItBefore = itIsOverCard(e);
 
@@ -41,7 +39,6 @@ export default function BoardCard({card, parentComponentId, boardId}){
             componentType:e.dataTransfer.getData("type"),
             boardId: boardId
         };
-
     }
 
     const handleDrag = (e) =>{
@@ -52,13 +49,10 @@ export default function BoardCard({card, parentComponentId, boardId}){
     }
 
     const handleDrop = (e) =>{
-
         if(e.dataTransfer.getData("type") === "card" && card.id !== parseInt(e.dataTransfer.getData("cardId"))){
             componentArranger(propGenerator(e));
         }
-
     }
-
 
     const handleDragOver = (e) =>{
         e.preventDefault();
@@ -66,10 +60,9 @@ export default function BoardCard({card, parentComponentId, boardId}){
 
     return(
         <ListGroup.Item draggable onDragStart={handleDrag} onDragOver={handleDragOver} onDrop={handleDrop}
-                        className={ card.bgColor + " " + card.textColor + " w-auto d-flex flex-row justify-content-between align-items-center align-content-center" } key={card.id * 100}>
+                        className={ bgColor + " " + textColor + " w-auto d-flex flex-row justify-content-between align-items-center align-content-center" } key={card.id * 100}>
             {card.title}
             <DeleteCardButton componentId={card.id} parentComponentId={parentComponentId} boardId={boardId} />
         </ListGroup.Item>
     )
 }
-

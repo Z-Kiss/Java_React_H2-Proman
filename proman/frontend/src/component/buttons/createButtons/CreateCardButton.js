@@ -2,11 +2,11 @@ import Button from "react-bootstrap/Button";
 import {OverlayTrigger} from "react-bootstrap";
 import {useState} from "react";
 import {useCreate} from "../../../context/CreateComponentProvider";
-import CreatePopover from "../../popup/CreatePopover";
 import {usePayloadGenerator} from "../../../context/PayloadGeneratorProvider";
-export default function CreateCardButton({parentComponentId}){
+import CreatePopoverForCard from "../../popup/CreatePopoverForCard";
+export default function CreateCardButton({parentComponentId, columnColor, textColor}){
 
-    const [payload, setPayload] = useState({bgColor:"bg-primary"});
+    const [payload, setPayload] = useState({bgColor: columnColor, textColor:textColor});
     const [show, setShow] = useState(false);
 
     const payloadGenerator = usePayloadGenerator()
@@ -33,10 +33,8 @@ export default function CreateCardButton({parentComponentId}){
             placement={"right"}
             show={show}
             onToggle={toggleShow}
-            overlay={CreatePopover(handleChange, createNewCard)}>
+            overlay={CreatePopoverForCard(handleChange, createNewCard)}>
             <Button variant={"outline-dark btn-sm"} className={"mx-1"}>{"+"}</Button>
         </OverlayTrigger>
-
     )
-
 }

@@ -24,9 +24,6 @@ public class Card {
 
     private Integer cardOrder;
 
-    private String bgColor;
-
-    private String textColor;
 
     @ManyToOne
     @JoinColumn(name = "COLUMN_ID")
@@ -38,8 +35,6 @@ public class Card {
         this.cardOrder = boardColumn.getCards().size();
         this.title = createRequest.getTitle();
         this.cardDescription = createRequest.getCardDescription();
-        this.bgColor = createRequest.getBgColor();
-        this.textColor = createRequest.getTextColor();
     }
 
     @Override
@@ -56,8 +51,6 @@ public class Card {
         if(updatedCard.getCardDescription() != null){this.setCardDescription(updatedCard.getCardDescription());}
         if(updatedCard.getTitle() != null){this.setTitle(updatedCard.getTitle());}
         if(updatedCard.getCardOrder() != null){this.setCardOrder(updatedCard.getCardOrder());}
-        if(updatedCard.getBgColor() != null){this.setBgColor(updatedCard.getBgColor());}
-        if(updatedCard.getTextColor() != null){this.setTextColor(updatedCard.getTextColor());}
         if(updatedCard.getBoardColumn() != null){this.setBoardColumn(updatedCard.getBoardColumn());}
     }
 }

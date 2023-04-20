@@ -9,7 +9,6 @@ export default function CreateBoardButton({parentComponentId}){
     const [payload, setPayload] = useState({bgColor:"bg-primary"});
     const [show, setShow] = useState(false);
 
-
     const create = useCreate();
     const payloadGenerator = usePayloadGenerator()
     const createNewBoard = async (e) =>{
@@ -36,7 +35,5 @@ export default function CreateBoardButton({parentComponentId}){
             overlay={CreatePopover(handleChange, createNewBoard)}>
             <Button variant={"primary"} className={"mx-1"}>{"Add Board"}</Button>
         </OverlayTrigger>
-
     )
-
 }

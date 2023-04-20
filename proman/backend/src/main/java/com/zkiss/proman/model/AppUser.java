@@ -3,6 +3,7 @@ package com.zkiss.proman.model;
 import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 //@Data
 @Getter
@@ -29,7 +30,7 @@ public class AppUser {
     public AppUser(UserRegisterRequest userRequest){
         this.name = userRequest.getName();
         this.email = userRequest.getEmail();
-        this.password = userRequest.getPassword();
+        this.password = hashPassword(userRequest.getPassword());
         this.role = RoleType.USER;
     }
 
@@ -41,5 +42,12 @@ public class AppUser {
         if(updatedUser.getRole() != null){this.setRole(updatedUser.getRole());}
     }
 
+    private String hashPassword(String password){
+        return BCrypt.hashpw(password, BCrypt.gensalt(10));
+    }
+
+    public Boolean checkPassword(String password){
+        return BCrypt.checkpw(password, this.password);
+    }
 
 }

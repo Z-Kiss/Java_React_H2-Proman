@@ -44,7 +44,12 @@ public class UserService {
     //Not final solution
     //TODO SecureLogin
     public boolean login(UserLoginRequest loginRequest) {
-        return userRepository.existsByEmailAndPassword(loginRequest.getEmail(), loginRequest.getPassword());
+        AppUser user = userRepository.getAppUserByEmail(loginRequest.getEmail());
+        if(user != null){
+            return user.checkPassword(loginRequest.getPassword());
+        } else {
+            return false;
+        }
     }
 
     public Long getIdByEmail(String email) {

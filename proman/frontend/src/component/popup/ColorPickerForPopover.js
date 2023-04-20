@@ -1,5 +1,4 @@
 import {InputGroup} from "react-bootstrap";
-
 export default function ColorPickerForPopover({handleChange}){
 
     return(

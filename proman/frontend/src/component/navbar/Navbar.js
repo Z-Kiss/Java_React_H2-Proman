@@ -1,7 +1,4 @@
-import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import UserButtons from "../buttons/UserButtons";
 import {useEffect} from "react";
@@ -9,12 +6,7 @@ import CreateBoardButton from "../buttons/createButtons/CreateBoardButton";
 import SearchField from "./SearchField";
 
 
-
-function NavScrollExample({props}) {
-
-
-
-
+function NavBar({props}) {
 
     const {setLoggedInUser} = props;
 
@@ -22,13 +14,10 @@ function NavScrollExample({props}) {
         const response = await fetch("/user")
         if (response.status === 200) {
             setLoggedInUser(await response.json());
-        } else {
-            console.log("nope")
         }
     }
 
-
-    useEffect((initLoggedInUser) => {
+    useEffect(() => {
         initLoggedInUser();
     }, [])
 
@@ -36,25 +25,20 @@ function NavScrollExample({props}) {
     return (
         <Navbar bg="dark" variant={"dark"} expand="lg">
             <Container fluid>
-
                 <Navbar.Brand href="#">Proman</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll"/>
                 <Navbar.Collapse id="navbarScroll">
-
                     <Container className={"d-flex mx-auto"}>
-                        <CreateBoardButton />
+                        <CreateBoardButton/>
                         <SearchField/>
                     </Container>
-
                     <Container fluid className={"d-flex justify-content-sm-end"}>
                         <UserButtons props={props}/>
                     </Container>
-
                 </Navbar.Collapse>
-
             </Container>
         </Navbar>
     );
 }
 
-export default NavScrollExample;
+export default NavBar;

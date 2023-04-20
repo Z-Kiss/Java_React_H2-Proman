@@ -7,17 +7,14 @@ export default function ColumnHeader({column, parentComponentId}){
 
     const componentArranger = useComponentArranger();
 
-
     const calculateWhereToPlace = (e) =>{
         let indexWhereToPlace = column.columnOrder;
-
         const indexOfDraggedComponent = parseInt(e.dataTransfer.getData("columnOrder"));
         const isItBefore = itIsBeforeColumn(e)
 
         if (indexWhereToPlace > indexOfDraggedComponent) {
             indexWhereToPlace -= 1
         }
-
         return isItBefore ? indexWhereToPlace : indexWhereToPlace + 1
     }
 
@@ -43,7 +40,6 @@ export default function ColumnHeader({column, parentComponentId}){
             componentType:e.dataTransfer.getData("type"),
             boardId: parentComponentId
         };
-
     }
 
     const handleDrop = (e) =>{
@@ -51,12 +47,12 @@ export default function ColumnHeader({column, parentComponentId}){
             componentArranger(propGenerator(e));
         }
     }
+
     const handleDrag = (e) =>{
         e.dataTransfer.setData("type","column");
         e.dataTransfer.setData("columnId",column.id);
         e.dataTransfer.setData("columnOrder",column.columnOrder);
         e.dataTransfer.setData("parentComponentId", parentComponentId);
-
     }
 
     const handleDragOver = (e) =>{
@@ -69,7 +65,7 @@ export default function ColumnHeader({column, parentComponentId}){
             <p>{column.title}</p>
             <div>
                 <DeleteColumnButton componentId={column.id} parentComponentId={parentComponentId}/>
-                <CreateCardButton parentComponentId={column.id} />
+                <CreateCardButton parentComponentId={column.id} columnColor={column.bgColor} textColor={column.textColor} />
             </div>
 
         </Card.Header>

@@ -1,6 +1,5 @@
 import {createContext, useContext} from "react";
 
-
 const BoardContext = createContext({})
 
 const BoardProvider = ({children}) =>{
@@ -9,16 +8,13 @@ const BoardProvider = ({children}) =>{
         const response = await fetch("/board/get-all-guest-boards")
         if (response.status === 200) {
             return await response.json();
-        } else {
-            console.log("nope")
         }
     }
+
     const getUserBoard = async () => {
         const response = await fetch("/board/get-all-boards-by-user")
         if (response.status === 200) {
             return  await response.json();
-        } else {
-            console.log("nope")
         }
     }
 

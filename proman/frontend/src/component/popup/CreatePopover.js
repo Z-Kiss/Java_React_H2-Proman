@@ -1,6 +1,5 @@
-import {InputGroup, Popover} from "react-bootstrap";
+import {Popover} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import ColorPickerForPopover from "./ColorPickerForPopover";
 import InputFieldForPopover from "./InputFieldForPopover";
 
