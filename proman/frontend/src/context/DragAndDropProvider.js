@@ -1,10 +1,8 @@
 import {createContext, useContext} from "react";
 
-
 const DragAndDropContext = createContext({});
 
 const DragAndDropProvider = ({children, currentState, setState}) => {
-
 
     const isItCard = (componentType) => {
         return componentType === "card";
@@ -20,32 +18,23 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
 
     const componentArranger = (changeProps) => {
 
-
         const {DraggedComponentProps, DropZoneComponentProps, componentType, boardId} = changeProps;
-
         const {idOfDraggedParentComponent, indexOfDraggedComponent} = DraggedComponentProps;
-
         const {idOfDropZoneParentComponent, indexWhereToPlace} = DropZoneComponentProps;
-
-
         let copyOfState = [...currentState];
-        let updatedDatabase = false;
-
 
         if (needToChangeParentComponent(idOfDraggedParentComponent, idOfDropZoneParentComponent)) {
             copyOfState = changeParentsOfComponent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace);
-
-            cardUpdaterForCardsWithChangedParents(copyOfState, idOfDropZoneParentComponent, boardId)
+            cardUpdaterForCardsWithChangedParents(copyOfState, idOfDropZoneParentComponent, boardId);
         } else {
             if (isItCard(componentType)) {
                 copyOfState = arrangeCards(copyOfState, idOfDropZoneParentComponent, indexWhereToPlace, indexOfDraggedComponent);
-                cardUpdater(copyOfState, idOfDropZoneParentComponent, boardId)
+                cardUpdater(copyOfState, idOfDropZoneParentComponent, boardId);
             } else if (isItColumn(componentType)) {
                 copyOfState = arrangeColumns(copyOfState, idOfDropZoneParentComponent, indexWhereToPlace, indexOfDraggedComponent);
-                boardColumnUpdater(copyOfState, idOfDropZoneParentComponent)
+                boardColumnUpdater(copyOfState, idOfDropZoneParentComponent);
             }
         }
-
         setState(copyOfState);
     }
 
@@ -53,53 +42,42 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
 
     //Card changer functions
     const changeParentsOfComponent = (copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace) => {
-
         const props = takeChildrenFromParent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent);
-
         copyOfState = props.copyOfState;
-        const childrenToChangeParent = props.takenChildren
-
+        const childrenToChangeParent = props.takenChildren;
         return giveChildrenToParent(copyOfState, idOfDropZoneParentComponent, indexWhereToPlace, childrenToChangeParent);
     }
     const takeChildrenFromParent = (copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent) => {
         let takenChildren;
-
         copyOfState = copyOfState.map(board => {
-
             return {
                 ...board, boardColumns: board.boardColumns.map(boardColumn => {
                     if (boardColumn.id === idOfDraggedParentComponent) {
-
-                        takenChildren = boardColumn.cards.splice(indexOfDraggedComponent, 1)
-
+                        takenChildren = boardColumn.cards.splice(indexOfDraggedComponent, 1);
                         return {
                             ...boardColumn,
                             cards: adjustComponentOrderAttribute([...boardColumn.cards], "cardOrder")
-                        }
+                        };
                     }
                     return boardColumn;
                 })
-            }
+            };
         })
 
         return {takenChildren: takenChildren[0], copyOfState: copyOfState};
     }
     const giveChildrenToParent = (currentState, idOfDropZoneParentComponent, indexWhereToPlace, childComponent) => {
         return currentState.map(board => {
-
             return {
                 ...board, boardColumns: board.boardColumns.map(boardColumn => {
                     if (boardColumn.id === idOfDropZoneParentComponent) {
-
-                        boardColumn.cards.splice(indexWhereToPlace, 0, childComponent)
-
-                        return {...boardColumn, cards: adjustComponentOrderAttribute(boardColumn.cards, "cardOrder")}
+                        boardColumn.cards.splice(indexWhereToPlace, 0, childComponent);
+                        return {...boardColumn, cards: adjustComponentOrderAttribute(boardColumn.cards, "cardOrder")};
                     }
                     return boardColumn;
                 })
-
-            }
-        })
+            };
+        });
     }
     const arrangeCards = (copyOfState, idOfDropZoneParentComponent, indexWhereToPlace, indexOfDraggedComponent) => {
         return copyOfState.map(board => {
@@ -111,11 +89,11 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
                                 cards: arrangeArray(indexWhereToPlace, indexOfDraggedComponent, boardColumn.cards, "cardOrder")
                             }
                         }
-                        return boardColumn
+                        return boardColumn;
                     }
                 )
-            }
-        })
+            };
+        });
     }
 
     //Column changer functions
@@ -125,30 +103,26 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
                 return {
                     ...board,
                     boardColumns: arrangeArray(indexWhereToPlace, indexOfDraggedComponent, board.boardColumns, "columnOrder")
-                }
+                };
             }
-            return board
-        })
+            return board;
+        });
     }
 
     // Util functions
     const arrangeArray = (indexWhereToPlace, indexOfDraggedComponent, arrayToArrange, componentKey) => {
-        const componentToChangePlace = getComponentByIndex(arrayToArrange, indexOfDraggedComponent)
-
-        putComponentToPlace(indexWhereToPlace, componentToChangePlace, arrayToArrange)
-
-        return adjustComponentOrderAttribute(arrayToArrange, componentKey)
-
-
+        const componentToChangePlace = getComponentByIndex(arrayToArrange, indexOfDraggedComponent);
+        putComponentToPlace(indexWhereToPlace, componentToChangePlace, arrayToArrange);
+        return adjustComponentOrderAttribute(arrayToArrange, componentKey);
     }
     const getComponentByIndex = (arrayToArrange, indexOfDraggedComponent) => {
-        return arrayToArrange.splice(indexOfDraggedComponent, 1)[0]
+        return arrayToArrange.splice(indexOfDraggedComponent, 1)[0];
     }
     const putComponentToPlace = (indexOfWhereToPlace, componentToChangePlace, arrayToArrange) => {
-        arrayToArrange.splice(indexOfWhereToPlace, 0, componentToChangePlace)
+        arrayToArrange.splice(indexOfWhereToPlace, 0, componentToChangePlace);
     }
     const adjustComponentOrderAttribute = (componentToAdjust, componentKey) => {
-        componentToAdjust =  componentToAdjust.filter(Boolean)
+        componentToAdjust =  componentToAdjust.filter(Boolean);
         componentToAdjust = componentToAdjust.map((component, index) => {
             return {
                 ...component,
@@ -156,7 +130,7 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
             };
         });
 
-        return componentToAdjust
+        return componentToAdjust;
     };
 
 
@@ -165,17 +139,16 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
     // Card updaters
     const cardUpdaterForCardsWithChangedParents = (copyOfState, idOfDropZoneParentComponent, boardId) =>{
         const cardsToUpdate = getsCardsThatNeedsUpdate(copyOfState, idOfDropZoneParentComponent, boardId);
-
         updateCardsWithChangedParentsInDatabase(cardsToUpdate, idOfDropZoneParentComponent);
     }
     const getsCardsThatNeedsUpdate = (copyOfState, idOfDropZoneParentComponent, boardId) => {
-        const board = copyOfState.find(board => board.id === boardId)
-        const boardColumn = board.boardColumns.find(boardColumn => boardColumn.id === idOfDropZoneParentComponent)
-        return [...boardColumn.cards]
+        const board = copyOfState.find(board => board.id === boardId);
+        const boardColumn = board.boardColumns.find(boardColumn => boardColumn.id === idOfDropZoneParentComponent);
+        return [...boardColumn.cards];
     }
     const updateCardsWithChangedParentsInDatabase = async (cards, idOfDropZoneComponent) => {
         for (const card of cards) {
-            updateComponentInDatabase("card/update-cards",cardWithChangedParentsPayloadGenerator(card, idOfDropZoneComponent))
+            updateComponentInDatabase("card/update-cards",cardWithChangedParentsPayloadGenerator(card, idOfDropZoneComponent));
         }
     }
     const cardUpdater = (copyOfState, idOfDropZoneParentComponent, boardId) => {
@@ -195,24 +168,22 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
         return copyOfState.find(board => board.id === idOfDropZoneParentComponent);
     }
     const updateBoardColumnsInDatabase = (boardColumns) => {
-
         boardColumns.forEach(boardColumn =>
             updateComponentInDatabase("/board-column/update", boardColumnPayloadGenerator(boardColumn)));
     }
 
     //Payload Generators
     const boardColumnPayloadGenerator = (component) => {
-
         return {
             id: component.id,
             columnOrder: component.columnOrder
-        }
+        };
     }
     const cardPayloadGenerator = (component) => {
         return {
             id: component.id,
             cardOrder: component.cardOrder
-        }
+        };
     }
     const cardWithChangedParentsPayloadGenerator = (component, idOfDropZoneComponent) => {
         return {
@@ -221,7 +192,7 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
                 id: component.id,
                 cardOrder: component.cardOrder
             }
-        }
+        };
     }
 
     //Fetch
@@ -230,7 +201,7 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)
-        })
+        });
     }
 
     return (
@@ -238,10 +209,7 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
             {children}
         </DragAndDropContext.Provider>
     )
-
-
 }
-
 
 export const useComponentArranger = () => useContext(DragAndDropContext).componentArranger;
 export default DragAndDropProvider;

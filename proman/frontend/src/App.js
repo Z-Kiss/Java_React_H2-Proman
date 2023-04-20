@@ -13,31 +13,39 @@ import {useGetBoards} from "./context/BoardProvider";
 
 
 export default function App() {
-    const [modalContent, setModalContent] = useState(null);
-    const [show, setShow] = useState(false);
+    const [modalContent, setModalContent] = useState("welcome");
+    const [show, setShow] = useState(true);
     const [loggedInUser, setLoggedInUser] = useState(null);
     const [boards, setBoards] = useState([]);
-
     const getBoards = useGetBoards();
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const initUserBoards = async () =>{
-        setBoards(await getBoards.ofUser());
+        const boards = await getBoards.ofUser()
+        if(boards === undefined){
+            alert("Some problem occurred with the Server try again");
+        }else {
+            setBoards(boards);
+        }
     }
     const initGuestBoards = async () =>{
-        setBoards(await getBoards.ofGuest());
+        const boards = await getBoards.ofGuest();
+        if(boards === undefined){
+            alert("Some problem occurred with the Server try again");
+        }else {
+            setBoards(boards);
+        }
     }
 
-    useEffect((initGuestBoards, initUserBoards) => {
+    useEffect(() => {
         if (loggedInUser === null) {
-            initGuestBoards()
+            initGuestBoards();
         } else {
-            initUserBoards()
+            initUserBoards();
         }
-    }, [loggedInUser])
-
+    }, [loggedInUser]);
 
     const props = {
         modalContent: modalContent,
@@ -48,12 +56,10 @@ export default function App() {
         setLoggedInUser: setLoggedInUser,
         handleShow: handleShow,
         handleClose: handleClose,
-    }
-
+    };
 
     return (
         <>
-
                 <PayloadGeneratorProvider>
                     <CreateComponentProvider currentState={boards} setState={setBoards}>
                         <DeleteComponentProvider currentState={boards} setState={setBoards}>
@@ -65,8 +71,6 @@ export default function App() {
                         </DeleteComponentProvider>
                     </CreateComponentProvider>
                 </PayloadGeneratorProvider>
-
         </>
     )
 }
-

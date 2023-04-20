@@ -8,7 +8,6 @@ export default function CreateColumnButton({parentComponentId}){
 
     const [payload, setPayload] = useState({bgColor:"bg-primary"});
     const [show, setShow] = useState(false);
-
     const payloadGenerator = usePayloadGenerator()
     const create = useCreate();
 
@@ -36,7 +35,5 @@ export default function CreateColumnButton({parentComponentId}){
             overlay={CreatePopover(handleChange, createNewColumn)}>
             <Button variant={"outline-dark"} className={"mx-1"}>{"Add Column"}</Button>
         </OverlayTrigger>
-
     )
-
 }

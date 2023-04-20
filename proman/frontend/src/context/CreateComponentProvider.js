@@ -1,7 +1,5 @@
 import {createContext, useContext} from "react";
 
-
-
 const CreateComponentContext = createContext({})
 
 const CreateComponentProvider = ({children, currentState, setState}) => {
@@ -16,9 +14,8 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
             const updatedState = updateStateWithNewBoard(newBoard);
             setState(updatedState);
         } else {
-            console.log("nope")
+            alert("Some problem occurred with the Server try again")
         }
-
     }
     const createBoardInDatabase = async (payload) => {
         const response = await fetch("/board/create", {
@@ -45,7 +42,7 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
             const updatedState = updateStateWithNewColumn(newColumn);
             setState(updatedState);
         } else {
-            console.log("nope")
+            alert("Some problem occurred with the Server try again")
         }
     }
     const createColumnInDatabase = async (payload) => {
@@ -60,7 +57,6 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
         }else {
             return undefined
         }
-
     }
     const updateStateWithNewColumn = (props) => {
         //boardId is the id of the Board that contains the boardColumn
@@ -81,7 +77,7 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
             const updatedState = updateStateWithNewCard(newCard);
             setState(updatedState);
         } else {
-            console.log("nope")
+            alert("Some problem occurred with the Server try again")
         }
     }
     const createCardInDatabase = async (payload) => {
@@ -110,21 +106,15 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
                     }
                     return boardColumn
                 })
-
-
             }
         })
     }
-
 
     const create = {
         newCard: createNewCard,
         newColumn: createNewColumn,
         newBoard: createNewBoard
     }
-
-
-
 
     return (
         <CreateComponentContext.Provider value={{create}}>

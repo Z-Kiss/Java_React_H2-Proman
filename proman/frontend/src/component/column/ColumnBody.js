@@ -19,7 +19,6 @@ export default function ColumnBody({column, parentComponentId}){
             componentType:e.dataTransfer.getData("type"),
             boardId:parentComponentId
         };
-
     }
 
     const handleDrop = (e) => {
@@ -34,7 +33,6 @@ export default function ColumnBody({column, parentComponentId}){
 
     return(
         <Card.Body style={{minHeight: "60px"}} onDragOver={handleDragOver} onDrop={handleDrop} >
-
             <ListGroup>
                 {column.cards
                     .sort((card1, card2) => (card1.cardOrder > card2.cardOrder ? 1 : -1))
@@ -43,11 +41,9 @@ export default function ColumnBody({column, parentComponentId}){
                     // in the future I will fix the problem but at the moment it's just a temporary fix
                     .filter(Boolean)
                     .map((card) =>
-
-                        <BoardCard key={card.id} card={{...card}} parentComponentId={column.id} boardId={parentComponentId} />
+                        <BoardCard key={card.id} card={{...card}} parentComponentId={column.id} boardId={parentComponentId} bgColor={column.bgColor} textColor={column.textColor} />
                     )}
             </ListGroup>
-
         </Card.Body>
     )
 }
