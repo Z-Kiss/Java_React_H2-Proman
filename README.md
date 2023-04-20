@@ -1,6 +1,6 @@
 # **Proman**
 
-Trello like List making Application to help Agile work style.
+Trello like List making Application to help Agile work style. Currently in Development phase, I continiously working on it.
 
 ### **Built With**
 
@@ -13,18 +13,33 @@ Trello like List making Application to help Agile work style.
     -Bootstrap
 
 
+### **Prerequisites**
+
+Maven
+How to innstall: https://maven.apache.org/install.html
+
+Node.js
+How to install: https://nodejs.org/en/download
+
+
 ### **Getting Started**
+
+Before you start, you need to install the dependencies.
+
+For install dependencies of Backend:
+Use this command from the _backend_ directory.
+
+    mvn dependency:copy-dependencies
+    
+For install dependencies of Frontend:
+
+    npm install
 
 For starting the Application simply run the _StartApplication.sh_
 
 This will run the Backend and the Frontend at the same time.
 
 
-### **Prerequisites**
-
-
-    -npm
-    -npm install npm@latest -g
 
 ### **Implemented Features**
 
@@ -82,8 +97,3 @@ This will run the Backend and the Frontend at the same time.
     
     - Get rid of the multiple Providers and create a "God State Provider"
     - Handle if HTTP request not succseed
-
-
-
-
-
