@@ -10,6 +10,7 @@ Trello like List making Application to help Agile work style. Currently in Devel
 
 #### ***Frontend***
     -React
+    -Javascript
     -Bootstrap
 
 
