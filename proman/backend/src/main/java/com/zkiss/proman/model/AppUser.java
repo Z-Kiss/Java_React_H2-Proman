@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 @Entity
 public class AppUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "APP_USER_ID", nullable = false)
     private Long id;
     @Column(unique = true, nullable = false)
