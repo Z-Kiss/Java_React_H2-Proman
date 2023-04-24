@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
+import java.util.UUID;
+
 //@Data
 @Getter
 @Setter
@@ -12,9 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 @Entity
 public class AppUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "APP_USER_ID", nullable = false)
-    private Long id;
+    private UUID id;
+
     @Column(unique = true, nullable = false)
     private String name;
 

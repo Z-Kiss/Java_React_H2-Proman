@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -61,7 +62,7 @@ public class UserController {
 
 
     private void putUserIdToSession(UserLoginRequest loginRequest){
-        Long userId = userService.getIdByEmail(loginRequest.getEmail());
+        UUID userId = userService.getIdByEmail(loginRequest.getEmail());
         sessionService.put("userId", userId);
     }
 

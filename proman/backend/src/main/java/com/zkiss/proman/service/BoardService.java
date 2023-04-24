@@ -8,6 +8,7 @@ import com.zkiss.proman.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BoardService {
@@ -43,7 +44,7 @@ public class BoardService {
     }
 
 
-    public List<Board> getAllBoardsByUserId(Long userId) {
+    public List<Board> getAllBoardsByUserId(UUID userId) {
         return boardRepository.getBoardsByAppUser_Id(userId);
     }
 

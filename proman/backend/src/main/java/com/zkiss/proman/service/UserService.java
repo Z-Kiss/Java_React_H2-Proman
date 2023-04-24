@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -52,7 +53,7 @@ public class UserService {
         }
     }
 
-    public Long getIdByEmail(String email) {
+    public UUID getIdByEmail(String email) {
         AppUser user = getAppUserByEmail(email);
         return user.getId();
     }
@@ -62,7 +63,7 @@ public class UserService {
     }
 
 
-    public AppUser getAppUserById(Long userId) {
+    public AppUser getAppUserById(UUID userId) {
        return userRepository.getAppUserById(userId);
     }
 
@@ -72,7 +73,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public String getUserNameById(Long userId) {
+    public String getUserNameById(UUID userId) {
         return userRepository.getAppUserById(userId).getName();
     }
 }

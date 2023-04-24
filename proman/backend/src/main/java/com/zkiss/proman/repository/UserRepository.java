@@ -4,7 +4,9 @@ package com.zkiss.proman.repository;
 import com.zkiss.proman.model.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<AppUser, Long>{
+import java.util.UUID;
+
+public interface UserRepository extends JpaRepository<AppUser, UUID>{
 
     boolean existsByName(String name);
 
@@ -16,5 +18,5 @@ public interface UserRepository extends JpaRepository<AppUser, Long>{
 
     AppUser getAppUserByEmail(String email);
 
-    AppUser getAppUserById(Long userId);
+    AppUser getAppUserById(UUID userId);
 }

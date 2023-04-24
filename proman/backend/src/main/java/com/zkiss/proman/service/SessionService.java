@@ -4,17 +4,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class SessionService {
 
-    private Map<String, Long> session = new HashMap<>();
+    private Map<String, UUID> session = new HashMap<>();
 
-    public void put(String key, Long id){
+    public void put(String key, UUID id){
         session.put(key, id);
     }
 
-    public Long get(String key){
+    public UUID get(String key){
         return session.get(key);
     }
 
