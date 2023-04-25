@@ -37,13 +37,6 @@ public class AppUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
-    public AppUser(UserRegisterRequest userRequest) {
-        this.name = userRequest.getName();
-        this.email = userRequest.getEmail();
-        this.password = userRequest.getPassword();
-        this.role = RoleType.USER;
-    }
-
     public void update(AppUser updatedUser) {
         if (updatedUser.getName() != null) {
             this.setName(updatedUser.getName());
