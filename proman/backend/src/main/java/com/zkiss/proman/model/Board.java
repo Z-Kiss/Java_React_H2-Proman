@@ -4,17 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-//@Data
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Table
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

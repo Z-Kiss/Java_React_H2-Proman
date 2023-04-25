@@ -9,9 +9,15 @@ import java.util.Set;
 public class UserUpdateRequest{
 
     private Long userId;
+
     private String name;
+
     private String email;
+
     private String password;
+
     private RoleType role;
+
     private Set<Board> boards;
+
 }

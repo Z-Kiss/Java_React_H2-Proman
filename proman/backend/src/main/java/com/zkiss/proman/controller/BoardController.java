@@ -7,7 +7,6 @@ import com.zkiss.proman.service.BoardService;
 import com.zkiss.proman.service.SessionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -15,7 +14,6 @@ import java.util.List;
 public class BoardController {
 
     private BoardService boardService;
-
     private SessionService sessionService;
 
     public BoardController(BoardService boardService, SessionService sessionService) {
@@ -32,7 +30,6 @@ public class BoardController {
         }else {
             return ResponseEntity.status(400).build();
         }
-
     }
 
     @DeleteMapping("/{id}")

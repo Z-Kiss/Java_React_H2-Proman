@@ -1,12 +1,10 @@
 package com.zkiss.proman.model;
 
-import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +12,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-@Entity
+@Table
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppUser implements UserDetails {

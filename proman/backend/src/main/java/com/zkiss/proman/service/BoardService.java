@@ -5,28 +5,19 @@ import com.zkiss.proman.model.Board;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import com.zkiss.proman.repository.BoardRepository;
 import com.zkiss.proman.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class BoardService {
 
-    private BoardRepository boardRepository;
-
-    private UserService userService;
-
-    private SessionService sessionService;
-    private final UserRepository userRepository;
-
-    public BoardService(BoardRepository boardRepository, UserService userService, SessionService sessionService,
-                        UserRepository userRepository) {
-        this.boardRepository = boardRepository;
-        this.userService = userService;
-        this.sessionService = sessionService;
-        this.userRepository = userRepository;
-    }
+    private final BoardRepository boardRepository;
+    private final UserService userService;
+    private final SessionService sessionService;
 
     public Board createBoard(BoardCreateRequest createRequest) {
         Board board;
@@ -35,14 +26,11 @@ public class BoardService {
             boardRepository.save(board);
         } else {
             AppUser user = userService.getAppUserById(sessionService.get("userId"));
-
             board = new Board(createRequest, user);
-
             boardRepository.save(board);
         }
         return board;
     }
-
 
     public List<Board> getAllBoardsByUserId(UUID userId) {
         return boardRepository.getBoardsByAppUser_Id(userId);

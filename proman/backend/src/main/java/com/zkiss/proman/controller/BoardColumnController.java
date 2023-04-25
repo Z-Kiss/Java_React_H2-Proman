@@ -2,7 +2,6 @@ package com.zkiss.proman.controller;
 
 import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
-
 import com.zkiss.proman.model.DTO.boardcolumnDTO.CreateBoardColumnResponse;
 import com.zkiss.proman.service.BoardColumnService;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +36,5 @@ public class BoardColumnController {
     public void deleteBoardColumn(@PathVariable("id") Long id){
         boardColumnService.delete(id);
     }
-
 
 }

@@ -8,5 +8,6 @@ import lombok.Data;
 public class CardsBoardColumnUpdateRequest implements Validator {
 
     private Long boardColumnId;
+
     private Card card;
 }

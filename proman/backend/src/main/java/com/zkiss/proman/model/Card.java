@@ -7,11 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//@Data
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Table
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
