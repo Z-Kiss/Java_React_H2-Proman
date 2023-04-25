@@ -1,8 +1,6 @@
 package com.zkiss.proman.config;
 
-import com.zkiss.proman.model.AppUser;
 import com.zkiss.proman.auth.JwtService;
-import com.zkiss.proman.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

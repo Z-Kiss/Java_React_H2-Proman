@@ -1,6 +1,5 @@
 package com.zkiss.proman.config;
 
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,7 @@ public class SecurityConfiguration {
 
     private final JwAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-//.requestMatchers("/user/register","/user/login","/db")//TODO delete db Endpoint
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
