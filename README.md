@@ -85,3 +85,13 @@ This will run the Backend and the Frontend at the same time.
 
     - You can Delete any Boards, Columns and Cards by clicking to the Icon.
     This change only happening on the Frontend if the sent DELETE Request response were OK.
+    
+### **Future plans**
+
+    - make it more secure with JWT token
+    - make Business Logic more clear wiht useReducer instead of Providers
+    - implement Rename Board, Column, Card
+    - implement Search bar functionality
+    - implement User page
+    - secure Delete Board, Column, Card
+   
