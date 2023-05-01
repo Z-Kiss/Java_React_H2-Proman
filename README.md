@@ -15,6 +15,8 @@ Trello like List making Application to help Agile work style. Currently in Devel
 
 
 ### **Prerequisites**
+Java Development Kit
+https://www.oracle.com/java/technologies/downloads/
 
 Maven
 How to innstall: https://maven.apache.org/install.html
@@ -28,11 +30,14 @@ How to install: https://nodejs.org/en/download
 Before you start, you need to install the dependencies.
 
 For install dependencies of Backend:
-Use this command from the _backend_ directory.
+
+- Use this command from the _backend_ directory.
 
     mvn dependency:copy-dependencies
     
 For install dependencies of Frontend:
+
+- Use this command from the _frontend_ directory.
 
     npm install
 
