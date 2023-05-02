@@ -1,9 +1,9 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-export default function WelcomeModal({props}) {
+export default function WelcomeModal({handleClose}) {
 
-    const {handleClose} = props;
+
 
     return (<>
             <Modal.Header closeButton>

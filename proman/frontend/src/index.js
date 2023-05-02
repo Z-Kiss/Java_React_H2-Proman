@@ -4,14 +4,19 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import BoardProvider from "./context/BoardProvider";
+import UserProvider from "./context/UserProvider";
 
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <BoardProvider>
-        <App />
-    </BoardProvider>
+
+        <UserProvider>
+            <BoardProvider>
+                <App />
+            </BoardProvider>
+        </UserProvider>
+
 
 );
 

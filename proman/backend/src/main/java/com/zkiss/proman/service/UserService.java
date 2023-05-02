@@ -1,78 +1,81 @@
 package com.zkiss.proman.service;
 
+import com.zkiss.proman.auth.JwtService;
 import com.zkiss.proman.model.AppUser;
+import com.zkiss.proman.auth.AuthenticationResponse;
 import com.zkiss.proman.model.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
+import com.zkiss.proman.model.RoleType;
 import com.zkiss.proman.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
-    public void registerUser(UserRegisterRequest user) {
-        userRepository.save(new AppUser(user));
-    }
-
-    public List<String> gatherErrorMessagesForRegisterUser(UserRegisterRequest userRequest){
-        List<String> errorMessages = new ArrayList<>();
-        if(userRequest.hasNoNullField()){
-            if (userRepository.existsByEmailOrName(userRequest.getEmail(), userRequest.getName())){
-                if(userRepository.existsByName(userRequest.getName())){
-                    errorMessages.add("Username already exist");
-                }
-                if(userRepository.existsByEmail(userRequest.getEmail())){
-                    errorMessages.add("Email already registered");
-                }
-            }
-        }else {
-            errorMessages.add("Missing User Information");
-        }
-        return errorMessages;
-    }
-
-    //Not final solution
-    //TODO SecureLogin
-    public boolean login(UserLoginRequest loginRequest) {
-        AppUser user = userRepository.getAppUserByEmail(loginRequest.getEmail());
-        if(user != null){
-            return user.checkPassword(loginRequest.getPassword());
+    public String registerUser(UserRegisterRequest userRegisterRequest) {
+        AppUser appUser = AppUser.builder()
+                .password(passwordEncoder.encode(userRegisterRequest.getPassword()))
+                .name(userRegisterRequest.getName())
+                .email(userRegisterRequest.getEmail())
+                .role(RoleType.USER)
+                .build();
+        if (!userRepository.exists(Example.of(appUser))) {
+            userRepository.save(appUser);
+            return jwtService.generateToken(appUser);
         } else {
-            return false;
+            return null;
         }
     }
 
-    public Long getIdByEmail(String email) {
-        AppUser user = getAppUserByEmail(email);
-        return user.getId();
+    public AuthenticationResponse loginUser(UserLoginRequest loginRequest) {
+        if (loginRequest.getEmail().equals("guest@guest.com")) {
+            if (this.getAppUserByEmail("guest@guest.com") == null) {
+                initGuest();
+            }
+        }
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getEmail(),
+                        loginRequest.getPassword()
+                )
+        );
+        AppUser appUser = userRepository.getAppUserByEmail(loginRequest.getEmail())
+                .orElseThrow();
+        String jwToken = jwtService.generateToken(appUser);
+        return AuthenticationResponse.builder()
+                .token(jwToken)
+                .build();
     }
 
-    private AppUser getAppUserByEmail(String email){
-        return userRepository.getAppUserByEmail(email);
+    private void initGuest() {
+        this.registerUser(UserRegisterRequest.builder()
+                .email("guest@guest.com")
+                .name("Guest")
+                .password("guestguest")
+                .role(RoleType.GUEST)
+                .build());
     }
 
-
-    public AppUser getAppUserById(Long userId) {
-       return userRepository.getAppUserById(userId);
+    public AppUser getAppUserById(UUID userId) {
+        return userRepository.getAppUserById(userId);
     }
 
-    public void updateUser(AppUser updatedUser) {
-        AppUser user = userRepository.getAppUserById(updatedUser.getId());
-        user.update(updatedUser);
-        userRepository.save(user);
-    }
-
-    public String getUserNameById(Long userId) {
-        return userRepository.getAppUserById(userId).getName();
+    public AppUser getAppUserByEmail(String email) {
+        return userRepository.getAppUserByEmail(email)
+                .orElse(null);
     }
 }

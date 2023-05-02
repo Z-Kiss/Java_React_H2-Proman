@@ -6,27 +6,23 @@ import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardsBoardColumnUpdateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CreateCardResponse;
 import com.zkiss.proman.repository.CardRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CardService {
 
-    private BoardColumnService boardColumnService;
-    private CardRepository cardRepository;
+    private final BoardColumnService boardColumnService;
+    private final CardRepository cardRepository;
 
-    public CardService(BoardColumnService boardColumnService, CardRepository cardRepository) {
-        this.boardColumnService = boardColumnService;
-        this.cardRepository = cardRepository;
-    }
 
     public CreateCardResponse registerCard(CardCreateRequest createRequest) {
         BoardColumn boardColumn = boardColumnService.getBoardColumnById(createRequest.getId());
         Card card = new Card(createRequest, boardColumn);
-
         cardRepository.save(card);
         boardColumn.addCard(card);
         boardColumnService.update(boardColumn);
-
         return new CreateCardResponse(boardColumn.getId(), card);
     }
 
@@ -37,7 +33,6 @@ public class CardService {
     }
 
     public void update(CardsBoardColumnUpdateRequest updateRequest){
-
         BoardColumn boardColumn = boardColumnService.getBoardColumnById(updateRequest.getBoardColumnId());
         Card updatedCard = updateRequest.getCard();
         updatedCard.setBoardColumn(boardColumn);
@@ -45,8 +40,6 @@ public class CardService {
         card.update(updatedCard);
         cardRepository.save(card);
     }
-
-
 
     public void delete(Long id) {
         cardRepository.deleteById(id);

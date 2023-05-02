@@ -9,54 +9,47 @@ import DragAndDropProvider from "./context/DragAndDropProvider";
 import DeleteComponentProvider from "./context/DeleteComponentProvider";
 import CreateComponentProvider from "./context/CreateComponentProvider";
 import PayloadGeneratorProvider from "./context/PayloadGeneratorProvider";
-import {useGetBoards} from "./context/BoardProvider";
+import {useUser} from "./context/UserProvider";
+import {useBoards, useSetBoards} from "./context/BoardProvider";
 
 
 export default function App() {
     const [modalContent, setModalContent] = useState("welcome");
     const [show, setShow] = useState(true);
-    const [loggedInUser, setLoggedInUser] = useState(null);
-    const [boards, setBoards] = useState([]);
-    const getBoards = useGetBoards();
-
+    const user = useUser();
+    const boards = useBoards();
+    const setBoards = useSetBoards();
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const initUserBoards = async () =>{
-        const boards = await getBoards.ofUser()
-        if(boards === undefined){
-            alert("Some problem occurred with the Server try again");
-        }else {
-            setBoards(boards);
+    const fetchBoards = async (user) => {
+        const response = await fetch(`/board/get-boards-by-id/${user.userId}`, {
+            headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            }
+        });
+        if (response.status === 200) {
+            setBoards(await response.json());
         }
     }
-    const initGuestBoards = async () =>{
-        const boards = await getBoards.ofGuest();
-        if(boards === undefined){
-            alert("Some problem occurred with the Server try again");
-        }else {
-            setBoards(boards);
-        }
-    }
-
-    useEffect(() => {
-        if (loggedInUser === null) {
-            initGuestBoards();
-        } else {
-            initUserBoards();
-        }
-    }, [loggedInUser]);
 
     const props = {
         modalContent: modalContent,
         setModalContent: setModalContent,
         show: show,
         setShow: setShow,
-        loggedInUser: loggedInUser,
-        setLoggedInUser: setLoggedInUser,
         handleShow: handleShow,
         handleClose: handleClose,
     };
+
+    useEffect(() =>{
+        if(user.userId !== null){
+            fetchBoards(user);
+        }
+    },[user])
+
+
+
 
     return (
         <>

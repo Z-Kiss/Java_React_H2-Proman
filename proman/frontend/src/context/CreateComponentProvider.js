@@ -6,6 +6,7 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
 
     let copyOfState = [...currentState]
 
+
     const createNewBoard = async (payload) => {
 
         const newBoard = await createBoardInDatabase(payload);
@@ -19,14 +20,16 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
     }
     const createBoardInDatabase = async (payload) => {
         const response = await fetch("/board/create", {
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            },
             method: "POST",
             body: JSON.stringify(payload)
         })
-        if(response.status === 200){
-           return await response.json();
-        }else {
-            console.log("nope")
+        if (response.status === 200) {
+            return await response.json();
+        } else {
             return undefined
         }
     }
@@ -48,13 +51,16 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
     const createColumnInDatabase = async (payload) => {
 
         let response = await fetch("/board-column/create", {
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            },
             method: "POST",
             body: JSON.stringify(payload)
         })
-        if(response.status === 200){
-            return  await response.json();
-        }else {
+        if (response.status === 200) {
+            return await response.json();
+        } else {
             return undefined
         }
     }
@@ -82,13 +88,16 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
     }
     const createCardInDatabase = async (payload) => {
         let response = await fetch("/card/create", {
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            },
             method: "POST",
             body: JSON.stringify(payload)
         })
-        if(response.status === 200){
+        if (response.status === 200) {
             return await response.json();
-        }else {
+        } else {
             return undefined
         }
     }
@@ -102,7 +111,7 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
                 ...board, boardColumns: board.boardColumns.map(boardColumn => {
                     if (boardColumn.id === boardColumnId) {
 
-                        return {...boardColumn, cards: [...boardColumn.cards,card]}
+                        return {...boardColumn, cards: [...boardColumn.cards, card]}
                     }
                     return boardColumn
                 })

@@ -1,34 +1,30 @@
-import {createContext, useContext} from "react";
+import {createContext, useContext, useState} from "react";
 
 const BoardContext = createContext({})
 
-const BoardProvider = ({children}) =>{
+const BoardProvider = ({children}) => {
 
-    const getGuestBoards = async () => {
-        const response = await fetch("/board/get-all-guest-boards")
+    const [boards, setBoards] = useState([]);
+    const fetchBoards = async (user) => {
+        const response = await fetch(`/board/get-boards-by-id/${user.userId}`, {
+            headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            }
+        });
         if (response.status === 200) {
-            return await response.json();
+            console.log("Okboard")
+            setBoards(await response.json());
         }
     }
 
-    const getUserBoard = async () => {
-        const response = await fetch("/board/get-all-boards-by-user")
-        if (response.status === 200) {
-            return  await response.json();
-        }
-    }
-
-    const getBoards ={
-        ofUser:getUserBoard,
-        ofGuest:getGuestBoards
-    }
-
-    return(
-        <BoardContext.Provider value={{getBoards}}>
+    return (
+        <BoardContext.Provider value={{boards, setBoards, fetchBoards}}>
             {children}
         </BoardContext.Provider>
     )
 }
 
-export const useGetBoards = () => useContext(BoardContext).getBoards;
+export const useBoards = () => useContext(BoardContext).boards;
+export const useSetBoards = () => useContext(BoardContext).setBoards;
+export const useFetchBoards = () => useContext(BoardContext).fetchBoards;
 export default BoardProvider;

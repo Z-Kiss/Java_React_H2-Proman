@@ -4,16 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-//@Data
 @Getter
 @Setter
 @NoArgsConstructor
+@Table
 @Entity
 public class Board {
     @Id
@@ -33,7 +30,7 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardColumn> boardColumns = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "APP_USER_ID" )
     @JsonIgnore
     private AppUser appUser;

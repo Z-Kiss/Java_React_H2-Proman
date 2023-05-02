@@ -8,12 +8,11 @@ export default function CreateBoardButton({parentComponentId}){
 
     const [payload, setPayload] = useState({bgColor:"bg-primary"});
     const [show, setShow] = useState(false);
-
     const create = useCreate();
     const payloadGenerator = usePayloadGenerator()
     const createNewBoard = async (e) =>{
         e.preventDefault();
-        create.newBoard(payload)
+        await create.newBoard(payload)
         setShow(false);
     }
 
