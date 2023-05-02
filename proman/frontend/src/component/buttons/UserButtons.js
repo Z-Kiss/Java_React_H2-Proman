@@ -1,34 +1,39 @@
 import Button from "react-bootstrap/Button";
-import NavDropdown from "react-bootstrap/NavDropdown";
+import {useLogout, useUser} from "../../context/UserProvider";
+import {useSetBoards} from "../../context/BoardProvider";
 
 
 export default function UserButtons({props}) {
 
-    const {setLoggedInUser, setModalContent, loggedInUser} = props
+    const {setModalContent} = props;
+    const user = useUser();
+    const logout = useLogout();
+    const setBoards = useSetBoards();
 
     const handleShow = () => {
         props.handleShow();
     }
 
-    function logout() {
-        fetch("/user/logout");
-        setLoggedInUser(null);
-    }
-
-    function openLoginModal() {
+    const openLoginModal = () => {
         setModalContent("login");
         handleShow();
     }
 
-    function openRegisterModal() {
+    const openRegisterModal = () => {
         setModalContent("register");
         handleShow();
     }
 
-    if (loggedInUser !== null) {
+    const handleLogout = () =>{
+        logout();
+        setBoards([]);
+    }
+
+
+    if (user.userName !== null) {
         return (<>
-            <Button className={"mx-1"} onClick={logout}>Logout</Button>
-            <Button className={"mx-1"}>{loggedInUser}</Button>
+            <Button className={"mx-1"} onClick={handleLogout}>Logout</Button>
+            <Button className={"mx-1"}>{user.userName}</Button>
         </>);
     } else {
         return (

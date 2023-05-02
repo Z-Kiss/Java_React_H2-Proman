@@ -1,25 +1,27 @@
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import {useState} from "react";
 
-export function RegisterModal({props, payload, handleChange}) {
-    const {handleClose} = props
+import {useRegister} from "../../context/UserProvider";
+
+export function RegisterModal({handleClose}) {
+
+    const [payload, setPayload] = useState({});
+    const register = useRegister();
 
     const registerUser = async (e) => {
-        console.log("haha")
-        e.preventDefault()
-        const response = await fetch("/user/register", {
-            headers: {"Content-Type": "application/json"},
-            method: "POST",
-            body: JSON.stringify(payload)
-        })
-
-        if (response.status === 200) {
-            alert("User Registered")
-        } else {
-            alert("Some problem occurred with the Server try again")
-        }
+        e.preventDefault();
+        register(payload);
         handleClose();
+    }
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setPayload(prevState => ({
+            ...prevState, [name]: value
+        }))
+        console.log(payload)
     }
 
     return (<>

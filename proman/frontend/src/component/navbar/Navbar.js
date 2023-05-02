@@ -8,19 +8,6 @@ import SearchField from "./SearchField";
 
 function NavBar({props}) {
 
-    const {setLoggedInUser} = props;
-
-    async function initLoggedInUser() {
-        const response = await fetch("/user")
-        if (response.status === 200) {
-            setLoggedInUser(await response.json());
-        }
-    }
-
-    useEffect(() => {
-        initLoggedInUser();
-    }, [])
-
 
     return (
         <Navbar bg="dark" variant={"dark"} expand="lg">
