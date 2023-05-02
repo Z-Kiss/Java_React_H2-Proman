@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table
+@Entity
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

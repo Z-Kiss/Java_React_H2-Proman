@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Table
+@Entity
 public class BoardColumn {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
