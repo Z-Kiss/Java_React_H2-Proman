@@ -10,5 +10,4 @@ public interface UserRepository extends JpaRepository<AppUser, UUID>{
     Optional<AppUser> getAppUserByEmail(String email);
 
     AppUser getAppUserById(UUID userId);
-
 }

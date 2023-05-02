@@ -12,6 +12,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
+@Entity
 @Table
 @NoArgsConstructor
 @AllArgsConstructor
@@ -51,13 +52,24 @@ public class AppUser implements UserDetails {
     }
 
     @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override

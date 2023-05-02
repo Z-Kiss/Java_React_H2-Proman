@@ -1,5 +1,6 @@
 package com.zkiss.proman.config;
 
+import com.zkiss.proman.model.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
