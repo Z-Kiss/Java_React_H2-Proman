@@ -1,10 +1,12 @@
 import {createContext, useContext} from "react";
+import {useUser} from "./UserProvider";
 
 const CreateComponentContext = createContext({})
 
 const CreateComponentProvider = ({children, currentState, setState}) => {
 
     let copyOfState = [...currentState]
+
 
     const createNewBoard = async (payload) => {
 
@@ -19,14 +21,15 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
     }
     const createBoardInDatabase = async (payload) => {
         const response = await fetch("/board/create", {
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer "+ sessionStorage.getItem("token")},
             method: "POST",
             body: JSON.stringify(payload)
         })
         if(response.status === 200){
            return await response.json();
         }else {
-            console.log("nope")
             return undefined
         }
     }
@@ -48,7 +51,9 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
     const createColumnInDatabase = async (payload) => {
 
         let response = await fetch("/board-column/create", {
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer "+ sessionStorage.getItem("token")},
             method: "POST",
             body: JSON.stringify(payload)
         })
@@ -82,7 +87,9 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
     }
     const createCardInDatabase = async (payload) => {
         let response = await fetch("/card/create", {
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer "+ sessionStorage.getItem("token")},
             method: "POST",
             body: JSON.stringify(payload)
         })

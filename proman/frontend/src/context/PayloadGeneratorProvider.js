@@ -1,12 +1,18 @@
 import {createContext, useContext} from "react";
+import {useUser} from "./UserProvider";
 
 const PayloadGeneratorContext = createContext({});
 
 const PayloadGeneratorProvider = ({children}) =>{
+    const user = useUser();
 
     const payloadGeneratorForNewObjects = (e, parentComponentId, payloadOfNewObject, setPayloadOfNewObject) =>{
         const brightBackground = ["bg-light","bg-warning"];
-        if(notBoard(parentComponentId)) {recordParentComponentId(setPayloadOfNewObject, parentComponentId);}
+        if(notBoard(parentComponentId)) {
+            recordParentComponentId(setPayloadOfNewObject, parentComponentId);
+        }else{
+            putUserIntoPayload(setPayloadOfNewObject);
+        }
         const {name, value} = e.target;
         recordAttributeOfNewObject(setPayloadOfNewObject,name, value);
         pickTextColor(brightBackground, payloadOfNewObject, setPayloadOfNewObject);
@@ -38,6 +44,12 @@ const PayloadGeneratorProvider = ({children}) =>{
         }
     }
 
+    const putUserIntoPayload = (setPayloadOfNewObject) =>{
+            setPayloadOfNewObject(prevState => ({
+                ...prevState,id: user.userId
+            }))
+    }
+
     const payloadGenerator = {
         forNewObject: payloadGeneratorForNewObjects
     }
@@ -51,4 +63,5 @@ const PayloadGeneratorProvider = ({children}) =>{
 }
 
 export const usePayloadGenerator = () => useContext(PayloadGeneratorContext).payloadGenerator
+
 export default PayloadGeneratorProvider;
