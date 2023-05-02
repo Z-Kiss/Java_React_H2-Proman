@@ -4,7 +4,6 @@ import {useState} from "react";
 import {useCreate} from "../../../context/CreateComponentProvider";
 import CreatePopover from "../../popup/CreatePopover";
 import {usePayloadGenerator} from "../../../context/PayloadGeneratorProvider";
-import {useUser} from "../../../context/UserProvider";
 export default function CreateBoardButton({parentComponentId}){
 
     const [payload, setPayload] = useState({bgColor:"bg-primary"});
@@ -13,7 +12,7 @@ export default function CreateBoardButton({parentComponentId}){
     const payloadGenerator = usePayloadGenerator()
     const createNewBoard = async (e) =>{
         e.preventDefault();
-        create.newBoard(payload)
+        await create.newBoard(payload)
         setShow(false);
     }
 

@@ -1,5 +1,4 @@
-import {createContext, useContext, useEffect, useState} from "react";
-import {useUser} from "./UserProvider";
+import {createContext, useContext, useState} from "react";
 
 const BoardContext = createContext({})
 
@@ -17,7 +16,6 @@ const BoardProvider = ({children}) => {
             setBoards(await response.json());
         }
     }
-
 
     return (
         <BoardContext.Provider value={{boards, setBoards, fetchBoards}}>

@@ -1,5 +1,4 @@
 import {createContext, useContext} from "react";
-import {useUser} from "./UserProvider";
 
 const CreateComponentContext = createContext({})
 
@@ -23,13 +22,14 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
         const response = await fetch("/board/create", {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer "+ sessionStorage.getItem("token")},
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            },
             method: "POST",
             body: JSON.stringify(payload)
         })
-        if(response.status === 200){
-           return await response.json();
-        }else {
+        if (response.status === 200) {
+            return await response.json();
+        } else {
             return undefined
         }
     }
@@ -53,13 +53,14 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
         let response = await fetch("/board-column/create", {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer "+ sessionStorage.getItem("token")},
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            },
             method: "POST",
             body: JSON.stringify(payload)
         })
-        if(response.status === 200){
-            return  await response.json();
-        }else {
+        if (response.status === 200) {
+            return await response.json();
+        } else {
             return undefined
         }
     }
@@ -89,13 +90,14 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
         let response = await fetch("/card/create", {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer "+ sessionStorage.getItem("token")},
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            },
             method: "POST",
             body: JSON.stringify(payload)
         })
-        if(response.status === 200){
+        if (response.status === 200) {
             return await response.json();
-        }else {
+        } else {
             return undefined
         }
     }
@@ -109,7 +111,7 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
                 ...board, boardColumns: board.boardColumns.map(boardColumn => {
                     if (boardColumn.id === boardColumnId) {
 
-                        return {...boardColumn, cards: [...boardColumn.cards,card]}
+                        return {...boardColumn, cards: [...boardColumn.cards, card]}
                     }
                     return boardColumn
                 })
