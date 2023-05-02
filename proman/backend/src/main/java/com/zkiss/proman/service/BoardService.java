@@ -4,10 +4,9 @@ import com.zkiss.proman.model.AppUser;
 import com.zkiss.proman.model.Board;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import com.zkiss.proman.repository.BoardRepository;
-import com.zkiss.proman.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.UUID;
 

@@ -12,6 +12,4 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     List<Board> getBoardsByAppUser_Id(UUID id);
 
     Board getBoardById(Long id);
-
-    void deleteById(Long id);
 }
