@@ -1,7 +1,6 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import UserButtons from "../buttons/UserButtons";
-import {useEffect} from "react";
 import CreateBoardButton from "../buttons/createButtons/CreateBoardButton";
 import SearchField from "./SearchField";
 
