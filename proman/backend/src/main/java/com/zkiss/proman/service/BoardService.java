@@ -17,15 +17,14 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserService userService;
-    private final SessionService sessionService;
 
     public Board createBoard(BoardCreateRequest createRequest) {
         Board board;
-        if (sessionService.get("userId") == null) {
+        if (createRequest.getId() == null) {
             board = new Board(createRequest, null);
             boardRepository.save(board);
         } else {
-            AppUser user = userService.getAppUserById(sessionService.get("userId"));
+            AppUser user = userService.getAppUserById(createRequest.getId());
             board = new Board(createRequest, user);
             boardRepository.save(board);
         }
@@ -36,14 +35,9 @@ public class BoardService {
         return boardRepository.getBoardsByAppUser_Id(userId);
     }
 
-    public List<Board> getAllBoardsByGuest() {
-       return boardRepository.getBoardsByAppUser_Id(null);
-    }
-
     public List<Board> getAllBoards() {
         return boardRepository.findAll();
     }
-
 
     public void updateBoard(Board updatedBoard) {
         Board board = getBoardById(updatedBoard.getId());
