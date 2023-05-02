@@ -93,7 +93,6 @@ This will run the Backend and the Frontend at the same time.
     
 ### **Future plans**
 
-    - make it more secure with JWT token
     - make Business Logic more clear wiht useReducer instead of Providers
     - implement Rename Board, Column, Card
     - implement Search bar functionality
