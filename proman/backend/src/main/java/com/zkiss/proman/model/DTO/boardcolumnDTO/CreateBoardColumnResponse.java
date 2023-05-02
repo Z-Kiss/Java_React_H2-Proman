@@ -4,11 +4,12 @@ import com.zkiss.proman.model.BoardColumn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+
 @Data
 @AllArgsConstructor
 public class CreateBoardColumnResponse {
 
-    Long boardId;
+    private Long boardId;
 
-    BoardColumn boardColumn;
+    private BoardColumn boardColumn;
 }
