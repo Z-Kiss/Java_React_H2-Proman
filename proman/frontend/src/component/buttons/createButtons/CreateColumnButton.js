@@ -25,11 +25,7 @@ export default function CreateColumnButton({parentComponentId}){
             const updatedState = updateStateWithNewColumn(newColumn);
             setStateOfBoards(updatedState);
         } else {
-            if(user === null){
-                alert("You are not Logged in")
-            }else{
                 alert("Some problem occurred with the Server try again")
-            }
         }
     }
     const createColumnInDatabase = async (payload) => {

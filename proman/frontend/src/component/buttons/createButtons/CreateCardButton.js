@@ -12,7 +12,6 @@ export default function CreateCardButton({parentComponentId, columnColor, textCo
     const payloadGenerator = usePayloadGenerator()
     const stateOfBoards = useBoards();
     const setStateOfBoards = useSetBoards();
-    const user = useUser();
 
     const addNewCard = async (e) =>{
         e.preventDefault();
@@ -26,12 +25,7 @@ export default function CreateCardButton({parentComponentId, columnColor, textCo
             const updatedState = updateStateWithNewCard(newCard);
             setStateOfBoards(updatedState);
         } else {
-            if(user === null){
-                alert("You are not Logged in")
-            }else{
                 alert("Some problem occurred with the Server try again")
-            }
-
         }
     }
     const createCardInDatabase = async (payload) => {

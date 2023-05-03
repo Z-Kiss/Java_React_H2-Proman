@@ -26,7 +26,7 @@ export default function CreateBoardButton({parentComponentId}) {
             const updatedState = updateStateWithNewBoard(newBoard);
             setStateOfBoards(updatedState);
         } else {
-            if(user === null){
+            if(user.userName === null){
                 alert("You are not Logged in")
             }else{
                 alert("Some problem occurred with the Server try again")
