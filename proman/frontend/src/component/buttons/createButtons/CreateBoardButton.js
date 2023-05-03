@@ -4,6 +4,7 @@ import {useState} from "react";
 import CreatePopover from "../../popup/CreatePopover";
 import {usePayloadGenerator} from "../../../context/PayloadGeneratorProvider";
 import {useBoards, useSetBoards} from "../../../context/BoardProvider";
+import {useUser} from "../../../context/UserProvider";
 
 export default function CreateBoardButton({parentComponentId}) {
 
@@ -12,6 +13,7 @@ export default function CreateBoardButton({parentComponentId}) {
     const payloadGenerator = usePayloadGenerator()
     const stateOfBoards = useBoards();
     const setStateOfBoards = useSetBoards();
+    const user = useUser();
     const addNewBoard = async e => {
         e.preventDefault();
         await createNewBoard(payload)
@@ -24,7 +26,11 @@ export default function CreateBoardButton({parentComponentId}) {
             const updatedState = updateStateWithNewBoard(newBoard);
             setStateOfBoards(updatedState);
         } else {
-            alert("Some problem occurred with the Server try again")
+            if(user === null){
+                alert("You are not Logged in")
+            }else{
+                alert("Some problem occurred with the Server try again")
+            }
         }
     }
     const createBoardInDatabase = async (payload) => {
