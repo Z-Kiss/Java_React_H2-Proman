@@ -6,8 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import Boards from "./component/table/Table";
 import DragAndDropProvider from "./context/DragAndDropProvider";
-import DeleteComponentProvider from "./context/DeleteComponentProvider";
-import CreateComponentProvider from "./context/CreateComponentProvider";
 import PayloadGeneratorProvider from "./context/PayloadGeneratorProvider";
 import {useUser} from "./context/UserProvider";
 import {useBoards, useSetBoards} from "./context/BoardProvider";
@@ -44,11 +42,9 @@ export default function App() {
 
     useEffect(() =>{
         if(user.userId !== null){
-            fetchBoards(user);
+            fetchBoards(user)
         }
     },[user])
-
-
 
 
     return (
