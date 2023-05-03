@@ -2,6 +2,11 @@
 
 Trello like List making Application to help Agile work style. Currently in Development phase, I continiously working on it.
 
+## **Toughts on the project**
+
+The idea and the name of the project came from one of the teamwork project that we did in CodeCool FullStack Developer course.
+My goal was with this project to learn more about React, and how to use CSS framework.
+
 ### **Built With**
 
 #### ***Backend***
@@ -15,8 +20,9 @@ Trello like List making Application to help Agile work style. Currently in Devel
 
 
 ### **Prerequisites**
+
 Java Development Kit
-https://www.oracle.com/java/technologies/downloads/
+How to install: https://www.oracle.com/java/technologies/downloads/
 
 Maven
 How to innstall: https://maven.apache.org/install.html
@@ -93,9 +99,21 @@ This will run the Backend and the Frontend at the same time.
     
 ### **Future plans**
 
-    - make Business Logic more clear wiht useReducer instead of Providers
+    - deploy application
+    - further implement Card Detailed information where you can write a more detailed description about the task
+    - create a better system for showing Errors, such as:
+        not logged in when User want to create Board
+        password/email mismatch
+        already existing Username, Email
+        etc...
     - implement Rename Board, Column, Card
-    - implement Search bar functionality
-    - implement User page
-    - secure Delete Board, Column, Card
+    - restrict Guest actions:
+        restrict Guest to delete any board, and handle Guest Boards delete either by time or with different approach
+        restrict Rename any component that not made by current logged in Guest
+    - implement Search bar functionality:
+        I think it will be usefull if you have more boards as a User or as Guest you can search in those already created
+    - implement User page:
+        where the User can create a personal profile page
+    - further implement Admin role:
+        be able to delete Users or content
    
