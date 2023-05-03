@@ -1,13 +1,37 @@
 import {RiDeleteBin6Fill} from "react-icons/ri";
 import Button from "react-bootstrap/Button";
-import {useDeleter} from "../../../context/DeleteComponentProvider";
+
+import {useBoards, useSetBoards} from "../../../context/BoardProvider";
 
 export default function DeleteBoardButton({componentId}){
 
-    const deleter = useDeleter();
-
+    const boardState = useBoards()
+    const setBoardState = useSetBoards();
     const deleteBoard = async () =>{
-        await deleter.ofBoard(componentId)
+        await boardDeleter(componentId)
+    }
+    const boardDeleter = async (componentId) =>{
+
+        const response = await deleteBoardFromDatabase(componentId);
+        if(response.status === 200){
+            const changedState = deleteBoardFormState(componentId, boardState);
+            setBoardState(changedState);
+        }else{
+            alert("Some problem occurred with the Server try again");
+        }
+    }
+    const deleteBoardFromDatabase = async (componentId) => {
+        return await fetch("board/" + componentId,{
+            headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            },
+            method: "DELETE"});
+    }
+    const deleteBoardFormState = (componentId, boardState) =>{
+        const copyOfState = [...boardState]
+        return copyOfState.filter(board =>{
+            return board.id !== componentId;
+        })
     }
 
     return(

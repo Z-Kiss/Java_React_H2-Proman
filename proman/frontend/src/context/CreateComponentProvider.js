@@ -7,37 +7,6 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
     let copyOfState = [...currentState]
 
 
-    const createNewBoard = async (payload) => {
-
-        const newBoard = await createBoardInDatabase(payload);
-
-        if (newBoard) {
-            const updatedState = updateStateWithNewBoard(newBoard);
-            setState(updatedState);
-        } else {
-            alert("Some problem occurred with the Server try again")
-        }
-    }
-    const createBoardInDatabase = async (payload) => {
-        const response = await fetch("/board/create", {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + sessionStorage.getItem("token")
-            },
-            method: "POST",
-            body: JSON.stringify(payload)
-        })
-        if (response.status === 200) {
-            return await response.json();
-        } else {
-            return undefined
-        }
-    }
-    const updateStateWithNewBoard = (props) => {
-        const {board} = props
-        return [...copyOfState, board]
-    }
-
     const createNewColumn = async (payload) => {
         const newColumn = await createColumnInDatabase(payload);
 
@@ -122,7 +91,6 @@ const CreateComponentProvider = ({children, currentState, setState}) => {
     const create = {
         newCard: createNewCard,
         newColumn: createNewColumn,
-        newBoard: createNewBoard
     }
 
     return (

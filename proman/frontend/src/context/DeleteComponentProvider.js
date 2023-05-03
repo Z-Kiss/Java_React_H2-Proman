@@ -8,28 +8,7 @@ const DeleteComponentProvider = ({children, currentState, setState}) =>{
 
     //Board deleter
 
-    const boardDeleter = async (componentId) =>{
-        const response = await deleteBoardFromDatabase(componentId);
-        if(response.status === 200){
-            const changedState = deleteBoardFormState(componentId);
-            setState(changedState);
-        }else{
-            alert("Some problem occurred with the Server try again");
-        }
 
-    }
-    const deleteBoardFormState = (componentId) =>{
-        return copyOfState = copyOfState.filter(board =>{
-            return board.id !== componentId;
-        })
-    }
-    const deleteBoardFromDatabase = async (componentId) => {
-        return await fetch("board/" + componentId,{
-            headers: {
-                Authorization: "Bearer " + sessionStorage.getItem("token")
-            },
-            method: "DELETE"});
-    }
 
     // Column Deleter
 
@@ -97,7 +76,7 @@ const DeleteComponentProvider = ({children, currentState, setState}) =>{
     }
 
     const deleter = {
-        ofBoard: boardDeleter,
+
         ofColumn: columnDeleter,
         ofCard: cardDeleter
     };

@@ -1,37 +1,68 @@
 import Button from "react-bootstrap/Button";
 import {OverlayTrigger} from "react-bootstrap";
 import {useState} from "react";
-import {useCreate} from "../../../context/CreateComponentProvider";
 import CreatePopover from "../../popup/CreatePopover";
 import {usePayloadGenerator} from "../../../context/PayloadGeneratorProvider";
-export default function CreateBoardButton({parentComponentId}){
+import {useBoards, useSetBoards} from "../../../context/BoardProvider";
 
-    const [payload, setPayload] = useState({bgColor:"bg-primary"});
+export default function CreateBoardButton({parentComponentId}) {
+
+    const [payload, setPayload] = useState({bgColor: "bg-primary"});
     const [show, setShow] = useState(false);
-    const create = useCreate();
     const payloadGenerator = usePayloadGenerator()
-    const createNewBoard = async (e) =>{
+    const stateOfBoards = useBoards();
+    const setStateOfBoards = useSetBoards();
+    const addNewBoard = async e => {
         e.preventDefault();
-        await create.newBoard(payload)
+        await createNewBoard(payload)
         setShow(false);
     }
 
-    const handleChange = (e) =>{
-        payloadGenerator.forNewObject(e,parentComponentId,payload,setPayload);
+    const createNewBoard = async (payload) => {
+        const newBoard = await createBoardInDatabase(payload);
+        if (newBoard) {
+            const updatedState = updateStateWithNewBoard(newBoard);
+            setStateOfBoards(updatedState);
+        } else {
+            alert("Some problem occurred with the Server try again")
+        }
+    }
+    const createBoardInDatabase = async (payload) => {
+        const response = await fetch("/board/create", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            },
+            method: "POST",
+            body: JSON.stringify(payload)
+        })
+        if (response.status === 200) {
+            return await response.json();
+        } else {
+            return undefined
+        }
+    }
+    const updateStateWithNewBoard = (props) => {
+        const {board} = props
+        return [...stateOfBoards, board]
+    }
+
+    const handleChange = (e) => {
+        payloadGenerator.forNewObject(e, parentComponentId, payload, setPayload);
     }
 
     const toggleShow = () => {
         setShow(!show)
     }
 
-    return(
+    return (
         <OverlayTrigger
             trigger="click"
             rootClose
             placement={"bottom"}
             show={show}
             onToggle={toggleShow}
-            overlay={CreatePopover(handleChange, createNewBoard)}>
+            overlay={CreatePopover(handleChange, addNewBoard)}>
             <Button variant={"primary"} className={"mx-1"}>{"Add Board"}</Button>
         </OverlayTrigger>
     )
