@@ -6,8 +6,8 @@ export default function DeleteBoardButton({componentId, parentComponentId, board
 
     const deleter = useDeleter();
 
-    const deleteBoard = () =>{
-        deleter.ofCard(componentId, parentComponentId, boardId)
+    const deleteBoard = async () =>{
+        await deleter.ofCard(componentId, parentComponentId, boardId)
     }
 
     return(

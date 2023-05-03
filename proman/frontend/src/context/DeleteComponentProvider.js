@@ -25,6 +25,9 @@ const DeleteComponentProvider = ({children, currentState, setState}) =>{
     }
     const deleteBoardFromDatabase = async (componentId) => {
         return await fetch("board/" + componentId,{
+            headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            },
             method: "DELETE"});
     }
 
@@ -42,6 +45,9 @@ const DeleteComponentProvider = ({children, currentState, setState}) =>{
     }
     const deleteColumnFromDatabase = async (componentId) => {
         return await fetch("board-column/" + componentId,{
+            headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            },
             method: "DELETE"});
     }
     const deleteColumnFromState = (componentId, parentComponentId) =>{
@@ -69,6 +75,9 @@ const DeleteComponentProvider = ({children, currentState, setState}) =>{
 
     const deleteCardFromDatabase = async (componentId) => {
         return  await fetch("card/" + componentId,{
+            headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            },
             method: "DELETE"});
     }
     const deleteCardFromState = (componentId, parentComponentId, boardId) =>{
