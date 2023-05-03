@@ -1,20 +1,58 @@
 import Button from "react-bootstrap/Button";
 import {OverlayTrigger} from "react-bootstrap";
 import {useState} from "react";
-import {useCreate} from "../../../context/CreateComponentProvider";
 import CreatePopover from "../../popup/CreatePopover";
 import {usePayloadGenerator} from "../../../context/PayloadGeneratorProvider";
+import {useBoards, useSetBoards} from "../../../context/BoardProvider";
 export default function CreateColumnButton({parentComponentId}){
 
     const [payload, setPayload] = useState({bgColor:"bg-primary"});
     const [show, setShow] = useState(false);
     const payloadGenerator = usePayloadGenerator()
-    const create = useCreate();
+    const stateOfBoard = useBoards();
+    const setStateOfBoards = useSetBoards()
 
-    const createNewColumn = async (e) =>{
+    const addNewColumn = async e =>{
         e.preventDefault();
-        create.newColumn(payload)
+        await createNewColumn(payload)
         setShow(false);
+    }
+    const createNewColumn = async (payload) => {
+        const newColumn = await createColumnInDatabase(payload);
+        if (newColumn) {
+            const updatedState = updateStateWithNewColumn(newColumn);
+            setStateOfBoards(updatedState);
+        } else {
+            alert("Some problem occurred with the Server try again")
+        }
+    }
+    const createColumnInDatabase = async (payload) => {
+
+        let response = await fetch("/board-column/create", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            },
+            method: "POST",
+            body: JSON.stringify(payload)
+        })
+        if (response.status === 200) {
+            return await response.json();
+        } else {
+            return undefined
+        }
+    }
+    const updateStateWithNewColumn = (props) => {
+        //boardId is the id of the Board that contains the boardColumn
+
+        const {boardId, boardColumn} = props;
+
+        return stateOfBoard.map(board => {
+            if (board.id === boardId) {
+                return {...board, boardColumns: [...board.boardColumns, boardColumn]};
+            }
+            return board;
+        })
     }
 
     const handleChange = (e) =>{
@@ -32,7 +70,7 @@ export default function CreateColumnButton({parentComponentId}){
             placement={"right"}
             show={show}
             onToggle={toggleShow}
-            overlay={CreatePopover(handleChange, createNewColumn)}>
+            overlay={CreatePopover(handleChange, addNewColumn)}>
             <Button variant={"outline-dark"} className={"mx-1"}>{"Add Column"}</Button>
         </OverlayTrigger>
     )
