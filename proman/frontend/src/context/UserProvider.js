@@ -48,8 +48,6 @@ const UserProvider = ({children}) => {
             })
             .then((response) => response.json())
             .then((userData) => setUser({userName: userData.userName, userId: userData.userId}))
-            .then(() =>(console.log(user)));
-
     }
 
 
@@ -61,7 +59,6 @@ const UserProvider = ({children}) => {
     useEffect(() =>{
         if(sessionStorage.getItem("token")){
             getMe()
-                .then(() => console.log(user))
         }
     },[])
 

@@ -30,7 +30,7 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardColumn> boardColumns = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "APP_USER_ID" )
     @JsonIgnore
     private AppUser appUser;

@@ -41,8 +41,6 @@ public class BoardController {
 
     @GetMapping("/get-boards-by-id/{id}")
     public List<Board> getAllBoardsByUser(@PathVariable("id") UUID id){
-        System.out.println(id);
-        System.out.println(boardService.getAllBoardsByUserId(id));
         return boardService.getAllBoardsByUserId(id);
     }
 

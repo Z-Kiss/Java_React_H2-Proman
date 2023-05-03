@@ -6,8 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import Boards from "./component/table/Table";
 import DragAndDropProvider from "./context/DragAndDropProvider";
-import DeleteComponentProvider from "./context/DeleteComponentProvider";
-import CreateComponentProvider from "./context/CreateComponentProvider";
 import PayloadGeneratorProvider from "./context/PayloadGeneratorProvider";
 import {useUser} from "./context/UserProvider";
 import {useBoards, useSetBoards} from "./context/BoardProvider";
@@ -44,25 +42,19 @@ export default function App() {
 
     useEffect(() =>{
         if(user.userId !== null){
-            fetchBoards(user);
+            fetchBoards(user)
         }
     },[user])
-
-
 
 
     return (
         <>
                 <PayloadGeneratorProvider>
-                    <CreateComponentProvider currentState={boards} setState={setBoards}>
-                        <DeleteComponentProvider currentState={boards} setState={setBoards}>
-                            <DragAndDropProvider currentState={boards} setState={setBoards}>
-                                <Navbar props={props}/>
-                                <ModalContainer props={props}/>
-                                <Boards boards={[...boards]} props={props}/>
-                            </DragAndDropProvider>
-                        </DeleteComponentProvider>
-                    </CreateComponentProvider>
+                    <DragAndDropProvider currentState={boards} setState={setBoards}>
+                        <Navbar props={props}/>
+                        <ModalContainer props={props}/>
+                        <Boards boards={[...boards]} props={props}/>
+                    </DragAndDropProvider>
                 </PayloadGeneratorProvider>
         </>
     )
