@@ -54,15 +54,11 @@ export default function App() {
     return (
         <>
                 <PayloadGeneratorProvider>
-                    <CreateComponentProvider currentState={boards} setState={setBoards}>
-                        <DeleteComponentProvider currentState={boards} setState={setBoards}>
-                            <DragAndDropProvider currentState={boards} setState={setBoards}>
-                                <Navbar props={props}/>
-                                <ModalContainer props={props}/>
-                                <Boards boards={[...boards]} props={props}/>
-                            </DragAndDropProvider>
-                        </DeleteComponentProvider>
-                    </CreateComponentProvider>
+                    <DragAndDropProvider currentState={boards} setState={setBoards}>
+                        <Navbar props={props}/>
+                        <ModalContainer props={props}/>
+                        <Boards boards={[...boards]} props={props}/>
+                    </DragAndDropProvider>
                 </PayloadGeneratorProvider>
         </>
     )
