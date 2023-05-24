@@ -12,7 +12,6 @@ const BoardProvider = ({children}) => {
             }
         });
         if (response.status === 200) {
-            console.log("Okboard")
             setBoards(await response.json());
         }
     }
