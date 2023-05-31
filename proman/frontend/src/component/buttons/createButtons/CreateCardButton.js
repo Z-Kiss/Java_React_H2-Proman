@@ -4,7 +4,6 @@ import {useState} from "react";
 import {usePayloadGenerator} from "../../../context/PayloadGeneratorProvider";
 import CreatePopoverForCard from "../../popup/CreatePopoverForCard";
 import {useBoards, useSetBoards} from "../../../context/BoardProvider";
-import {useUser} from "../../../context/UserProvider";
 export default function CreateCardButton({parentComponentId, columnColor, textColor}){
 
     const [payload, setPayload] = useState({bgColor: columnColor, textColor:textColor});
