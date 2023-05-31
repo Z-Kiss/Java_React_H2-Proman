@@ -7,7 +7,7 @@ import {useRegister} from "../../context/UserProvider";
 
 export function RegisterModal({handleClose}) {
 
-    const [payload, setPayload] = useState({});
+    const [payload, setPayload] = useState({role: "USER"});
     const register = useRegister();
 
     const registerUser = async (e) => {
