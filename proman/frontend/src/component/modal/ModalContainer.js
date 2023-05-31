@@ -20,9 +20,7 @@ export default function ModalContainer({props}) {
                     ? <RegisterModal handleClose={handleClose}/>
                     : modalContent === "login"
                         ? <LoginModal handleClose={handleClose}/>
-                        : modalContent === "welcome"
-                            ? <WelcomeModal handleClose={handleClose}/>
-                            : <></>}
+                        :<></>}
             </Modal>
         </>, document.getElementById("modal")
     );
