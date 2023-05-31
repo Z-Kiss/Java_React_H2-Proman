@@ -2,7 +2,6 @@ import Modal from 'react-bootstrap/Modal';
 import {createPortal} from "react-dom";
 import {RegisterModal} from "./RegisterModal";
 import LoginModal from "./LoginModal";
-import WelcomeModal from "./WelcomeModal";
 
 export default function ModalContainer({props}) {
 
