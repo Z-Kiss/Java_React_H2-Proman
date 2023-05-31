@@ -31,7 +31,7 @@ public class UserService {
                 .password(passwordEncoder.encode(userRegisterRequest.getPassword()))
                 .name(userRegisterRequest.getName())
                 .email(userRegisterRequest.getEmail())
-                .role(RoleType.USER)
+                .role(userRegisterRequest.getRole())
                 .build();
         if (!userRepository.exists(Example.of(appUser))) {
             userRepository.save(appUser);
