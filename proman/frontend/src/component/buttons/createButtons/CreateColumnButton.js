@@ -4,7 +4,6 @@ import {useState} from "react";
 import CreatePopover from "../../popup/CreatePopover";
 import {usePayloadGenerator} from "../../../context/PayloadGeneratorProvider";
 import {useBoards, useSetBoards} from "../../../context/BoardProvider";
-import {useUser} from "../../../context/UserProvider";
 export default function CreateColumnButton({parentComponentId}){
 
     const [payload, setPayload] = useState({bgColor:"bg-primary"});
@@ -12,7 +11,6 @@ export default function CreateColumnButton({parentComponentId}){
     const payloadGenerator = usePayloadGenerator()
     const stateOfBoard = useBoards();
     const setStateOfBoards = useSetBoards()
-    const user = useUser();
 
     const addNewColumn = async e =>{
         e.preventDefault();
