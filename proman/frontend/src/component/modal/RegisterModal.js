@@ -21,7 +21,6 @@ export function RegisterModal({handleClose}) {
         setPayload(prevState => ({
             ...prevState, [name]: value
         }))
-        console.log(payload)
     }
 
     return (<>

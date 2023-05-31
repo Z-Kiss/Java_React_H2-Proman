@@ -199,7 +199,9 @@ const DragAndDropProvider = ({children, currentState, setState}) => {
     const updateComponentInDatabase = async (url, payload) => {
         await fetch(url, {
             method: "PUT",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + sessionStorage.getItem("token")},
             body: JSON.stringify(payload)
         });
     }
