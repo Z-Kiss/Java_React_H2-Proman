@@ -11,7 +11,8 @@ function NavBar({props}) {
     return (
         <Navbar bg="dark" variant={"dark"} expand="lg">
             <Container fluid>
-                <Navbar.Brand href="#">Proman</Navbar.Brand>
+                <Navbar.Brand href="/">Proman</Navbar.Brand>
+                <Navbar.Brand href="/about">About</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll"/>
                 <Navbar.Collapse id="navbarScroll">
                     <Container className={"d-flex mx-auto"}>

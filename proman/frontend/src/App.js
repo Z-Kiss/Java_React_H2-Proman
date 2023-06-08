@@ -8,28 +8,21 @@ import Boards from "./component/table/Table";
 import DragAndDropProvider from "./context/DragAndDropProvider";
 import PayloadGeneratorProvider from "./context/PayloadGeneratorProvider";
 import {useUser} from "./context/UserProvider";
-import {useBoards, useSetBoards} from "./context/BoardProvider";
+import {useBoards, useFetchBoards, useSetBoards} from "./context/BoardProvider";
+
+import AboutPage from "./component/page/AboutPage";
+import {Route, Routes} from "react-router-dom";
 
 
 export default function App() {
     const [modalContent, setModalContent] = useState("welcome");
-    const [show, setShow] = useState(true);
+    const [show, setShow] = useState(false);
     const user = useUser();
     const boards = useBoards();
     const setBoards = useSetBoards();
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
-    const fetchBoards = async (user) => {
-        const response = await fetch(`/board/get-boards-by-id/${user.userId}`, {
-            headers: {
-                Authorization: "Bearer " + sessionStorage.getItem("token")
-            }
-        });
-        if (response.status === 200) {
-            setBoards(await response.json());
-        }
-    }
+    const fetchBoards = useFetchBoards();
 
     const props = {
         modalContent: modalContent,
@@ -41,9 +34,7 @@ export default function App() {
     };
 
     useEffect(() =>{
-        if(user.userId !== null){
-            fetchBoards(user)
-        }
+        fetchBoards(user)
     },[user])
 
 
@@ -53,7 +44,11 @@ export default function App() {
                     <DragAndDropProvider currentState={boards} setState={setBoards}>
                         <Navbar props={props}/>
                         <ModalContainer props={props}/>
-                        <Boards boards={[...boards]} props={props}/>
+                        <Routes>
+                            <Route path={"/"} element={<Boards boards={[...boards]} props={props}/>}/>
+                            <Route path={"/about"} element={<AboutPage/>}/>
+                        </Routes>
+
                     </DragAndDropProvider>
                 </PayloadGeneratorProvider>
         </>
