@@ -9,10 +9,10 @@ import java.sql.SQLException;
 @SpringBootApplication
 public class PromanApplication {
 
-    @Bean(initMethod = "start", destroyMethod = "stop")
-    public Server h2Server() throws SQLException {
-        return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092");
-    }
+//    @Bean(initMethod = "start", destroyMethod = "stop")
+//    public Server h2Server() throws SQLException {
+//        return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092");
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(PromanApplication.class, args);
