@@ -1,8 +1,12 @@
 import {createContext, useContext} from "react";
+import {useBoards, useSetBoards} from "./BoardProvider";
 
 const DragAndDropContext = createContext({});
 
-const DragAndDropProvider = ({children, currentState, setState}) => {
+const DragAndDropProvider = ({children}) => {
+
+    const currentState = useBoards();
+    const setState = useSetBoards();
 
     const isItCard = (componentType) => {
         return componentType === "card";
