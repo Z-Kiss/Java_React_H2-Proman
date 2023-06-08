@@ -30,10 +30,9 @@ const UserProvider = ({children}) => {
         })
         if (response.status === 200) {
             const body = await response.json();
-            const token = body.token;
-            sessionStorage.setItem("token", token);
-            await getMe()
-
+            const token = await body.token;
+            await sessionStorage.setItem("token", token);
+            await getMe();
         } else {
             alert("Wrong Email/Username combination")
         }
@@ -55,12 +54,6 @@ const UserProvider = ({children}) => {
         sessionStorage.removeItem("token")
         setUser({userName: null, userId: null});
     }
-
-    useEffect(() =>{
-        if(sessionStorage.getItem("token")){
-            getMe()
-        }
-    },[])
 
 
     return (
