@@ -20,7 +20,6 @@ public class BoardController {
 
     @PostMapping("/create")
     public ResponseEntity<CreateBoardResponse> createBoard(@RequestBody BoardCreateRequest createRequest){
-        System.out.println(createRequest);
         if(createRequest.hasNoNullField()){
             Board board = boardService.createBoard(createRequest);
             return ResponseEntity.ok().body(new CreateBoardResponse(board));
