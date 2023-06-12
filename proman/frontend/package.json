@@ -1,6 +1,6 @@
 {
   "homepage": "/about",
-  "name": "frontend",
+  "name": "proman",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
