@@ -1,2 +1,8 @@
 /.idea/
+/proman/.idea/
 /node_modules/
+/proman/frontend/node_modules/
+/proman/frontend/frontend.iml
+/proman/backend/target/
+/proman/frontend/build/
+proman/backend/backend.iml

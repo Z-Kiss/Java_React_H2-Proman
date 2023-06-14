@@ -1,0 +1,11 @@
+version: '3'
+services:
+  proman-backend:
+    image: proman-backend
+    ports:
+      - "8080:8080"
+  proman-frontend:
+    image: proman-frontend
+    ports:
+      - "3000:3000"
+    depends_on: [proman-backend]
