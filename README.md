@@ -2,6 +2,14 @@
 
 Trello like List making Application to help Agile work style. Currently in Development phase, I continiously working on it.
 
+# **You can Check Out the Deployed Version**
+
+https://proman-8si7.onrender.com
+
+Because its a free hosting site, the application not running all the time.
+When you go to the link, the server will start and that need some minute.
+
+
 ## **Toughts on the project**
 
 The idea and the name of the project came from one of the teamwork project that we did in CodeCool FullStack Developer course.
@@ -54,26 +62,27 @@ This will build the Docker image, it may take some minutes.
 docker run -p 8080:8080 proman_api
 ```
 
-3 After the container is running we check out the apit at: https://localhost:8080
+3. After the container is running we check out the apit at: https://localhost:8080
 
 
-
-### **Getting Started**
+### **Getting Started as Developer mode**
 
 Before you start, you need to install the dependencies.
 
-For install dependencies of Backend:
+1. For install dependencies of Backend:
 
 - Use this command from the _backend_ directory.
-
+    ```
     mvn dependency:copy-dependencies
+    ```
     
 For install dependencies of Frontend:
 
 - Use this command from the _frontend_ directory.
-
+    ```
     npm install
-
+    ```
+    
 For starting the Application simply run the _StartApplication.sh_
 
 This will run the Backend and the Frontend at the same time.
@@ -82,6 +91,11 @@ This will run the Backend and the Frontend at the same time.
 
 ### **Implemented Features**
 
+
+
+#### **Secure User Interactions**
+    
+    - Register, Login, Logout and you can logn as Guest that's not needed any pre registration
 
 #### **Create Components**
 
@@ -126,7 +140,7 @@ This will run the Backend and the Frontend at the same time.
     
 ### **Future plans**
 
-    - deploy application
+    
     - further implement Card Detailed information where you can write a more detailed description about the task
     - create a better system for showing Errors, such as:
         not logged in when User want to create Board
