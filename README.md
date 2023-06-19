@@ -12,6 +12,7 @@ My goal was with this project to learn more about React, and how to use CSS fram
 #### ***Backend***
     -Java
     -Spring Boot
+    -H2
 
 #### ***Frontend***
     -React
@@ -21,14 +22,40 @@ My goal was with this project to learn more about React, and how to use CSS fram
 
 ### **Prerequisites**
 
-Java Development Kit
-How to install: https://www.oracle.com/java/technologies/downloads/
+To run as Developer mode:
 
-Maven
-How to innstall: https://maven.apache.org/install.html
+    Java Development Kit
+    How to install: https://www.oracle.com/java/technologies/downloads/
 
-Node.js
-How to install: https://nodejs.org/en/download
+    Maven
+    How to innstall: https://maven.apache.org/install.html
+
+    Node.js
+    How to install: https://nodejs.org/en/download
+
+To run wit Docker:
+
+    Docker
+    How to install: https://www.docker.com/
+    
+### **Run application with Docker**
+
+1. From the _proman_ directory use the command:
+
+```
+docker build -t proman_api .
+```
+
+This will build the Docker image, it may take some minutes.
+
+2. After the image built, we can run it with this command:
+
+```
+docker run -p 8080:8080 proman_api
+```
+
+3 After the container is running we check out the apit at: https://localhost:8080
+
 
 
 ### **Getting Started**
