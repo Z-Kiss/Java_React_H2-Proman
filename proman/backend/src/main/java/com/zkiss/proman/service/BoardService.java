@@ -18,16 +18,10 @@ public class BoardService {
     private final UserService userService;
 
     public Board createBoard(BoardCreateRequest createRequest) {
-        Board board;
-        if (createRequest.getId() == null) {
-            board = new Board(createRequest, null);
-            boardRepository.save(board);
-        } else {
-            AppUser user = userService.getAppUserById(createRequest.getId());
-            board = new Board(createRequest, user);
-            boardRepository.save(board);
-        }
-        return board;
+        AppUser user = userService.getAppUserById(createRequest.getUserId());
+        Board newBoard = new Board(createRequest, user);
+        boardRepository.save(newBoard);
+        return newBoard;
     }
 
     public List<Board> getAllBoardsByUserId(UUID userId) {
