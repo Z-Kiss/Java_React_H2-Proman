@@ -8,7 +8,7 @@ import java.util.UUID;
 @Data
 public class BoardCreateRequest implements Validator {
 
-    private UUID id;
+    private UUID userId;
 
     private String title;
 

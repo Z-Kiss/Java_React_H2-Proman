@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class CardCreateRequest implements Validator {
-    private Long id;
+    private Long boardColumnId;
 
     private String title;
 

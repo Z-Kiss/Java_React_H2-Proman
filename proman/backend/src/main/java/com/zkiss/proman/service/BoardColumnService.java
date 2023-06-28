@@ -17,7 +17,7 @@ public class BoardColumnService {
     private final BoardColumnRepository boardColumnRepository;
 
     public CreateBoardColumnResponse registerBoardColumn(BoardColumnCreateRequest createRequest) {
-        Board board = boardService.getBoardById(createRequest.getId());
+        Board board = boardService.getBoardById(createRequest.getBoardId());
         BoardColumn boardColumn = new BoardColumn(createRequest, board);
         boardColumnRepository.save(boardColumn);
         board.addBoardColumn(boardColumn);

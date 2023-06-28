@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class BoardColumnCreateRequest implements Validator {
 
-    private Long id;
+    private Long boardId;
 
     private String title;
 
