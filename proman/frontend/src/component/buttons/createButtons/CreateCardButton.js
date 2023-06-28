@@ -1,14 +1,12 @@
 import Button from "react-bootstrap/Button";
 import {OverlayTrigger} from "react-bootstrap";
 import {useState} from "react";
-import {usePayloadGenerator} from "../../../context/PayloadGeneratorProvider";
 import CreatePopoverForCard from "../../popup/CreatePopoverForCard";
 import {useBoards, useSetBoards} from "../../../context/BoardProvider";
-export default function CreateCardButton({parentComponentId, columnColor, textColor}){
+export default function CreateCardButton({boardColumnId, columnColor, textColor}){
 
-    const [payload, setPayload] = useState({bgColor: columnColor, textColor:textColor});
+    const [payload, setPayload] = useState({boardColumnId: boardColumnId, bgColor: columnColor, textColor:textColor});
     const [show, setShow] = useState(false);
-    const payloadGenerator = usePayloadGenerator()
     const stateOfBoards = useBoards();
     const setStateOfBoards = useSetBoards();
 
@@ -17,7 +15,6 @@ export default function CreateCardButton({parentComponentId, columnColor, textCo
         await createNewCard(payload)
         setShow(false);
     }
-
     const createNewCard = async (payload) => {
         const newCard = await createCardInDatabase(payload);
         if (newCard) {
@@ -61,7 +58,9 @@ export default function CreateCardButton({parentComponentId, columnColor, textCo
     }
 
     const handleChange = (e) =>{
-        payloadGenerator.forNewObject(e, parentComponentId, payload, setPayload)
+        const {name, value} = e.target;
+        setPayload(prevState => ({
+            ...prevState,[name]:value}));
     }
 
     const toggleShow = () => {

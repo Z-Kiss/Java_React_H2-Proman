@@ -2,7 +2,7 @@ import {ListGroup} from "react-bootstrap";
 import { useComponentArranger } from "../../context/DragAndDropProvider";
 import DeleteCardButton from "../buttons/deleteButtons/DeleteCardButton";
 
-export default function BoardCard({card, parentComponentId, boardId, bgColor, textColor}){
+export default function BoardCard({card, columnId, boardId, bgColor, textColor}){
 
     const componentArranger = useComponentArranger();
 
@@ -11,7 +11,7 @@ export default function BoardCard({card, parentComponentId, boardId, bgColor, te
         const indexOfDraggedComponent = parseInt(e.dataTransfer.getData("cardOrder"));
         const isItBefore = itIsOverCard(e);
 
-        if (indexWhereToPlace > indexOfDraggedComponent && parseInt(e.dataTransfer.getData("parentComponentId")) === parentComponentId) {
+        if (indexWhereToPlace > indexOfDraggedComponent && parseInt(e.dataTransfer.getData("parentComponentId")) === columnId) {
             indexWhereToPlace -= 1
         }
         return isItBefore ? indexWhereToPlace : indexWhereToPlace + 1
@@ -28,7 +28,7 @@ export default function BoardCard({card, parentComponentId, boardId, bgColor, te
         return {
             DropZoneComponentProps: {
                 idOfDropZoneComponent: card.id,
-                idOfDropZoneParentComponent: parentComponentId,
+                idOfDropZoneParentComponent: columnId,
                 indexWhereToPlace: calculateWhereToPlace(e)
             },
             DraggedComponentProps: {
@@ -45,7 +45,7 @@ export default function BoardCard({card, parentComponentId, boardId, bgColor, te
         e.dataTransfer.setData("type","card")
         e.dataTransfer.setData("cardId",card.id)
         e.dataTransfer.setData("cardOrder",card.cardOrder)
-        e.dataTransfer.setData("parentComponentId", parentComponentId)
+        e.dataTransfer.setData("parentComponentId", columnId)
     }
 
     const handleDrop = (e) =>{
@@ -62,7 +62,7 @@ export default function BoardCard({card, parentComponentId, boardId, bgColor, te
         <ListGroup.Item draggable onDragStart={handleDrag} onDragOver={handleDragOver} onDrop={handleDrop}
                         className={ bgColor + " " + textColor + " w-auto d-flex flex-row justify-content-between align-items-center align-content-center" } key={card.id * 100}>
             {card.title}
-            <DeleteCardButton componentId={card.id} parentComponentId={parentComponentId} boardId={boardId} />
+            <DeleteCardButton componentId={card.id} columnId={columnId} boardId={boardId} />
         </ListGroup.Item>
     )
 }

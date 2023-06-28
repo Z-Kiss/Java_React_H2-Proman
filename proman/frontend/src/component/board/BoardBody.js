@@ -7,7 +7,7 @@ export default function BoardBody({board}){
             {board.boardColumns
                 .filter(Boolean)
                 .map((column) =>
-                    <Column  key={column.id} column={{...column}}  parentComponentId={board.id}/>
+                    <Column  key={column.id} column={{...column}}  boardId={board.id}/>
                 )}
         </Card.Body>
     )

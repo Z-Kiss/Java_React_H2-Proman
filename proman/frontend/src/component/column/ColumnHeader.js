@@ -3,7 +3,7 @@ import DeleteColumnButton from "../buttons/deleteButtons/DeleteColumnButton"
 import CreateCardButton from "../buttons/createButtons/CreateCardButton";
 import {useComponentArranger} from "../../context/DragAndDropProvider";
 
-export default function ColumnHeader({column, parentComponentId}){
+export default function ColumnHeader({column, boardId}){
 
     const componentArranger = useComponentArranger();
 
@@ -29,7 +29,7 @@ export default function ColumnHeader({column, parentComponentId}){
         return {
             DropZoneComponentProps: {
                 idOfDropZoneComponent: column.id,
-                idOfDropZoneParentComponent: parentComponentId,
+                idOfDropZoneParentComponent: boardId,
                 indexWhereToPlace: calculateWhereToPlace(e)
             },
             DraggedComponentProps: {
@@ -38,7 +38,7 @@ export default function ColumnHeader({column, parentComponentId}){
                 indexOfDraggedComponent: parseInt(e.dataTransfer.getData("columnOrder"))
             },
             componentType:e.dataTransfer.getData("type"),
-            boardId: parentComponentId
+            boardId: boardId
         };
     }
 
@@ -52,7 +52,7 @@ export default function ColumnHeader({column, parentComponentId}){
         e.dataTransfer.setData("type","column");
         e.dataTransfer.setData("columnId",column.id);
         e.dataTransfer.setData("columnOrder",column.columnOrder);
-        e.dataTransfer.setData("parentComponentId", parentComponentId);
+        e.dataTransfer.setData("parentComponentId", boardId);
     }
 
     const handleDragOver = (e) =>{
@@ -64,8 +64,8 @@ export default function ColumnHeader({column, parentComponentId}){
                      className={column.bgColor + " bg-gradient " + column.textColor + " w-auto d-flex flex-row justify-content-between align-items-center align-content-center"} >
             <p>{column.title}</p>
             <div>
-                <DeleteColumnButton componentId={column.id} parentComponentId={parentComponentId}/>
-                <CreateCardButton parentComponentId={column.id} columnColor={column.bgColor} textColor={column.textColor} />
+                <DeleteColumnButton columnId={column.id} boardId={boardId}/>
+                <CreateCardButton boardColumnId={column.id} columnColor={column.bgColor} textColor={column.textColor} />
             </div>
 
         </Card.Header>

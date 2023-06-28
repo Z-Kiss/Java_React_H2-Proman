@@ -3,14 +3,13 @@ import ColumnHeader from "./ColumnHeader";
 import ColumnBody from "./ColumnBody";
 
 
-export default function Column(props){
+export default function Column({column, boardId}) {
 
-    const {column, parentComponentId} = props
 
-    return(
-        <Card  style={{minWidth: "20%"}} >
-            <ColumnHeader column={column} parentComponentId={parentComponentId}/>
-            <ColumnBody column={column} parentComponentId={parentComponentId} />
+    return (
+        <Card style={{minWidth: "20%"}}>
+            <ColumnHeader column={column} boardId={boardId}/>
+            <ColumnBody column={column} boardId={boardId}/>
         </Card>
     )
 }

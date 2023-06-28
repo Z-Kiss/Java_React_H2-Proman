@@ -2,7 +2,7 @@ import {Card, ListGroup} from "react-bootstrap";
 import BoardCard from "../card/BoardCard";
 import {useComponentArranger} from "../../context/DragAndDropProvider";
 
-export default function ColumnBody({column, parentComponentId}){
+export default function ColumnBody({column, boardId}){
 
     const componentArranger = useComponentArranger();
     const propGenerator = (e) => {
@@ -17,7 +17,7 @@ export default function ColumnBody({column, parentComponentId}){
                 indexOfDraggedComponent: parseInt(e.dataTransfer.getData("cardOrder"))
             },
             componentType:e.dataTransfer.getData("type"),
-            boardId:parentComponentId
+            boardId:boardId
         };
     }
 
@@ -41,7 +41,7 @@ export default function ColumnBody({column, parentComponentId}){
                     // in the future I will fix the problem but at the moment it's just a temporary fix
                     .filter(Boolean)
                     .map((card) =>
-                        <BoardCard key={card.id} card={{...card}} parentComponentId={column.id} boardId={parentComponentId} bgColor={column.bgColor} textColor={column.textColor} />
+                        <BoardCard key={card.id} card={{...card}} columnId={column.id} boardId={boardId} bgColor={column.bgColor} textColor={column.textColor} />
                     )}
             </ListGroup>
         </Card.Body>

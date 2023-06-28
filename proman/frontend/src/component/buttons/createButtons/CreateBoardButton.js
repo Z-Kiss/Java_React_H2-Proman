@@ -2,38 +2,39 @@ import Button from "react-bootstrap/Button";
 import {OverlayTrigger} from "react-bootstrap";
 import {useState} from "react";
 import CreatePopover from "../../popup/CreatePopover";
-import {usePayloadGenerator} from "../../../context/PayloadGeneratorProvider";
 import {useBoards, useSetBoards} from "../../../context/BoardProvider";
 import {useUser} from "../../../context/UserProvider";
 
-export default function CreateBoardButton({parentComponentId}) {
-
+export default function CreateBoardButton() {
+    const user = useUser();
     const [payload, setPayload] = useState({bgColor: "bg-primary"});
     const [show, setShow] = useState(false);
-    const payloadGenerator = usePayloadGenerator()
     const stateOfBoards = useBoards();
     const setStateOfBoards = useSetBoards();
-    const user = useUser();
+    const brightBackground = ["bg-light", "bg-warning", "bg-info"];
+
     const addNewBoard = async e => {
         e.preventDefault();
         await createNewBoard(payload)
         setShow(false);
     }
 
-    const createNewBoard = async (payload) => {
-        const newBoard = await createBoardInDatabase(payload);
+    const createNewBoard = async () => {
+        pickTextColor();
+        putUserIntoPayload();
+        const newBoard = await createBoardInDatabase();
         if (newBoard) {
             const updatedState = updateStateWithNewBoard(newBoard);
             setStateOfBoards(updatedState);
         } else {
-            if(user.userName === null){
+            if (user.userName === null) {
                 alert("You are not Logged in")
-            }else{
+            } else {
                 alert("Some problem occurred with the Server try again")
             }
         }
     }
-    const createBoardInDatabase = async (payload) => {
+    const createBoardInDatabase = async () => {
         const response = await fetch("/board/create", {
             headers: {
                 "Content-Type": "application/json",
@@ -54,7 +55,33 @@ export default function CreateBoardButton({parentComponentId}) {
     }
 
     const handleChange = (e) => {
-        payloadGenerator.forNewObject(e, parentComponentId, payload, setPayload);
+        recordAttributeOfNewObject(e);
+    }
+
+    const recordAttributeOfNewObject = (e) => {
+        const {name, value} = e.target;
+        setPayload(prevState => ({
+            ...prevState, [name]: value
+        }));
+    }
+
+    const pickTextColor = () => {
+        let textColor = ""
+        if (brightBackground.some((color) => color === payload.bgColor)) {
+            textColor = "text-dark"
+        } else {
+            textColor = "text-white"
+        }
+        setPayload(prevState => ({
+            ...prevState,
+            textColor: textColor
+        }));
+    };
+
+    const putUserIntoPayload = () => {
+        setPayload(prevState => ({
+            ...prevState, userId: user.userId
+        }))
     }
 
     const toggleShow = () => {

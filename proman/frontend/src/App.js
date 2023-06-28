@@ -6,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import Table from "./component/table/Table";
 import DragAndDropProvider from "./context/DragAndDropProvider";
-import PayloadGeneratorProvider from "./context/PayloadGeneratorProvider";
 import AboutPage from "./component/page/AboutPage";
 import {Route, Routes} from "react-router-dom";
 
@@ -28,8 +27,6 @@ export default function App() {
 
 
     return (
-        <>
-            <PayloadGeneratorProvider>
                 <DragAndDropProvider>
                     <Navbar props={props}/>
                     <ModalContainer props={props}/>
@@ -38,7 +35,5 @@ export default function App() {
                         <Route path={"/about"} element={<AboutPage/>}/>
                     </Routes>
                 </DragAndDropProvider>
-            </PayloadGeneratorProvider>
-        </>
     )
 }

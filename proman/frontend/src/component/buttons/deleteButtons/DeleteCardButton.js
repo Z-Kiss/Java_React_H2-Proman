@@ -3,19 +3,19 @@ import Button from "react-bootstrap/Button";
 import {RiDeleteBin6Fill} from "react-icons/ri";
 import {useBoards, useSetBoards} from "../../../context/BoardProvider";
 
-export default function DeleteBoardButton({componentId, parentComponentId, boardId}){
+export default function DeleteBoardButton({componentId, columnId, boardId}){
 
     const stateOfBoards = useBoards();
     const setStateOfBoards = useSetBoards();
 
     const deleteCard = async () =>{
-        await cardDeleter(componentId, parentComponentId, boardId)
+        await cardDeleter(componentId, columnId, boardId)
     }
 
-    const cardDeleter = async (componentId, parentComponentId, boardId) =>{
+    const cardDeleter = async (componentId, columnId, boardId) =>{
         const response = await deleteCardFromDatabase(componentId);
         if(response.status === 200){
-            const changedState = deleteCardFromState(componentId, parentComponentId, boardId);
+            const changedState = deleteCardFromState(componentId, columnId, boardId);
             setStateOfBoards(changedState);
         }else{
             alert("Some problem occurred with the Server try again");
@@ -29,12 +29,12 @@ export default function DeleteBoardButton({componentId, parentComponentId, board
             },
             method: "DELETE"});
     }
-    const deleteCardFromState = (componentId, parentComponentId, boardId) =>{
+    const deleteCardFromState = (componentId, columnId, boardId) =>{
         const copyOfState = [...stateOfBoards]
         return copyOfState.map(board => {
             if(board.id === boardId){
                 return {...board, boardColumns: board.boardColumns.map(boardColumn =>{
-                        if(boardColumn.id === parentComponentId){
+                        if(boardColumn.id === columnId){
                             return {...boardColumn, cards: boardColumn.cards.filter(card => {
                                     return card.id !== componentId;
                                 })};

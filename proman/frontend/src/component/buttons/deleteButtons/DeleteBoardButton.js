@@ -3,34 +3,33 @@ import Button from "react-bootstrap/Button";
 
 import {useBoards, useSetBoards} from "../../../context/BoardProvider";
 
-export default function DeleteBoardButton({componentId}){
-
+export default function DeleteBoardButton({boardId}){
     const boardState = useBoards()
     const setBoardState = useSetBoards();
     const deleteBoard = async () =>{
-        await boardDeleter(componentId)
+        await boardDeleter(boardId)
     }
-    const boardDeleter = async (componentId) =>{
+    const boardDeleter = async (boardId) =>{
 
-        const response = await deleteBoardFromDatabase(componentId);
+        const response = await deleteBoardFromDatabase(boardId);
         if(response.status === 200){
-            const changedState = deleteBoardFormState(componentId, boardState);
+            const changedState = deleteBoardFormState(boardId);
             setBoardState(changedState);
         }else{
             alert("Some problem occurred with the Server try again");
         }
     }
-    const deleteBoardFromDatabase = async (componentId) => {
-        return await fetch("board/" + componentId,{
+    const deleteBoardFromDatabase = async (boardId) => {
+        return await fetch("board/" + boardId,{
             headers: {
                 Authorization: "Bearer " + sessionStorage.getItem("token")
             },
             method: "DELETE"});
     }
-    const deleteBoardFormState = (componentId, boardState) =>{
+    const deleteBoardFormState = (boardId) =>{
         const copyOfState = [...boardState]
         return copyOfState.filter(board =>{
-            return board.id !== componentId;
+            return board.id !== boardId;
         })
     }
 
