@@ -27,7 +27,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/user/**").permitAll()
-                .requestMatchers("/**").permitAll()
+                .requestMatchers("/").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
