@@ -6,7 +6,7 @@ const BoardProvider = ({children}) => {
 
     const [boards, setBoards] = useState([]);
     const fetchBoards = async (user) => {
-        const response = await fetch(`/board/get-boards-by-id/${user.userId}`, {
+        const response = await fetch(`/board/${user.userId}`, {
             headers: {
                 Authorization: "Bearer " + sessionStorage.getItem("token")
             }
