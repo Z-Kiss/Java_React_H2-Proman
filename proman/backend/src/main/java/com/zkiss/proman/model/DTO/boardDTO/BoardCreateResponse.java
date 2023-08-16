@@ -6,8 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class CreateBoardResponse {
+public class BoardCreateResponse {
 
-    Board board;
-
+    private Board board;
 }
