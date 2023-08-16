@@ -4,6 +4,7 @@ import com.zkiss.proman.model.AppUser;
 import com.zkiss.proman.model.Board;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import com.zkiss.proman.repository.BoardRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserService userService;
 
+    @Transactional
     public Board createBoard(BoardCreateRequest createRequest) {
         AppUser user = userService.getAppUserById(createRequest.getUserId());
         Board newBoard = new Board(createRequest, user);
