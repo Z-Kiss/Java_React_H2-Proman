@@ -2,9 +2,10 @@ package com.zkiss.proman.controller;
 
 import com.zkiss.proman.model.Card;
 import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
-import com.zkiss.proman.model.DTO.cardDTO.CardsBoardColumnUpdateRequest;
+import com.zkiss.proman.model.DTO.cardDTO.CardBoardColumnUpdateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CreateCardResponse;
 import com.zkiss.proman.service.CardService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,33 +14,29 @@ import org.springframework.web.bind.annotation.*;
 public class CardController {
 
     private CardService cardService;
+
     public CardController(CardService cardService) {
         this.cardService = cardService;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<CreateCardResponse> createCard(@RequestBody CardCreateRequest createRequest){
-        if(createRequest.hasNoNullField()){
-            CreateCardResponse response = cardService.registerCard(createRequest);
-            return ResponseEntity.ok().body(response);
-        }else {
-            return ResponseEntity.status(401).build();
-        }
+    @PostMapping()
+    public ResponseEntity<CreateCardResponse> createCard(@Valid @RequestBody CardCreateRequest createRequest) {
+        CreateCardResponse response = cardService.registerCard(createRequest);
+        return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping("/update-single-card")
-    public void updateCard(@RequestBody Card card){
+    @PutMapping()
+    public void updateCard(@RequestBody Card card) {
         cardService.update(card);
     }
 
-    @PutMapping("/update-cards")
-    public void updateCardsBoardColumn(@RequestBody CardsBoardColumnUpdateRequest updateRequest){
+    @PutMapping("/update-cards-board-columns")
+    public void updateCardsBoardColumn(@Valid @RequestBody CardBoardColumnUpdateRequest updateRequest) {
         cardService.update(updateRequest);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCard(@PathVariable("id") Long id){
+    public void deleteCard(@PathVariable("id") Long id) {
         cardService.delete(id);
     }
-
 }

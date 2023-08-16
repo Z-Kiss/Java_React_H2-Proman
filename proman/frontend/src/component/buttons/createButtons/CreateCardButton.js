@@ -25,7 +25,7 @@ export default function CreateCardButton({boardColumnId, columnColor, textColor}
         }
     }
     const createCardInDatabase = async (payload) => {
-        let response = await fetch("/card/create", {
+        let response = await fetch("/card", {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + sessionStorage.getItem("token")
