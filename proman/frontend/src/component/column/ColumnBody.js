@@ -22,7 +22,7 @@ export default function ColumnBody({column, boardId}){
     }
 
     const handleDrop = (e) => {
-        if(e.dataTransfer.getData("type") === "card" && column.cards.length === 0){
+        if(e.dataTransfer.getData("type") === "card" && boardId === parseInt(e.dataTransfer.getData("boardId"))){
             componentArranger(propGenerator(e))
         }
     }
@@ -35,11 +35,8 @@ export default function ColumnBody({column, boardId}){
         <Card.Body style={{minHeight: "60px"}} onDragOver={handleDragOver} onDrop={handleDrop} >
             <ListGroup>
                 {column.cards
-                    .sort((card1, card2) => (card1.cardOrder > card2.cardOrder ? 1 : -1))
-                    // sometimes it happens that undefined element created in the BoardColumns
-                    // this .filter(Boolean) get rid of it
-                    // in the future I will fix the problem but at the moment it's just a temporary fix
                     .filter(Boolean)
+                    .sort((card1, card2) => (card1.cardOrder > card2.cardOrder ? 1 : -1))
                     .map((card) =>
                         <BoardCard key={card.id} card={{...card}} columnId={column.id} boardId={boardId} bgColor={column.bgColor} textColor={column.textColor} />
                     )}
