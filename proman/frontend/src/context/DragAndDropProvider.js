@@ -16,24 +16,24 @@ const DragAndDropProvider = ({children}) => {
         return componentType === "column";
     }
 
-    const needToChangeParentComponent = (idOfDraggedParentComponent, idOfDropZoneParentComponent) => {
+    const IsItNeedToChangeParentComponent = (idOfDraggedParentComponent, idOfDropZoneParentComponent) => {
         return idOfDropZoneParentComponent !== idOfDraggedParentComponent;
     }
 
-    const componentArranger = (changeProps) => {
+    const componentArranger = async (changeProps) => {
 
         const {DraggedComponentProps, DropZoneComponentProps, componentType, boardId} = changeProps;
         const {idOfDraggedParentComponent, indexOfDraggedComponent} = DraggedComponentProps;
         const {idOfDropZoneParentComponent, indexWhereToPlace} = DropZoneComponentProps;
         let copyOfState = [...currentState];
 
-        if (needToChangeParentComponent(idOfDraggedParentComponent, idOfDropZoneParentComponent)) {
+        if (IsItNeedToChangeParentComponent(idOfDraggedParentComponent, idOfDropZoneParentComponent)) {
             copyOfState = changeParentsOfComponent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace);
-            cardUpdaterForCardsWithChangedParents(copyOfState, idOfDropZoneParentComponent, boardId);
+            await cardUpdaterForCardsWithChangedParents(copyOfState, idOfDropZoneParentComponent,idOfDraggedParentComponent, boardId);
         } else {
             if (isItCard(componentType)) {
                 copyOfState = arrangeCards(copyOfState, idOfDropZoneParentComponent, indexWhereToPlace, indexOfDraggedComponent);
-                cardUpdater(copyOfState, idOfDropZoneParentComponent, boardId);
+                await cardUpdater(copyOfState, idOfDropZoneParentComponent, boardId);
             } else if (isItColumn(componentType)) {
                 copyOfState = arrangeColumns(copyOfState, idOfDropZoneParentComponent, indexWhereToPlace, indexOfDraggedComponent);
                 boardColumnUpdater(copyOfState, idOfDropZoneParentComponent);
@@ -44,7 +44,7 @@ const DragAndDropProvider = ({children}) => {
 
     //*********Array manipulator methods***********
 
-    //Card changer functions
+    //*********Card changer functions
     const changeParentsOfComponent = (copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent, idOfDropZoneParentComponent, indexWhereToPlace) => {
         const props = takeChildrenFromParent(copyOfState, idOfDraggedParentComponent, indexOfDraggedComponent);
         copyOfState = props.copyOfState;
@@ -100,7 +100,7 @@ const DragAndDropProvider = ({children}) => {
         });
     }
 
-    //Column changer functions
+    //*********Column changer functions
     const arrangeColumns = (copyOfState, idOfDraggedParentComponent, indexWhereToPlace, indexOfDraggedComponent) => {
         return copyOfState.map(board => {
             if (board.id === idOfDraggedParentComponent) {
@@ -113,7 +113,7 @@ const DragAndDropProvider = ({children}) => {
         });
     }
 
-    // Util functions
+    //*********Util functions
     const arrangeArray = (indexWhereToPlace, indexOfDraggedComponent, arrayToArrange, componentKey) => {
         const componentToChangePlace = getComponentByIndex(arrayToArrange, indexOfDraggedComponent);
         putComponentToPlace(indexWhereToPlace, componentToChangePlace, arrayToArrange);
@@ -126,7 +126,7 @@ const DragAndDropProvider = ({children}) => {
         arrayToArrange.splice(indexOfWhereToPlace, 0, componentToChangePlace);
     }
     const adjustComponentOrderAttribute = (componentToAdjust, componentKey) => {
-        componentToAdjust =  componentToAdjust.filter(Boolean);
+        componentToAdjust = componentToAdjust.filter(Boolean);
         componentToAdjust = componentToAdjust.map((component, index) => {
             return {
                 ...component,
@@ -138,32 +138,34 @@ const DragAndDropProvider = ({children}) => {
     };
 
 
-    //*******Update methods*********
+    //*********Update methods*********
 
-    // Card updaters
-    const cardUpdaterForCardsWithChangedParents = (copyOfState, idOfDropZoneParentComponent, boardId) =>{
+    //********* Card updaters
+    const cardUpdaterForCardsWithChangedParents = async (copyOfState, idOfDropZoneParentComponent, idOfDraggedParentComponent, boardId) =>{
         const cardsToUpdate = getsCardsThatNeedsUpdate(copyOfState, idOfDropZoneParentComponent, boardId);
-        updateCardsWithChangedParentsInDatabase(cardsToUpdate, idOfDropZoneParentComponent);
+        await updateCardsWithChangedParentsInDatabase(cardsToUpdate, idOfDropZoneParentComponent, idOfDraggedParentComponent);
     }
     const getsCardsThatNeedsUpdate = (copyOfState, idOfDropZoneParentComponent, boardId) => {
         const board = copyOfState.find(board => board.id === boardId);
         const boardColumn = board.boardColumns.find(boardColumn => boardColumn.id === idOfDropZoneParentComponent);
         return [...boardColumn.cards];
     }
-    const updateCardsWithChangedParentsInDatabase = async (cards, idOfDropZoneComponent) => {
+    const updateCardsWithChangedParentsInDatabase = async (cards, idOfDropZoneComponent, idOfDraggedParentComponent) => {
         for (const card of cards) {
-            updateComponentInDatabase("card/update-cards",cardWithChangedParentsPayloadGenerator(card, idOfDropZoneComponent));
+           await updateComponentInDatabase("/card/update-cards-board-columns",cardWithChangedParentsPayloadGenerator(card, idOfDropZoneComponent, idOfDraggedParentComponent));
         }
     }
-    const cardUpdater = (copyOfState, idOfDropZoneParentComponent, boardId) => {
+    const cardUpdater = async (copyOfState, idOfDropZoneParentComponent, boardId) => {
         const cardsToUpdate = getsCardsThatNeedsUpdate(copyOfState, idOfDropZoneParentComponent, boardId);
-        updateCards(cardsToUpdate);
+        await updateCards(cardsToUpdate);
     }
-    const updateCards = (cards) => {
-        cards.forEach(card => updateComponentInDatabase("card/update-single-card", cardPayloadGenerator(card)));
+    const updateCards = async (cards) => {
+        for (const card of cards) {
+            await updateComponentInDatabase("/card", cardPayloadGenerator(card));
+        }
     }
 
-    //Column updaters
+    //*********Column updaters
     const boardColumnUpdater = (copyOfState, idOfDropZoneParent) => {
         const board = getBoardColumnsThatNeedsUpdate(copyOfState, idOfDropZoneParent);
         updateBoardColumnsInDatabase([...board.boardColumns]);
@@ -173,10 +175,10 @@ const DragAndDropProvider = ({children}) => {
     }
     const updateBoardColumnsInDatabase = (boardColumns) => {
         boardColumns.forEach(boardColumn =>
-            updateComponentInDatabase("/board-column/update", boardColumnPayloadGenerator(boardColumn)));
+            updateComponentInDatabase("/board-column", boardColumnPayloadGenerator(boardColumn)));
     }
 
-    //Payload Generators
+    //*********Payload Generators
     const boardColumnPayloadGenerator = (component) => {
         return {
             id: component.id,
@@ -184,22 +186,20 @@ const DragAndDropProvider = ({children}) => {
         };
     }
     const cardPayloadGenerator = (component) => {
+        console.log(component.cardOrder)
         return {
             id: component.id,
             cardOrder: component.cardOrder
         };
     }
-    const cardWithChangedParentsPayloadGenerator = (component, idOfDropZoneComponent) => {
+    const cardWithChangedParentsPayloadGenerator = (card, idOfDropZoneComponent,idOfDraggedParentComponent) => {
         return {
             boardColumnId: idOfDropZoneComponent,
-            card: {
-                id: component.id,
-                cardOrder: component.cardOrder
-            }
+            card: card
         };
     }
 
-    //Fetch
+    //*********Fetch
     const updateComponentInDatabase = async (url, payload) => {
         await fetch(url, {
             method: "PUT",
