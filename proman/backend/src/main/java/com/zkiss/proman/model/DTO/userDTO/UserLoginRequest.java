@@ -1,13 +1,13 @@
 package com.zkiss.proman.model.DTO.userDTO;
 
-import com.zkiss.proman.model.DTO.Validator;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class UserLoginRequest implements Validator {
-
+public class UserLoginRequest{
+    @NotNull(message = "Email should be present")
     private String email;
-
+    @NotNull(message = "Password should be present")
     private String password;
 
 }

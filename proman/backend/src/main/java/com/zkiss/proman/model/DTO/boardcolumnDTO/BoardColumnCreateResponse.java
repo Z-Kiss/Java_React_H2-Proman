@@ -5,9 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
+
 @Data
 @AllArgsConstructor
-public class CreateBoardColumnResponse {
+public class BoardColumnCreateResponse {
 
     private Long boardId;
 
