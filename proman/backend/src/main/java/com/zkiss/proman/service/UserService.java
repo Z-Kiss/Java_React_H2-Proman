@@ -7,6 +7,7 @@ import com.zkiss.proman.model.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
 import com.zkiss.proman.model.RoleType;
 import com.zkiss.proman.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +26,7 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
-
+    @Transactional
     public String registerUser(UserRegisterRequest userRegisterRequest) {
         AppUser appUser = AppUser.builder()
                 .password(passwordEncoder.encode(userRegisterRequest.getPassword()))

@@ -7,7 +7,7 @@ import {useUser} from "../../../context/UserProvider";
 
 export default function CreateBoardButton() {
     const user = useUser();
-    const [payload, setPayload] = useState({bgColor: "bg-primary"});
+    const payload = {bgColor: "bg-primary", textColor: ""};
     const [show, setShow] = useState(false);
     const stateOfBoards = useBoards();
     const setStateOfBoards = useSetBoards();
@@ -15,30 +15,31 @@ export default function CreateBoardButton() {
 
     const addNewBoard = async e => {
         e.preventDefault();
-        await createNewBoard(payload)
+        await createNewBoard();
         setShow(false);
     }
 
     const createNewBoard = async () => {
         pickTextColor();
-        putUserIntoPayload();
-        const newBoard = await createBoardInDatabase();
-        if (newBoard) {
-            const updatedState = updateStateWithNewBoard(newBoard);
-            setStateOfBoards(updatedState);
+        if (user.userName === null) {
+            alert("You are not Logged in")
         } else {
-            if (user.userName === null) {
-                alert("You are not Logged in")
+            putUserIntoPayload();
+            const newBoard = await createBoardInDatabase(payload);
+            if (newBoard) {
+                const updatedState = updateStateWithNewBoard(newBoard);
+                setStateOfBoards(updatedState);
             } else {
                 alert("Some problem occurred with the Server try again")
             }
         }
     }
-    const createBoardInDatabase = async () => {
-        const response = await fetch("/board/create", {
+
+    const createBoardInDatabase = async (payload) => {
+        const response = await fetch("/board", {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + sessionStorage.getItem("token")
+                Authorization: "Bearer " + sessionStorage.getItem("token"),
             },
             method: "POST",
             body: JSON.stringify(payload)
@@ -48,6 +49,7 @@ export default function CreateBoardButton() {
         } else {
             return undefined
         }
+
     }
     const updateStateWithNewBoard = (props) => {
         const {board} = props
@@ -60,28 +62,19 @@ export default function CreateBoardButton() {
 
     const recordAttributeOfNewObject = (e) => {
         const {name, value} = e.target;
-        setPayload(prevState => ({
-            ...prevState, [name]: value
-        }));
+        payload[name] = value
     }
 
     const pickTextColor = () => {
-        let textColor = ""
         if (brightBackground.some((color) => color === payload.bgColor)) {
-            textColor = "text-dark"
+            payload.textColor = "text-dark"
         } else {
-            textColor = "text-white"
+            payload.textColor = "text-white"
         }
-        setPayload(prevState => ({
-            ...prevState,
-            textColor: textColor
-        }));
     };
 
     const putUserIntoPayload = () => {
-        setPayload(prevState => ({
-            ...prevState, userId: user.userId
-        }))
+        payload.userId = user.userId;
     }
 
     const toggleShow = () => {

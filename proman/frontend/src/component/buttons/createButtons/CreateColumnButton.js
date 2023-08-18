@@ -6,20 +6,20 @@ import {useBoards, useSetBoards} from "../../../context/BoardProvider";
 
 export default function CreateColumnButton({boardId}) {
 
-    const [payload, setPayload] = useState({boardId: boardId, bgColor: "bg-primary"});
+    const payload = {boardId: boardId,title:"", bgColor: "bg-primary", textColor:""};
     const [show, setShow] = useState(false);
     const stateOfBoard = useBoards();
     const setStateOfBoards = useSetBoards();
-    const brightBackground = ["bg-light", "bg-warning"];
+    const brightBackground = ["bg-light", "bg-warning", "bg-info"];
 
     const addNewColumn = async e => {
         e.preventDefault();
-        await createNewColumn(payload)
+        await createNewColumn()
         setShow(false);
     }
-    const createNewColumn = async (payload) => {
+    const createNewColumn = async () => {
         pickTextColor();
-        const newColumn = await createColumnInDatabase(payload);
+        const newColumn = await createColumnInDatabase();
         if (newColumn) {
             const updatedState = updateStateWithNewColumn(newColumn);
             setStateOfBoards(updatedState);
@@ -27,9 +27,9 @@ export default function CreateColumnButton({boardId}) {
             alert("Some problem occurred with the Server try again")
         }
     }
-    const createColumnInDatabase = async (payload) => {
+    const createColumnInDatabase = async () => {
 
-        let response = await fetch("/board-column/create", {
+        let response = await fetch("/board-column", {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + sessionStorage.getItem("token")
@@ -63,22 +63,15 @@ export default function CreateColumnButton({boardId}) {
 
     const recordAttributeOfNewObject = (e) => {
         const {name, value} = e.target;
-        setPayload(prevState => ({
-            ...prevState, [name]: value
-        }));
+        payload[name] = value
     }
 
     const pickTextColor = () => {
-        let textColor = ""
         if (brightBackground.some((color) => color === payload.bgColor)) {
-            textColor = "text-dark"
+            payload.textColor = "text-dark"
         } else {
-            textColor = "text-white"
+            payload.textColor = "text-white"
         }
-        setPayload(prevState => ({
-            ...prevState,
-            textColor: textColor
-        }));
     };
     const toggleShow = () => {
         setShow(!show)

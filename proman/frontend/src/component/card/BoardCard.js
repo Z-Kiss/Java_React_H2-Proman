@@ -46,6 +46,7 @@ export default function BoardCard({card, columnId, boardId, bgColor, textColor})
         e.dataTransfer.setData("cardId",card.id)
         e.dataTransfer.setData("cardOrder",card.cardOrder)
         e.dataTransfer.setData("parentComponentId", columnId)
+        e.dataTransfer.setData("boardId", boardId)
     }
 
     const handleDrop = (e) =>{

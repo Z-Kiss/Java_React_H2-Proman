@@ -10,4 +10,6 @@ runFrontend(){
   npm run start
 }
 
-runBackend | runFrontend
+runBackend &
+runFrontend &
+wait

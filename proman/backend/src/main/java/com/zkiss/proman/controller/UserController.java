@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
     @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody UserRegisterRequest userRequest) {
+    public ResponseEntity<Void> registerUser(@RequestBody UserRegisterRequest userRequest) {
         String jwtToken = userService.registerUser(userRequest);
         if(jwtToken != null){
             return ResponseEntity.ok().build();
