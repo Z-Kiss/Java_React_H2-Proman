@@ -22,7 +22,7 @@ export default function ColumnBody({column, boardId}){
     }
 
     const handleDrop = (e) => {
-        if(e.dataTransfer.getData("type") === "card" && boardId === parseInt(e.dataTransfer.getData("boardId"))){
+        if(e.dataTransfer.getData("type") === "card" && column.cards.length === 0 && boardId === parseInt(e.dataTransfer.getData("boardId"))){
             componentArranger(propGenerator(e))
         }
     }

@@ -186,7 +186,6 @@ const DragAndDropProvider = ({children}) => {
         };
     }
     const cardPayloadGenerator = (component) => {
-        console.log(component.cardOrder)
         return {
             id: component.id,
             cardOrder: component.cardOrder
