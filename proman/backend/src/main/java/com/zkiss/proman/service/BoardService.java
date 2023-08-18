@@ -33,7 +33,7 @@ public class BoardService {
     public List<Board> getAllBoards() {
         return boardRepository.findAll();
     }
-
+    @Transactional
     public void updateBoard(Board updatedBoard) {
         Board board = getBoardById(updatedBoard.getId());
         board.update(updatedBoard);
@@ -43,7 +43,7 @@ public class BoardService {
     public Board getBoardById(Long boardId) {
         return boardRepository.getBoardById(boardId);
     }
-
+    @Transactional
     public void deleteBoard(Long id) {
         boardRepository.deleteById(id);
     }

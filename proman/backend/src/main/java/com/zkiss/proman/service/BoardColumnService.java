@@ -32,11 +32,11 @@ public class BoardColumnService {
         boardColumn.update(updatedBoardColumn);
         boardColumnRepository.save(boardColumn);
     }
-
+    @Transactional
     public void delete(Long id) {
         boardColumnRepository.deleteById(id);
     }
-
+    @Transactional
     public BoardColumn getBoardColumnById(Long boardColumnId) {
         return boardColumnRepository.getBoardColumnById(boardColumnId);
     }
