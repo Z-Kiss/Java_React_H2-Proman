@@ -5,6 +5,7 @@ import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardBoardColumnUpdateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CreateCardResponse;
 import com.zkiss.proman.service.CardService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +27,23 @@ public class CardController {
     }
 
     @PutMapping()
-    public void updateCard(@RequestBody Card card) {
-        cardService.update(card);
+    public ResponseEntity<?> updateCard(@RequestBody Card card) {
+        try{
+            cardService.update(card);
+            return ResponseEntity.ok().build();
+        }catch (EntityNotFoundException error){
+            return ResponseEntity.badRequest().build();
+        }
     }
-
     @PutMapping("/update-cards-board-columns")
-    public void updateCardsBoardColumn(@Valid @RequestBody CardBoardColumnUpdateRequest updateRequest) {
-        cardService.update(updateRequest);
+    public ResponseEntity<?> updateCardsBoardColumn(@Valid @RequestBody CardBoardColumnUpdateRequest updateRequest) {
+        try{
+            cardService.update(updateRequest);
+            return ResponseEntity.ok().build();
+        }catch (EntityNotFoundException error){
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @DeleteMapping("/{id}")
