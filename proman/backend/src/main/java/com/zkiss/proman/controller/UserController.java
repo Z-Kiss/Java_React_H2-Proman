@@ -37,7 +37,7 @@ public class UserController {
 
     @GetMapping("/me")
     public UserInfo checkOnMe(@RequestHeader(HttpHeaders.AUTHORIZATION) String header){
-        String token = header.substring(7);
+        String token = jwtService.extractToken(header);
         String email = jwtService.extractEmail(token);
         AppUser user = userService.getAppUserByEmail(email);
         return new UserInfo(user);
