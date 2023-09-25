@@ -7,7 +7,6 @@ import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateResponse;
 import com.zkiss.proman.service.BoardService;
 import com.zkiss.proman.service.UserService;
-import jakarta.jws.soap.SOAPBinding;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -48,8 +47,13 @@ public class BoardController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBoard(@PathVariable("id") Long id) {
-        boardService.deleteBoard(id);
+    public ResponseEntity<?> deleteBoard(@PathVariable("id") Long id) {
+        Integer deletedBoardId = boardService.deleteBoard(id);
+        if (deletedBoardId > 0) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     private boolean hasAuthorization(String header, UUID id) {
@@ -57,5 +61,4 @@ public class BoardController {
         AppUser currentUser = userService.getAppUserByEmail(jwtService.extractEmail(token));
         return currentUser.getId().equals(id);
     }
-
 }
