@@ -1,11 +1,11 @@
 package com.zkiss.proman.model.DTO.boardcolumnDTO;
 
-
+import lombok.Builder;
 import lombok.Data;
 import jakarta.validation.constraints.NotNull;
 
 @Data
-
+@Builder
 public class BoardColumnCreateRequest {
 
     @NotNull(message = "BoardId should be present")
