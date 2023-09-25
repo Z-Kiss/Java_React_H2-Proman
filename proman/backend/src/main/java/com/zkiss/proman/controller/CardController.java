@@ -5,34 +5,48 @@ import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardBoardColumnUpdateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CreateCardResponse;
 import com.zkiss.proman.service.CardService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/card")
+@RequiredArgsConstructor
 public class CardController {
 
-    private CardService cardService;
-
-    public CardController(CardService cardService) {
-        this.cardService = cardService;
-    }
+    private final CardService cardService;
 
     @PostMapping()
     public ResponseEntity<CreateCardResponse> createCard(@Valid @RequestBody CardCreateRequest createRequest) {
-        CreateCardResponse response = cardService.registerCard(createRequest);
-        return ResponseEntity.ok().body(response);
+        try{
+            CreateCardResponse response = cardService.registerCard(createRequest);
+            return ResponseEntity.ok().body(response);
+        }catch (EntityNotFoundException error){
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @PutMapping()
-    public void updateCard(@RequestBody Card card) {
-        cardService.update(card);
+    public ResponseEntity<?> updateCard(@RequestBody Card card) {
+        try{
+            cardService.update(card);
+            return ResponseEntity.ok().build();
+        }catch (EntityNotFoundException error){
+            return ResponseEntity.badRequest().build();
+        }
     }
-
     @PutMapping("/update-cards-board-columns")
-    public void updateCardsBoardColumn(@Valid @RequestBody CardBoardColumnUpdateRequest updateRequest) {
-        cardService.update(updateRequest);
+    public ResponseEntity<?> updateCardsBoardColumn(@Valid @RequestBody CardBoardColumnUpdateRequest updateRequest) {
+        try{
+            cardService.update(updateRequest);
+            return ResponseEntity.ok().build();
+        }catch (EntityNotFoundException error){
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @DeleteMapping("/{id}")

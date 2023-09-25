@@ -4,6 +4,7 @@ import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateResponse;
 import com.zkiss.proman.service.BoardColumnService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +21,23 @@ public class BoardColumnController {
 
     @PostMapping()
     public ResponseEntity<BoardColumnCreateResponse> createNewBoardColumn(@Valid @RequestBody BoardColumnCreateRequest createRequest) {
-        BoardColumnCreateResponse response = boardColumnService.registerBoardColumn(createRequest);
-        return ResponseEntity.ok().body(response);
+        try{
+            BoardColumnCreateResponse response = boardColumnService.creatBoardColumn(createRequest);
+            return ResponseEntity.ok().body(response);
+        }catch (EntityNotFoundException error){
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @PutMapping()
-    public void updateBoardColumn(@RequestBody BoardColumn boardColumn) {
-        boardColumnService.update(boardColumn);
+    public ResponseEntity<?> updateBoardColumn(@RequestBody BoardColumn boardColumn) {
+        try{
+            boardColumnService.update(boardColumn);
+            return ResponseEntity.ok().build();
+        }catch (EntityNotFoundException error){
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/{id}")

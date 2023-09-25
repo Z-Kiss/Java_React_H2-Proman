@@ -1,13 +1,18 @@
 package com.zkiss.proman.controller;
 
+import com.zkiss.proman.auth.JwtService;
+import com.zkiss.proman.model.AppUser;
 import com.zkiss.proman.model.Board;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateResponse;
 import com.zkiss.proman.service.BoardService;
+import com.zkiss.proman.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +23,8 @@ import java.util.UUID;
 public class BoardController {
 
     private final BoardService boardService;
+    private final JwtService jwtService;
+    private final UserService userService;
 
     @GetMapping()
     public List<Board> getAllBoards() {
@@ -25,8 +32,12 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public List<Board> getAllBoardsByUser(@PathVariable("id") UUID id) {
-        return boardService.getAllBoardsByUserId(id);
+    public ResponseEntity<?> getAllBoardsByUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String header, @PathVariable("id") UUID id) {
+        if (hasAuthorization(header, id)) {
+            return ResponseEntity.ok().body(boardService.getAllBoardsByUserId(id));
+        } else {
+            return ResponseEntity.status(403).build();
+        }
     }
 
     @PostMapping()
@@ -36,9 +47,18 @@ public class BoardController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBoard(@PathVariable("id") Long id) {
-        boardService.deleteBoard(id);
+    public ResponseEntity<?> deleteBoard(@PathVariable("id") Long id) {
+        Integer deletedBoardId = boardService.deleteBoard(id);
+        if (deletedBoardId > 0) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-
+    private boolean hasAuthorization(String header, UUID id) {
+        String token = jwtService.extractToken(header);
+        AppUser currentUser = userService.getAppUserByEmail(jwtService.extractEmail(token));
+        return currentUser.getId().equals(id);
+    }
 }

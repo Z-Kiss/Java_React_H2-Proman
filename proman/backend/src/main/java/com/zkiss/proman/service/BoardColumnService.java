@@ -5,6 +5,7 @@ import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateResponse;
 import com.zkiss.proman.repository.BoardColumnRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class BoardColumnService {
     private final BoardColumnRepository boardColumnRepository;
 
     @Transactional
-    public BoardColumnCreateResponse registerBoardColumn(BoardColumnCreateRequest createRequest) {
+    public BoardColumnCreateResponse creatBoardColumn(BoardColumnCreateRequest createRequest) {
         Board board = boardService.getBoardById(createRequest.getBoardId());
         BoardColumn boardColumn = new BoardColumn(createRequest, board);
         boardColumnRepository.save(boardColumn);
@@ -28,16 +29,17 @@ public class BoardColumnService {
 
     @Transactional
     public void update(BoardColumn updatedBoardColumn) {
-        BoardColumn boardColumn = boardColumnRepository.getBoardColumnById(updatedBoardColumn.getId());
+        BoardColumn boardColumn = boardColumnRepository.findById(updatedBoardColumn.getId())
+                .orElseThrow(EntityNotFoundException::new);
         boardColumn.update(updatedBoardColumn);
         boardColumnRepository.save(boardColumn);
     }
-
+    @Transactional
     public void delete(Long id) {
         boardColumnRepository.deleteById(id);
     }
-
+    @Transactional
     public BoardColumn getBoardColumnById(Long boardColumnId) {
-        return boardColumnRepository.getBoardColumnById(boardColumnId);
+        return boardColumnRepository.findById(boardColumnId).orElseThrow(EntityNotFoundException::new);
     }
 }

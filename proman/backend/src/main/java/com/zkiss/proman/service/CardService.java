@@ -6,6 +6,7 @@ import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardBoardColumnUpdateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CreateCardResponse;
 import com.zkiss.proman.repository.CardRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class CardService {
     }
     @Transactional
     public void update(Card updatedCard) {
-        Card card = cardRepository.getCardById(updatedCard.getId());
+        Card card = cardRepository.findById(updatedCard.getId()).orElseThrow(EntityNotFoundException::new);
         card.update(updatedCard);
         cardRepository.save(card);
     }
@@ -37,11 +38,11 @@ public class CardService {
         BoardColumn boardColumn = boardColumnService.getBoardColumnById(updateRequest.getBoardColumnId());
         Card updatedCard = updateRequest.getCard();
         updatedCard.setBoardColumn(boardColumn);
-        Card card = cardRepository.getCardById(updatedCard.getId());
+        Card card = cardRepository.findById(updatedCard.getId()).orElseThrow(EntityNotFoundException::new);
         card.update(updatedCard);
         cardRepository.save(card);
     }
-
+    @Transactional
     public void delete(Long id) {
         cardRepository.deleteById(id);
     }

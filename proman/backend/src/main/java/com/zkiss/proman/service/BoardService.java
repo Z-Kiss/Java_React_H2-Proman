@@ -4,6 +4,7 @@ import com.zkiss.proman.model.AppUser;
 import com.zkiss.proman.model.Board;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import com.zkiss.proman.repository.BoardRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,7 @@ public class BoardService {
     public Board createBoard(BoardCreateRequest createRequest) {
         AppUser user = userService.getAppUserById(createRequest.getUserId());
         Board newBoard = new Board(createRequest, user);
-        boardRepository.save(newBoard);
-        return newBoard;
+        return boardRepository.save(newBoard);
     }
 
     public List<Board> getAllBoardsByUserId(UUID userId) {
@@ -41,10 +41,11 @@ public class BoardService {
     }
 
     public Board getBoardById(Long boardId) {
-        return boardRepository.getBoardById(boardId);
+        return boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
     }
 
-    public void deleteBoard(Long id) {
-        boardRepository.deleteById(id);
+    @Transactional
+    public Integer deleteBoard(Long id) {
+        return boardRepository.deleteBoardById(id);
     }
 }
