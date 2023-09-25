@@ -1,16 +1,17 @@
 package com.zkiss.proman.service;
 
+import com.zkiss.proman.auth.AuthenticationResponse;
 import com.zkiss.proman.auth.JwtService;
 import com.zkiss.proman.model.AppUser;
-import com.zkiss.proman.auth.AuthenticationResponse;
 import com.zkiss.proman.model.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
 import com.zkiss.proman.model.RoleType;
 import com.zkiss.proman.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,19 +28,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public String registerUser(UserRegisterRequest userRegisterRequest) {
+    public void registerUser(UserRegisterRequest userRegisterRequest) {
         AppUser appUser = AppUser.builder()
                 .password(passwordEncoder.encode(userRegisterRequest.getPassword()))
                 .name(userRegisterRequest.getName())
                 .email(userRegisterRequest.getEmail())
                 .role(userRegisterRequest.getRole())
                 .build();
-        if (!userRepository.exists(Example.of(appUser))) {
-            userRepository.save(appUser);
-            return jwtService.generateToken(appUser);
-        } else {
-            return null;
-        }
+        userRepository.save(appUser);
     }
 
     public AuthenticationResponse loginUser(UserLoginRequest loginRequest) {
@@ -55,7 +51,8 @@ public class UserService {
                 )
         );
         AppUser appUser = userRepository.getAppUserByEmail(loginRequest.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new BadCredentialsException("Username/Password mismatch"));
+
         String jwToken = jwtService.generateToken(appUser);
         return AuthenticationResponse.builder()
                 .token(jwToken)
@@ -77,6 +74,6 @@ public class UserService {
 
     public AppUser getAppUserByEmail(String email) {
         return userRepository.getAppUserByEmail(email)
-                .orElse(null);
+                .orElseThrow(() -> new EntityNotFoundException("No user with this email: " + email));
     }
 }

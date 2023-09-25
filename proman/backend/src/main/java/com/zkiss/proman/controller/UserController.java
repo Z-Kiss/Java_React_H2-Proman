@@ -7,9 +7,13 @@ import com.zkiss.proman.model.DTO.userDTO.UserInfo;
 import com.zkiss.proman.model.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
 import com.zkiss.proman.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,27 +23,36 @@ public class UserController {
 
     private final UserService userService;
     private final JwtService jwtService;
+
     @PostMapping("/register")
-    public ResponseEntity<Void> registerUser(@RequestBody UserRegisterRequest userRequest) {
-        String jwtToken = userService.registerUser(userRequest);
-        if(jwtToken != null){
+    public ResponseEntity<Void> registerUser(@Valid @RequestBody UserRegisterRequest userRequest) {
+        try {
+            userService.registerUser(userRequest);
             return ResponseEntity.ok().build();
-        }else {
-            return ResponseEntity.status(409).build();
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody UserLoginRequest loginRequest) {
-        AuthenticationResponse authResponse = userService.loginUser(loginRequest);
-        return ResponseEntity.ok(authResponse);
+    public ResponseEntity<AuthenticationResponse> loginUser(@Valid @RequestBody UserLoginRequest loginRequest) {
+        try {
+            AuthenticationResponse authResponse = userService.loginUser(loginRequest);
+            return ResponseEntity.ok(authResponse);
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/me")
-    public UserInfo checkOnMe(@RequestHeader(HttpHeaders.AUTHORIZATION) String header){
+    public ResponseEntity<UserInfo> checkOnMe(@RequestHeader(HttpHeaders.AUTHORIZATION) String header) {
         String token = jwtService.extractToken(header);
         String email = jwtService.extractEmail(token);
-        AppUser user = userService.getAppUserByEmail(email);
-        return new UserInfo(user);
+        try {
+            AppUser user = userService.getAppUserByEmail(email);
+            return ResponseEntity.ok(new UserInfo(user));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
