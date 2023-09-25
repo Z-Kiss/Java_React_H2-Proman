@@ -20,8 +20,13 @@ public class CardController {
 
     @PostMapping()
     public ResponseEntity<CreateCardResponse> createCard(@Valid @RequestBody CardCreateRequest createRequest) {
-        CreateCardResponse response = cardService.registerCard(createRequest);
-        return ResponseEntity.ok().body(response);
+        try{
+            CreateCardResponse response = cardService.registerCard(createRequest);
+            return ResponseEntity.ok().body(response);
+        }catch (EntityNotFoundException error){
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @PutMapping()
