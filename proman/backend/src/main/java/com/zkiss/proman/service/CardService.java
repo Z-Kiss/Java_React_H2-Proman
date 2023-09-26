@@ -4,7 +4,7 @@ import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.Card;
 import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardBoardColumnUpdateRequest;
-import com.zkiss.proman.model.DTO.cardDTO.CreateCardResponse;
+import com.zkiss.proman.model.DTO.cardDTO.CardCreateResponse;
 import com.zkiss.proman.repository.CardRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -19,13 +19,16 @@ public class CardService {
     private final CardRepository cardRepository;
 
     @Transactional
-    public CreateCardResponse registerCard(CardCreateRequest createRequest) {
+    public CardCreateResponse registerCard(CardCreateRequest createRequest) {
         BoardColumn boardColumn = boardColumnService.getBoardColumnById(createRequest.getBoardColumnId());
-        Card card = new Card(createRequest, boardColumn);
-        cardRepository.save(card);
-        boardColumn.addCard(card);
-        boardColumnService.updateBoardColumn(boardColumn);
-        return new CreateCardResponse(boardColumn.getId(), card);
+        Card savedCard = cardRepository.save( new Card(createRequest, boardColumn));
+        this.updateBoardColumn(boardColumn, savedCard);
+        return new CardCreateResponse(boardColumn.getId(), savedCard);
+    }
+
+    private void updateBoardColumn(BoardColumn boardColumnToUpdate, Card card){
+        boardColumnToUpdate.addCard(card);
+        boardColumnService.updateBoardColumn(boardColumnToUpdate);
     }
     @Transactional
     public void updateCard(Card updatedCard) {
@@ -34,7 +37,7 @@ public class CardService {
         cardRepository.save(card);
     }
     @Transactional
-    public void update(CardBoardColumnUpdateRequest updateRequest){
+    public void updateCardsBoardColumn(CardBoardColumnUpdateRequest updateRequest){
         BoardColumn boardColumn = boardColumnService.getBoardColumnById(updateRequest.getBoardColumnId());
         Card updatedCard = updateRequest.getCard();
         updatedCard.setBoardColumn(boardColumn);
