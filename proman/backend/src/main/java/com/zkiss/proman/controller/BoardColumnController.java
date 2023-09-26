@@ -21,10 +21,10 @@ public class BoardColumnController {
 
     @PostMapping()
     public ResponseEntity<BoardColumnCreateResponse> createNewBoardColumn(@Valid @RequestBody BoardColumnCreateRequest createRequest) {
-        try{
+        try {
             BoardColumnCreateResponse response = boardColumnService.creatBoardColumn(createRequest);
             return ResponseEntity.ok().body(response);
-        }catch (EntityNotFoundException error){
+        } catch (EntityNotFoundException error) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -32,17 +32,23 @@ public class BoardColumnController {
 
     @PutMapping()
     public ResponseEntity<?> updateBoardColumn(@RequestBody BoardColumn boardColumn) {
-        try{
-            boardColumnService.update(boardColumn);
+        try {
+            boardColumnService.updateBoardColumn(boardColumn);
             return ResponseEntity.ok().build();
-        }catch (EntityNotFoundException error){
+        } catch (EntityNotFoundException error) {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBoardColumn(@PathVariable("id") Long id) {
-        boardColumnService.delete(id);
+    public ResponseEntity<?> deleteBoardColumn(@PathVariable("id") Long id) {
+        Integer deletedRecords = boardColumnService.deleteBoardColum(id);
+        if (deletedRecords > 0) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
 }
