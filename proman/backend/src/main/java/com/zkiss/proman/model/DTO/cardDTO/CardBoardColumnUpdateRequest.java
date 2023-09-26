@@ -2,10 +2,11 @@ package com.zkiss.proman.model.DTO.cardDTO;
 
 import com.zkiss.proman.model.Card;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-@NotNull
+@Builder
 public class CardBoardColumnUpdateRequest {
     @NotNull(message = "BoardColumnId should be present")
     private Long boardColumnId;
