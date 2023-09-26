@@ -41,7 +41,7 @@ public class CardController {
     @PutMapping("/update-cards-board-columns")
     public ResponseEntity<?> updateCardsBoardColumn(@Valid @RequestBody CardBoardColumnUpdateRequest updateRequest) {
         try{
-            cardService.update(updateRequest);
+            cardService.updateCardsBoardColumn(updateRequest);
             return ResponseEntity.ok().build();
         }catch (EntityNotFoundException error){
             return ResponseEntity.badRequest().build();

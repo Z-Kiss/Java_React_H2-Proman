@@ -34,7 +34,7 @@ public class CardService {
         cardRepository.save(card);
     }
     @Transactional
-    public void update(CardBoardColumnUpdateRequest updateRequest){
+    public void updateCardsBoardColumn(CardBoardColumnUpdateRequest updateRequest){
         BoardColumn boardColumn = boardColumnService.getBoardColumnById(updateRequest.getBoardColumnId());
         Card updatedCard = updateRequest.getCard();
         updatedCard.setBoardColumn(boardColumn);
