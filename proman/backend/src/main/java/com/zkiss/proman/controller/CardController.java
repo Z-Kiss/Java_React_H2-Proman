@@ -3,7 +3,7 @@ package com.zkiss.proman.controller;
 import com.zkiss.proman.model.Card;
 import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardBoardColumnUpdateRequest;
-import com.zkiss.proman.model.DTO.cardDTO.CreateCardResponse;
+import com.zkiss.proman.model.DTO.cardDTO.CardCreateResponse;
 import com.zkiss.proman.service.CardService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -19,9 +19,9 @@ public class CardController {
     private final CardService cardService;
 
     @PostMapping()
-    public ResponseEntity<CreateCardResponse> createCard(@Valid @RequestBody CardCreateRequest createRequest) {
+    public ResponseEntity<CardCreateResponse> createCard(@Valid @RequestBody CardCreateRequest createRequest) {
         try{
-            CreateCardResponse response = cardService.registerCard(createRequest);
+            CardCreateResponse response = cardService.registerCard(createRequest);
             return ResponseEntity.ok().body(response);
         }catch (EntityNotFoundException error){
             return ResponseEntity.badRequest().build();

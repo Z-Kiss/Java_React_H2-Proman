@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class CreateCardResponse {
+public class CardCreateResponse {
     @NotNull(message = "should be present")
     private Long boardColumnId;
     @NotNull(message = "should be present")

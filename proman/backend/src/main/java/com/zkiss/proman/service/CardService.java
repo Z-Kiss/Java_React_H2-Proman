@@ -4,7 +4,7 @@ import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.Card;
 import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardBoardColumnUpdateRequest;
-import com.zkiss.proman.model.DTO.cardDTO.CreateCardResponse;
+import com.zkiss.proman.model.DTO.cardDTO.CardCreateResponse;
 import com.zkiss.proman.repository.CardRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
