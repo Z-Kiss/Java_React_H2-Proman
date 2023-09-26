@@ -24,11 +24,11 @@ public class CardService {
         Card card = new Card(createRequest, boardColumn);
         cardRepository.save(card);
         boardColumn.addCard(card);
-        boardColumnService.update(boardColumn);
+        boardColumnService.updateBoardColumn(boardColumn);
         return new CreateCardResponse(boardColumn.getId(), card);
     }
     @Transactional
-    public void update(Card updatedCard) {
+    public void updateCard(Card updatedCard) {
         Card card = cardRepository.findById(updatedCard.getId()).orElseThrow(EntityNotFoundException::new);
         card.update(updatedCard);
         cardRepository.save(card);
@@ -43,7 +43,7 @@ public class CardService {
         cardRepository.save(card);
     }
     @Transactional
-    public void delete(Long id) {
-        cardRepository.deleteById(id);
+    public Integer deleteCard(Long id) {
+       return cardRepository.deleteCardById(id);
     }
 }
