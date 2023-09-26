@@ -48,8 +48,8 @@ public class BoardController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable("id") Long id) {
-        Integer deletedBoardId = boardService.deleteBoard(id);
-        if (deletedBoardId > 0) {
+        Integer deletedRecords = boardService.deleteBoard(id);
+        if (deletedRecords > 0) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();

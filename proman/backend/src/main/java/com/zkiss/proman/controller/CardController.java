@@ -32,7 +32,7 @@ public class CardController {
     @PutMapping()
     public ResponseEntity<?> updateCard(@RequestBody Card card) {
         try{
-            cardService.update(card);
+            cardService.updateCard(card);
             return ResponseEntity.ok().build();
         }catch (EntityNotFoundException error){
             return ResponseEntity.badRequest().build();
@@ -50,7 +50,12 @@ public class CardController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCard(@PathVariable("id") Long id) {
-        cardService.delete(id);
+    public ResponseEntity<?> deleteCard(@PathVariable("id") Long id) {
+        Integer deletedRecords = cardService.deleteCard(id);
+        if (deletedRecords > 0) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

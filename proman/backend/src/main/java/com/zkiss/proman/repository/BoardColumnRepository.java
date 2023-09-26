@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BoardColumnRepository extends JpaRepository<BoardColumn, Long> {
+
+    Integer deleteBoardColumnById (Long id);
 }
