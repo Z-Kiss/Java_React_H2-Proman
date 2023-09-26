@@ -19,13 +19,16 @@ public class CardService {
     private final CardRepository cardRepository;
 
     @Transactional
-    public CreateCardResponse registerCard(CardCreateRequest createRequest) {
+    public CardCreateResponse registerCard(CardCreateRequest createRequest) {
         BoardColumn boardColumn = boardColumnService.getBoardColumnById(createRequest.getBoardColumnId());
-        Card card = new Card(createRequest, boardColumn);
-        cardRepository.save(card);
-        boardColumn.addCard(card);
-        boardColumnService.updateBoardColumn(boardColumn);
-        return new CreateCardResponse(boardColumn.getId(), card);
+        Card savedCard = cardRepository.save( new Card(createRequest, boardColumn));
+        this.updateBoardColumn(boardColumn, savedCard);
+        return new CardCreateResponse(boardColumn.getId(), savedCard);
+    }
+
+    private void updateBoardColumn(BoardColumn boardColumnToUpdate, Card card){
+        boardColumnToUpdate.addCard(card);
+        boardColumnService.updateBoardColumn(boardColumnToUpdate);
     }
     @Transactional
     public void updateCard(Card updatedCard) {
