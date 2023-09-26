@@ -21,7 +21,7 @@ My goal was with this project to learn more about:
 At the beginning it was hard to catch the concept of React but I think at the end it was successful.
 
 I know that H2 it's not one of the commonly used relational databases, because it's an in-memory and embedded database system, but I chose it because, made the development process easier.
-Just for curiosity, I tried out with Postgresql instead of H2 and it's worked.
+Just for curiosity, I tried out with Postgresql instead of H2, and it's worked just as fine.
 
 ### **Built With**
 
