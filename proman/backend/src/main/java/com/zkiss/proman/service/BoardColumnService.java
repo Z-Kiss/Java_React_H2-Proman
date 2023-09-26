@@ -20,26 +20,30 @@ public class BoardColumnService {
     @Transactional
     public BoardColumnCreateResponse creatBoardColumn(BoardColumnCreateRequest createRequest) {
         Board board = boardService.getBoardById(createRequest.getBoardId());
-        BoardColumn boardColumn = new BoardColumn(createRequest, board);
-        boardColumnRepository.save(boardColumn);
+        BoardColumn savedBoardColumn = boardColumnRepository.save(new BoardColumn(createRequest, board));
+        this.updateBoardWithBoardColumn(board, savedBoardColumn);
+        return new BoardColumnCreateResponse(board.getId(), savedBoardColumn);
+    }
+    private void updateBoardWithBoardColumn(Board board, BoardColumn boardColumn){
         board.addBoardColumn(boardColumn);
         boardService.updateBoard(board);
-        return new BoardColumnCreateResponse(board.getId(), boardColumn);
     }
 
     @Transactional
-    public void update(BoardColumn updatedBoardColumn) {
+    public void updateBoardColumn(BoardColumn updatedBoardColumn) {
         BoardColumn boardColumn = boardColumnRepository.findById(updatedBoardColumn.getId())
                 .orElseThrow(EntityNotFoundException::new);
         boardColumn.update(updatedBoardColumn);
         boardColumnRepository.save(boardColumn);
     }
     @Transactional
-    public void delete(Long id) {
-        boardColumnRepository.deleteById(id);
+    public Integer deleteBoardColum(Long id) {
+        return boardColumnRepository.deleteBoardColumnById(id);
     }
     @Transactional
     public BoardColumn getBoardColumnById(Long boardColumnId) {
         return boardColumnRepository.findById(boardColumnId).orElseThrow(EntityNotFoundException::new);
     }
+
+
 }
