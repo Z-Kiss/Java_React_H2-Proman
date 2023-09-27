@@ -27,12 +27,12 @@ public class UserController {
     private final JwtService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> registerUser(@Valid @RequestBody UserRegisterRequest userRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegisterRequest userRequest) {
         try {
             userService.registerUser(userRequest);
-            return ResponseEntity.ok().build();
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(201).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
