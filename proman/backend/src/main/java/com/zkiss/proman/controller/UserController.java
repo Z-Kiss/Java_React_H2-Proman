@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -53,6 +55,17 @@ public class UserController {
             return ResponseEntity.ok(new UserInfo(user));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String header, @PathVariable UUID id) {
+        String emailOfSender = this.extractEmailFromHeader(header);
+        try {
+            userService.deleteUser(id, emailOfSender);
+            return ResponseEntity.ok().build();
+        } catch (BadCredentialsException | EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
