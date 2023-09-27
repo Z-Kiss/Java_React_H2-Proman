@@ -1,6 +1,5 @@
 package com.zkiss.proman.controller;
 
-import com.zkiss.proman.auth.AuthenticationResponse;
 import com.zkiss.proman.auth.JwtService;
 import com.zkiss.proman.model.AppUser;
 import com.zkiss.proman.model.DTO.userDTO.UserInfo;
@@ -10,7 +9,6 @@ import com.zkiss.proman.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
