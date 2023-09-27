@@ -69,7 +69,7 @@ public class UserService {
     }
 
     public AppUser getAppUserById(UUID userId) {
-        return userRepository.getAppUserById(userId);
+        return userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
     }
 
     public AppUser getAppUserByEmail(String email) {
