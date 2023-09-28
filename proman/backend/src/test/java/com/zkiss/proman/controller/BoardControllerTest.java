@@ -80,7 +80,7 @@ class BoardControllerTest {
     void getAllBoardsByUser() throws Exception {
         this.registerTestUser();
         String token = this.loginTestUser().getToken();
-        UUID testUserId = getIdOfTestUser("test@test.com");
+        UUID testUserId = getIdOfTestUser();
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/board/" + testUserId)
@@ -93,7 +93,7 @@ class BoardControllerTest {
     void createBoard() throws Exception {
         this.registerTestUser();
         String token = this.loginTestUser().getToken();
-        UUID testUserId = getIdOfTestUser("test@test.com");
+        UUID testUserId = getIdOfTestUser();
 
         BoardCreateRequest boardCreateRequest = BoardCreateRequest.builder()
                 .userId(testUserId)
