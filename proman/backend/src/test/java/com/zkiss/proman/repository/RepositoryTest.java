@@ -5,7 +5,6 @@ import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import jakarta.transaction.Transactional;
-import org.junit.After;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import static org.mockito.Mockito.mock;
 
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK) // Enables full application context
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class RepositoryTest {
 
@@ -32,7 +31,7 @@ public class RepositoryTest {
     @Autowired
     private CardRepository cardRepository;
 
-    private AppUser appUserTest = AppUser.builder()
+    private final AppUser appUserTest = AppUser.builder()
             .email("test@test.com")
             .password("test")
             .name("test")
@@ -49,12 +48,6 @@ public class RepositoryTest {
         Assertions.assertEquals(appUserTest.getName(),savedAppUser.getName());
 
     }
-
-    @After
-    public void delete_user_from_repository() {
-        userRepository.delete(this.appUserTest);
-    }
-
 
     @Test
     @Transactional
