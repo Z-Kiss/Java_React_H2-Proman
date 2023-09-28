@@ -1,14 +1,5 @@
 package com.zkiss.proman.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zkiss.proman.auth.AuthenticationResponse;
-import com.zkiss.proman.model.AppUser;
-import com.zkiss.proman.model.DTO.userDTO.UserLoginRequest;
-import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
-import com.zkiss.proman.model.RoleType;
-import com.zkiss.proman.repository.UserRepository;
-import com.zkiss.proman.service.UserService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -30,25 +20,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest {
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
     private MockMvc mockMvc;
 
-    private final UserRegisterRequest registerRequest = UserRegisterRequest.builder()
-            .email("test@test.com")
-            .password("testPassword")
-            .name("testName")
-            .role(RoleType.USER)
-            .build();
-
-    private final UserLoginRequest loginRequest = UserLoginRequest.builder()
-            .email("test@test.com")
-            .password("testPassword")
-            .build();
+    @Autowired
+    private TestHelper testHelper;
 
     @Test
     @Transactional
@@ -57,19 +32,19 @@ class UserControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders
                 .post("/user/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(this.registerRequest))
+                .content(testHelper.getRegisterRequest())
         ).andExpect(status().isCreated());
     }
 
     @Test
     @Transactional
     void test_loginUser_method_working() throws Exception {
-        registerTestUser();
+        testHelper.registerTestUser();
 
         this.mockMvc.perform(MockMvcRequestBuilders
                 .post("/user/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(loginRequest))
+                .content(testHelper.getLoginRequest())
         ).andExpect(status().is2xxSuccessful());
     }
 
@@ -77,9 +52,7 @@ class UserControllerTest {
     @Test
     @Transactional
     void test_checkOnMe_method_working() throws Exception {
-        registerTestUser();
-        AuthenticationResponse response = loginTestUser();
-        String token = response.getToken();
+        String token = testHelper.getTokenForAuthorizationHeader();
 
         this.mockMvc.perform(MockMvcRequestBuilders
                 .get("/user/me")
@@ -88,22 +61,5 @@ class UserControllerTest {
 
     }
 
-    private void registerTestUser() {
-        AppUser testUser = AppUser.builder()
-                .password(this.passwordEncoder.encode(registerRequest.getPassword()))
-                .name(registerRequest.getName())
-                .email(registerRequest.getEmail())
-                .role(registerRequest.getRole())
-                .build();
 
-        userRepository.save(testUser);
-    }
-
-    private AuthenticationResponse loginTestUser() {
-        return userService.loginUser(loginRequest);
-    }
-
-    private String toJson(Object obj) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(obj);
-    }
 }
