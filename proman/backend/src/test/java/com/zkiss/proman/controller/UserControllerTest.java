@@ -52,7 +52,7 @@ class UserControllerTest {
 
     @Test
     @Transactional
-    void registerUser() throws Exception {
+    void test_registerUser_method_working() throws Exception {
 
         this.mockMvc.perform(MockMvcRequestBuilders
                 .post("/user/register")
@@ -63,7 +63,7 @@ class UserControllerTest {
 
     @Test
     @Transactional
-    void loginUser() throws Exception {
+    void test_loginUser_method_working() throws Exception {
         registerTestUser();
 
         this.mockMvc.perform(MockMvcRequestBuilders
@@ -76,7 +76,7 @@ class UserControllerTest {
 
     @Test
     @Transactional
-    void checkOnMe() throws Exception {
+    void test_checkOnMe_method_working() throws Exception {
         registerTestUser();
         AuthenticationResponse response = loginTestUser();
         String token = response.getToken();

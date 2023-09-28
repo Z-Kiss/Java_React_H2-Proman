@@ -41,7 +41,7 @@ public class RepositoryTest {
 
     @Test
     @Transactional
-    public void AppUserRepository_save_test() {
+    public void test_AppUserRepository_save_working() {
         AppUser savedAppUser = userRepository.save(this.appUserTest);
 
         Assertions.assertNotNull(savedAppUser);
@@ -51,7 +51,7 @@ public class RepositoryTest {
 
     @Test
     @Transactional
-    public void BoardRepository_save_test(){
+    public void test_BoardRepository_save_working(){
         BoardCreateRequest boardCreateRequestMock = mock(BoardCreateRequest.class);
 
         AppUser appUserMock = mock(AppUser.class);
@@ -65,7 +65,7 @@ public class RepositoryTest {
 
     @Test
     @Transactional
-    public void BoardColumnRepository_save_test(){
+    public void test_BoardColumnRepository_save_working(){
         BoardColumnCreateRequest requestMock = mock(BoardColumnCreateRequest.class);
 
         Board boardMock = mock(Board.class);
@@ -80,7 +80,7 @@ public class RepositoryTest {
 
     @Test
     @Transactional
-    public void CardRepository_save_test(){
+    public void test_CardRepository_save__working(){
         CardCreateRequest requestMock = mock(CardCreateRequest.class);
 
         BoardColumn boardColumnMock = mock(BoardColumn.class);
