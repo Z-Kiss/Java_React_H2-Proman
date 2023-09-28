@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import static org.mockito.Mockito.mock;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT) // Enables full application context
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK) // Enables full application context
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class RepositoryTest {
 
