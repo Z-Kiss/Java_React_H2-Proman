@@ -4,10 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zkiss.proman.auth.AuthenticationResponse;
 import com.zkiss.proman.model.AppUser;
+import com.zkiss.proman.model.Board;
+import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import com.zkiss.proman.model.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
 import com.zkiss.proman.model.RoleType;
 import com.zkiss.proman.repository.UserRepository;
+import com.zkiss.proman.service.BoardService;
 import com.zkiss.proman.service.UserService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -22,21 +25,30 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.UUID;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @AutoConfigureMockMvc
-class UserControllerTest {
+class BoardControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private MockMvc mockMvc;
+    private BoardService boardService;
+
 
     private final UserRegisterRequest registerRequest = UserRegisterRequest.builder()
             .email("test@test.com")
@@ -50,39 +62,64 @@ class UserControllerTest {
             .password("testPassword")
             .build();
 
+
     @Test
     @Transactional
-    void test_registerUser_method_working() throws Exception {
+    void getAllBoards() throws Exception {
+        this.registerTestUser();
+        String token = this.loginTestUser().getToken();
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                .post("/user/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(this.registerRequest))
-        ).andExpect(status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/board")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     @Transactional
-    void test_loginUser_method_working() throws Exception {
-        registerTestUser();
+    void getAllBoardsByUser() throws Exception {
+        this.registerTestUser();
+        String token = this.loginTestUser().getToken();
+        UUID testUserId = getIdOfTestUser();
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                .post("/user/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(loginRequest))
-        ).andExpect(status().is2xxSuccessful());
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/board/" + testUserId)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().is2xxSuccessful());
     }
-
 
     @Test
     @Transactional
-    void test_checkOnMe_method_working() throws Exception {
-        registerTestUser();
-        AuthenticationResponse response = loginTestUser();
-        String token = response.getToken();
+    void createBoard() throws Exception {
+        this.registerTestUser();
+        String token = this.loginTestUser().getToken();
+        UUID testUserId = getIdOfTestUser();
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                .get("/user/me")
+        BoardCreateRequest boardCreateRequest = BoardCreateRequest.builder()
+                .userId(testUserId)
+                .title("testTitle")
+                .textColor("testColor")
+                .bgColor("testColor")
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/board")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(boardCreateRequest))
+                ).andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    @Transactional
+    void deleteBoard() throws Exception {
+        this.registerTestUser();
+        String token = this.loginTestUser().getToken();
+        UUID testUserId = getIdOfTestUser();
+        Board testBoard = this.createTestBoard(testUserId);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .delete("/board/" + testBoard.getId())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
         ).andExpect(status().is2xxSuccessful());
 
@@ -99,8 +136,25 @@ class UserControllerTest {
         userRepository.save(testUser);
     }
 
+    private UUID getIdOfTestUser() {
+        AppUser testUser = userService.getAppUserByEmail("test@test.com");
+        return testUser.getId();
+    }
+
     private AuthenticationResponse loginTestUser() {
         return userService.loginUser(loginRequest);
+    }
+
+    private Board createTestBoard(UUID testUserId){
+        BoardCreateRequest boardCreateRequest = BoardCreateRequest.builder()
+                .userId(testUserId)
+                .title("testTitle")
+                .textColor("testColor")
+                .bgColor("testColor")
+                .build();
+
+        return boardService.createBoard(boardCreateRequest);
+
     }
 
     private String toJson(Object obj) throws JsonProcessingException {
