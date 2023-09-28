@@ -11,8 +11,6 @@ import com.zkiss.proman.repository.UserRepository;
 import com.zkiss.proman.service.UserService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -26,7 +24,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @AutoConfigureMockMvc
@@ -91,7 +88,7 @@ class UserControllerTest {
 
     }
 
-    public void registerTestUser() {
+    private void registerTestUser() {
         AppUser testUser = AppUser.builder()
                 .password(this.passwordEncoder.encode(registerRequest.getPassword()))
                 .name(registerRequest.getName())
@@ -102,11 +99,11 @@ class UserControllerTest {
         userRepository.save(testUser);
     }
 
-    public AuthenticationResponse loginTestUser() {
+    private AuthenticationResponse loginTestUser() {
         return userService.loginUser(loginRequest);
     }
 
-    public String toJson(Object obj) throws JsonProcessingException {
+    private String toJson(Object obj) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(obj);
     }
 }
