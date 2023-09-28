@@ -10,7 +10,7 @@ Because it's a free hosting site, the application is not running all the time.
 When you go to the link, the server will start and that will take some minutes.
 
 
-## **Toughts on the project**
+## **Thoughts on the project**
 
 The idea and the name of the project came from one of the teamwork projects that we did in the CodeCool FullStack Developer course.
 My goal was with this project to learn more about:
@@ -103,7 +103,7 @@ This will run the Backend and the Frontend at the same time.
 
 ## **Secure User Interactions**
     
-- Register, Login, Logout and you can login as Guest that's not needed any pre registration
+- Register, Login, Logout and you can login as Guest that's not needed any pre-registration
 
 ## **Create Components**
 
@@ -124,7 +124,7 @@ This will run the Backend and the Frontend at the same time.
 
 
 - With the Drag and Drop you can change the position of the Columns or Cards. 
-This change only happens on the Frontend if the sent PUT Request responses were Ok.
+This change only happens on the Frontend if the sent, PUT Request responses were Ok.
 
 ### _**Drag and Drop Columns**_
 
@@ -144,7 +144,7 @@ the card will be, over or under the target Card.
 ## **Delete Board, Column, Cards**
 
 - You can Delete any Boards, Columns and Cards by clicking to the Icon.
-This change only happens on the Frontend if the sent DELETE Request response were OK.
+This change only happens on the Frontend if the sent, DELETE Request response were OK.
     
 # **Future plans**
 
