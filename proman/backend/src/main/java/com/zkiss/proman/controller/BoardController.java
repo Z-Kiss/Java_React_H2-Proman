@@ -36,7 +36,7 @@ public class BoardController {
         if (hasAuthorization(header, id)) {
             return ResponseEntity.ok().body(boardService.getAllBoardsByUserId(id));
         } else {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(403).body("Not authorized");
         }
     }
 
@@ -52,7 +52,7 @@ public class BoardController {
         if (deletedRecords > 0) {
             return ResponseEntity.ok().build();
         } else {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(403).body("Nothing deleted");
         }
     }
 
