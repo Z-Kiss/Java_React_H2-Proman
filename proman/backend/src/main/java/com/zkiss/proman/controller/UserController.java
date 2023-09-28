@@ -25,22 +25,22 @@ public class UserController {
     private final JwtService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> registerUser(@Valid @RequestBody UserRegisterRequest userRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegisterRequest userRequest) {
         try {
             userService.registerUser(userRequest);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(201).build();
         } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(403).body(e.getMessage());
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> loginUser(@Valid @RequestBody UserLoginRequest loginRequest) {
+    public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginRequest loginRequest) {
         try {
             AuthenticationResponse authResponse = userService.loginUser(loginRequest);
             return ResponseEntity.ok(authResponse);
         } catch (BadCredentialsException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(400).body(e.getMessage());
         }
     }
 
