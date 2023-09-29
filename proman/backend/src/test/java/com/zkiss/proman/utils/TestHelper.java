@@ -1,4 +1,4 @@
-package com.zkiss.proman.controller;
+package com.zkiss.proman.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
