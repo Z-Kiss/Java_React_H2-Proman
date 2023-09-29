@@ -29,6 +29,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/user/**").permitAll()
+                .requestMatchers("/about").permitAll()
                 .requestMatchers("/").permitAll()
                 .requestMatchers(toH2Console()).permitAll()
                 .anyRequest().authenticated()
