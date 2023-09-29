@@ -3,17 +3,17 @@ package com.zkiss.proman.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zkiss.proman.auth.AuthenticationResponse;
-import com.zkiss.proman.model.AppUser;
-import com.zkiss.proman.model.Board;
-import com.zkiss.proman.model.BoardColumn;
+import com.zkiss.proman.model.*;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
+import com.zkiss.proman.model.DTO.cardDTO.CardBoardColumnUpdateRequest;
+import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.model.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
-import com.zkiss.proman.model.RoleType;
 import com.zkiss.proman.repository.UserRepository;
 import com.zkiss.proman.service.BoardColumnService;
 import com.zkiss.proman.service.BoardService;
+import com.zkiss.proman.service.CardService;
 import com.zkiss.proman.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +30,7 @@ public class TestHelper {
     private final UserService userService;
     private final BoardService boardService;
     private final BoardColumnService boardColumnService;
+    private final CardService cardService;
 
     private final String TEST_EMAIL = "test@test.com";
     private final String TEST_PASSWORD = "testPassword";
@@ -46,12 +47,14 @@ public class TestHelper {
             .name(TEST_NAME)
             .role(TEST_ROLE)
             .build();
-    public final UserLoginRequest loginRequest = UserLoginRequest.builder()
+    private final UserLoginRequest loginRequest = UserLoginRequest.builder()
             .email(TEST_EMAIL)
             .password(TEST_PASSWORD)
             .build();
 
-
+    //
+    //    Helper methods for UserController
+    //
     public String getRegisterRequestAsJson() {
         return toJson(registerRequest);
     }
@@ -86,7 +89,10 @@ public class TestHelper {
         return testUser.getId();
     }
 
-    public BoardCreateRequest getBoardCreateRequest() {
+    //
+    //    Helper methods for BoardController
+    //
+    private BoardCreateRequest getBoardCreateRequest() {
         UUID testUserId = this.getIdOfTestUser();
         return BoardCreateRequest.builder()
                 .userId(testUserId)
@@ -104,7 +110,10 @@ public class TestHelper {
         return boardService.createBoard(this.getBoardCreateRequest());
     }
 
-    public BoardColumnCreateRequest getBoardColumnCreateRequest() {
+    //
+//    Helper methods for BoardColumnController
+//
+    private BoardColumnCreateRequest getBoardColumnCreateRequest() {
         Board testBoard = this.createTestBoard();
 
         return BoardColumnCreateRequest.builder()
@@ -123,8 +132,48 @@ public class TestHelper {
         return boardColumnService.creatBoardColumn(this.getBoardColumnCreateRequest());
     }
 
-    public String createTestBoardColumnAsJson(){
+    public String createTestBoardColumnAsJson() {
         return toJson(createTestBoardColumn());
+    }
+
+    //
+//    Helper methods for CardController
+//
+    private CardCreateRequest getCardCreateRequest() {
+        BoardColumn testBoardColumn = this.createTestBoardColumn();
+
+        return CardCreateRequest.builder()
+                .boardColumnId(testBoardColumn.getId())
+                .title(TEST_TITLE)
+                .textColor(TEST_TEXT_COLOR)
+                .bgColor(TEST_BG_COLOR)
+                .build();
+    }
+
+    public String getCardCreateRequestAsJson() {
+        return toJson(this.getCardCreateRequest());
+    }
+
+    public Card createTestCard() {
+        return cardService.registerCard(getCardCreateRequest());
+    }
+
+    public String getTestCardAsJson() {
+        return toJson(createTestCard());
+    }
+
+    public CardBoardColumnUpdateRequest getCardColumnUpdateRequest() {
+        BoardColumn testBoardColumn = this.createTestBoardColumn();
+        Card testCard = this.createTestCard();
+        return CardBoardColumnUpdateRequest.builder()
+                .boardColumnId(testBoardColumn.getId())
+                .card(testCard)
+                .boardColumnId(testBoardColumn.getId())
+                .build();
+    }
+
+    public String getCardColumnUpdateRequestAsJson() {
+        return toJson(this.getCardColumnUpdateRequest());
     }
 
     private String toJson(Object obj) {
@@ -134,6 +183,6 @@ public class TestHelper {
             System.out.println(e.getMessage());
             return null;
         }
-
     }
+
 }

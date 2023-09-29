@@ -10,5 +10,11 @@ public class CardCreateResponse {
 
     private Long boardColumnId;
 
+
     private Card card;
+
+    public CardCreateResponse(Card card) {
+        this.boardColumnId = card.getBoardColumnId();
+        this.card = card;
+    }
 }

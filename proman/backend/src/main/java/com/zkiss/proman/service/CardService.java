@@ -19,11 +19,11 @@ public class CardService {
     private final CardRepository cardRepository;
 
     @Transactional
-    public CardCreateResponse registerCard(CardCreateRequest createRequest) {
+    public Card registerCard(CardCreateRequest createRequest) {
         BoardColumn boardColumn = boardColumnService.getBoardColumnById(createRequest.getBoardColumnId());
         Card savedCard = cardRepository.save( new Card(createRequest, boardColumn));
         this.updateBoardColumn(boardColumn, savedCard);
-        return new CardCreateResponse(boardColumn.getId(), savedCard);
+        return savedCard;
     }
 
     private void updateBoardColumn(BoardColumn boardColumnToUpdate, Card card){

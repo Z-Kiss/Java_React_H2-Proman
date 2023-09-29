@@ -1,6 +1,6 @@
 package com.zkiss.proman.controller;
 
-import com.zkiss.proman.model.Board;
+import com.zkiss.proman.model.Card;
 import com.zkiss.proman.utils.TestHelper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -14,56 +14,66 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.UUID;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @AutoConfigureMockMvc
-class BoardControllerTest {
+class CardControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private TestHelper testHelper;
 
-
     @Test
     @Transactional
-    void getAllBoardsByUser() throws Exception {
-        String token = testHelper.getTokenForAuthorizationHeader();
-        UUID testUserId = testHelper.getIdOfTestUser();
-
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/board/" + testUserId)
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
-                .andExpect(status().is2xxSuccessful());
-    }
-
-    @Test
-    @Transactional
-    void createBoard() throws Exception {
+    void test_createCard_method_is_working() throws Exception {
         String token = testHelper.getTokenForAuthorizationHeader();
 
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/board")
+                .post("/card")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(testHelper.getBoardCreateRequestAsJson())
+                .content(testHelper.getCardCreateRequestAsJson())
+        ).andExpect(status().isCreated());
+    }
+
+    @Test
+    @Transactional
+    void test_updateCard_method_is_working() throws Exception {
+        String token = testHelper.getTokenForAuthorizationHeader();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/card")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(testHelper.getTestCardAsJson())
         ).andExpect(status().is2xxSuccessful());
     }
 
     @Test
     @Transactional
-    void deleteBoard() throws Exception {
+    void test_updateCardsBoardColumn_method_is_working() throws Exception {
         String token = testHelper.getTokenForAuthorizationHeader();
-        Board testBoard = testHelper.createTestBoard();
 
         mockMvc.perform(MockMvcRequestBuilders
-                .delete("/board/" + testBoard.getId())
+                .put("/card/update-cards-board-columns")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(testHelper.getCardColumnUpdateRequestAsJson())
+        ).andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    @Transactional
+    void test_deleteCard_method_is_working() throws Exception {
+        String token = testHelper.getTokenForAuthorizationHeader();
+        Card testCard = testHelper.createTestCard();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .delete("/card/" + testCard.getId())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
         ).andExpect(status().is2xxSuccessful());
-
     }
 }

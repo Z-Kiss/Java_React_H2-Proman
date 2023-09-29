@@ -43,11 +43,11 @@ class CardServiceTest {
         when(boardColumnService.getBoardColumnById(any())).thenReturn(mockBoardColumn);
         when(cardRepository.save(any())).thenReturn(mock(Card.class));
 
-        CardCreateResponse responseFromService = cardService.registerCard(request);
+        Card cardFromService = cardService.registerCard(request);
 
         verify(boardColumnService, times(1)).getBoardColumnById(any());
         verify(cardRepository, times(1)).save(any());
-        Assertions.assertNotNull(responseFromService);
+        Assertions.assertNotNull(cardFromService);
     }
 
     @Test
