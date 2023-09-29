@@ -1,8 +1,8 @@
 package com.zkiss.proman.controller;
 
 import com.zkiss.proman.model.Card;
-import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardBoardColumnUpdateRequest;
+import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardCreateResponse;
 import com.zkiss.proman.service.CardService;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,31 +19,32 @@ public class CardController {
     private final CardService cardService;
 
     @PostMapping()
-    public ResponseEntity<CardCreateResponse> createCard(@Valid @RequestBody CardCreateRequest createRequest) {
-        try{
-            CardCreateResponse response = cardService.registerCard(createRequest);
-            return ResponseEntity.ok().body(response);
-        }catch (EntityNotFoundException error){
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> createCard(@Valid @RequestBody CardCreateRequest createRequest) {
+        try {
+            Card savedCard = cardService.registerCard(createRequest);
+            return ResponseEntity.status(201).body(new CardCreateResponse(savedCard));
+        } catch (Exception error) {
+            return ResponseEntity.badRequest().body(error.getMessage());
         }
 
     }
 
     @PutMapping()
     public ResponseEntity<?> updateCard(@RequestBody Card card) {
-        try{
+        try {
             cardService.updateCard(card);
             return ResponseEntity.ok().build();
-        }catch (EntityNotFoundException error){
+        } catch (EntityNotFoundException error) {
             return ResponseEntity.badRequest().build();
         }
     }
+
     @PutMapping("/update-cards-board-columns")
     public ResponseEntity<?> updateCardsBoardColumn(@Valid @RequestBody CardBoardColumnUpdateRequest updateRequest) {
-        try{
+        try {
             cardService.updateCardsBoardColumn(updateRequest);
             return ResponseEntity.ok().build();
-        }catch (EntityNotFoundException error){
+        } catch (EntityNotFoundException error) {
             return ResponseEntity.badRequest().build();
         }
 
