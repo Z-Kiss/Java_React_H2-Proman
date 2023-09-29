@@ -32,7 +32,6 @@ class BoardColumnServiceTest {
     @Test
     void test_creatBoardColumn_method_working() {
         Board board = mock(Board.class);
-        when(board.getId()).thenReturn(1L);
 
         when(boardService.getBoardById(any())).thenReturn(board);
         when(boardColumnRepository.save(any())).thenReturn(mock(BoardColumn.class));
@@ -44,11 +43,11 @@ class BoardColumnServiceTest {
                 .textColor("testColor")
                 .build();
 
-        BoardColumnCreateResponse responseFromService = boardColumnService.creatBoardColumn(request);
+        BoardColumn boardColumnFromService = boardColumnService.creatBoardColumn(request);
 
         verify(boardService,times(1)).getBoardById(any());
         verify(boardColumnRepository, times(1)).save(any());
-        Assertions.assertNotNull(responseFromService);
+        Assertions.assertNotNull(boardColumnFromService);
     }
 
     @Test
