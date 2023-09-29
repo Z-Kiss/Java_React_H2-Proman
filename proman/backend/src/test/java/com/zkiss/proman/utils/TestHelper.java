@@ -28,13 +28,13 @@ public class TestHelper {
     private final BoardService boardService;
     private final BoardColumnService boardColumnService;
 
-    private String TEST_EMAIL = "test@test.com";
-    private String TEST_PASSWORD = "testPassword";
-    private String TEST_NAME = "testName";
-    private String TEST_TITLE = "testTitle";
-    private String TEST_TEXT_COLOR = "testTextColor";
-    private String TEST_BG_COLOR = "testBgColor";
-    private RoleType TEST_ROLE = RoleType.USER;
+    private final String TEST_EMAIL = "test@test.com";
+    private final String TEST_PASSWORD = "testPassword";
+    private final String TEST_NAME = "testName";
+    private final String TEST_TITLE = "testTitle";
+    private final String TEST_TEXT_COLOR = "testTextColor";
+    private final String TEST_BG_COLOR = "testBgColor";
+    private final RoleType TEST_ROLE = RoleType.USER;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final UserRegisterRequest registerRequest = UserRegisterRequest.builder()
