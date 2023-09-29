@@ -57,25 +57,6 @@ public class TestHelper {
         return toJson(loginRequest);
     }
 
-    public String getBoardCreateRequest() throws JsonProcessingException {
-        UUID testUserId = this.getIdOfTestUser();
-
-        BoardCreateRequest boardCreateRequest = BoardCreateRequest.builder()
-                .userId(testUserId)
-                .title("testTitle")
-                .textColor("testColor")
-                .bgColor("testColor")
-                .build();
-
-        return toJson(boardCreateRequest);
-    }
-
-    public String getTokenForAuthorizationHeader(){
-        this.registerTestUser();
-        AuthenticationResponse response = this.loginTestUser();
-        return response.getToken();
-    }
-
     public void registerTestUser() {
         AppUser testUser = AppUser.builder()
                 .password(this.passwordEncoder.encode(TEST_PASSWORD))
@@ -91,16 +72,20 @@ public class TestHelper {
         return userService.loginUser(loginRequest);
     }
 
+    public String getTokenForAuthorizationHeader() {
+        this.registerTestUser();
+        AuthenticationResponse response = this.loginTestUser();
+        return response.getToken();
+    }
+
     public UUID getIdOfTestUser() {
         AppUser testUser = userService.getAppUserByEmail(TEST_EMAIL);
         return testUser.getId();
     }
 
-
-    public Board createTestBoard(){
-        UUID testUserId = getIdOfTestUser();
-
-        BoardCreateRequest boardCreateRequest = BoardCreateRequest.builder()
+    public BoardCreateRequest getBoardCreateRequest() {
+        UUID testUserId = this.getIdOfTestUser();
+        return BoardCreateRequest.builder()
                 .userId(testUserId)
                 .title(TEST_TITLE)
                 .textColor(TEST_TEXT_COLOR)
