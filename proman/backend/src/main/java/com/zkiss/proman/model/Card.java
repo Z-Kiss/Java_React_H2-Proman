@@ -30,11 +30,15 @@ public class Card {
     @JsonIgnore
     private BoardColumn boardColumn;
 
-    public Card(CardCreateRequest createRequest,BoardColumn boardColumn) {
+    public Card(CardCreateRequest createRequest, BoardColumn boardColumn) {
         this.boardColumn = boardColumn;
         this.cardOrder = boardColumn.getCards().size();
         this.title = createRequest.getTitle();
         this.cardDescription = createRequest.getCardDescription();
+    }
+
+    public Long getBoardColumnId() {
+        return boardColumn.getId();
     }
 
     @Override
@@ -48,9 +52,17 @@ public class Card {
     }
 
     public void update(Card updatedCard) {
-        if(updatedCard.getCardDescription() != null){this.setCardDescription(updatedCard.getCardDescription());}
-        if(updatedCard.getTitle() != null){this.setTitle(updatedCard.getTitle());}
-        if(updatedCard.getCardOrder() != null){this.setCardOrder(updatedCard.getCardOrder());}
-        if(updatedCard.getBoardColumn() != null){this.setBoardColumn(updatedCard.getBoardColumn());}
+        if (updatedCard.getCardDescription() != null) {
+            this.setCardDescription(updatedCard.getCardDescription());
+        }
+        if (updatedCard.getTitle() != null) {
+            this.setTitle(updatedCard.getTitle());
+        }
+        if (updatedCard.getCardOrder() != null) {
+            this.setCardOrder(updatedCard.getCardOrder());
+        }
+        if (updatedCard.getBoardColumn() != null) {
+            this.setBoardColumn(updatedCard.getBoardColumn());
+        }
     }
 }
