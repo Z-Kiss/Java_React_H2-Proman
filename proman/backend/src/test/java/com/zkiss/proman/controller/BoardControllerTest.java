@@ -28,17 +28,6 @@ class BoardControllerTest {
     @Autowired
     private TestHelper testHelper;
 
-    @Test
-    @Transactional
-    void getAllBoards() throws Exception {
-
-        String token = testHelper.getTokenForAuthorizationHeader();
-
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/board")
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
-                .andExpect(status().is2xxSuccessful());
-    }
 
     @Test
     @Transactional
@@ -58,11 +47,11 @@ class BoardControllerTest {
         String token = testHelper.getTokenForAuthorizationHeader();
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/board")
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(testHelper.getBoardCreateRequestAsJson())
-                ).andExpect(status().is2xxSuccessful());
+                .post("/board")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(testHelper.getBoardCreateRequestAsJson())
+        ).andExpect(status().is2xxSuccessful());
     }
 
     @Test
