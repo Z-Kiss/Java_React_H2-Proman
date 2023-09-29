@@ -34,8 +34,8 @@ public class BoardColumnController {
         try {
             boardColumnService.updateBoardColumn(boardColumn);
             return ResponseEntity.ok().build();
-        } catch (EntityNotFoundException error) {
-            return ResponseEntity.badRequest().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
