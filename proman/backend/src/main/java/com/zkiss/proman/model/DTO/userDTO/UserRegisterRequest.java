@@ -8,12 +8,12 @@ import lombok.Data;
 @Data
 @Builder
 public class UserRegisterRequest{
-    @NotNull(message = "should be present")
+    @NotNull(message = "Name should be present")
     private String name;
-    @NotNull(message = "should be present")
+    @NotNull(message = "Email should be present")
     private String email;
-    @NotNull(message = "should be present")
+    @NotNull(message = "Password should be present")
     private String password;
-    @NotNull(message = "should be present")
+    @NotNull(message = "Role should be present")
     private RoleType role;
 }
