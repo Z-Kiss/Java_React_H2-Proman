@@ -6,18 +6,17 @@ import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateResponse;
 import com.zkiss.proman.service.BoardColumnService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/board-column")
+@RequiredArgsConstructor
 public class BoardColumnController {
 
     private final BoardColumnService boardColumnService;
 
-    public BoardColumnController(BoardColumnService boardColumnService) {
-        this.boardColumnService = boardColumnService;
-    }
 
     @PostMapping()
     public ResponseEntity<BoardColumnCreateResponse> createNewBoardColumn(@Valid @RequestBody BoardColumnCreateRequest createRequest) {
