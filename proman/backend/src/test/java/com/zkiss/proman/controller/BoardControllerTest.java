@@ -1,6 +1,7 @@
 package com.zkiss.proman.controller;
 
 import com.zkiss.proman.model.Board;
+import com.zkiss.proman.utils.TestHelper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ class BoardControllerTest {
                         .post("/board")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(testHelper.getBoardCreateRequest())
+                        .content(testHelper.getBoardCreateRequestAsJson())
                 ).andExpect(status().is2xxSuccessful());
     }
 
