@@ -21,8 +21,8 @@ public class BoardColumnController {
     @PostMapping()
     public ResponseEntity<BoardColumnCreateResponse> createNewBoardColumn(@Valid @RequestBody BoardColumnCreateRequest createRequest) {
         try {
-            BoardColumnCreateResponse response = boardColumnService.creatBoardColumn(createRequest);
-            return ResponseEntity.ok().body(response);
+            BoardColumn savedBoardColumn = boardColumnService.creatBoardColumn(createRequest);
+            return ResponseEntity.status(201).body(new BoardColumnCreateResponse(savedBoardColumn));
         } catch (EntityNotFoundException error) {
             return ResponseEntity.badRequest().build();
         }
