@@ -28,17 +28,24 @@ public class TestHelper {
     private final BoardService boardService;
     private final BoardColumnService boardColumnService;
 
+    private String TEST_EMAIL = "test@test.com";
+    private String TEST_PASSWORD = "testPassword";
+    private String TEST_NAME = "testName";
+    private String TEST_TITLE = "testTitle";
+    private String TEST_TEXT_COLOR = "testTextColor";
+    private String TEST_BG_COLOR = "testBgColor";
+    private RoleType TEST_ROLE = RoleType.USER;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final UserRegisterRequest registerRequest = UserRegisterRequest.builder()
-            .email("test@test.com")
-            .password("testPassword")
-            .name("testName")
-            .role(RoleType.USER)
+            .email(TEST_EMAIL)
+            .password(TEST_PASSWORD)
+            .name(TEST_NAME)
+            .role(TEST_ROLE)
             .build();
-
     public final UserLoginRequest loginRequest = UserLoginRequest.builder()
-            .email("test@test.com")
-            .password("testPassword")
+            .email(TEST_EMAIL)
+            .password(TEST_PASSWORD)
             .build();
 
 
@@ -71,10 +78,10 @@ public class TestHelper {
 
     public void registerTestUser() {
         AppUser testUser = AppUser.builder()
-                .password(this.passwordEncoder.encode(registerRequest.getPassword()))
-                .name(registerRequest.getName())
-                .email(registerRequest.getEmail())
-                .role(registerRequest.getRole())
+                .password(this.passwordEncoder.encode(TEST_PASSWORD))
+                .name(TEST_NAME)
+                .email(TEST_EMAIL)
+                .role(TEST_ROLE)
                 .build();
 
         userRepository.save(testUser);
@@ -85,7 +92,7 @@ public class TestHelper {
     }
 
     public UUID getIdOfTestUser() {
-        AppUser testUser = userService.getAppUserByEmail("test@test.com");
+        AppUser testUser = userService.getAppUserByEmail(TEST_EMAIL);
         return testUser.getId();
     }
 
@@ -95,9 +102,9 @@ public class TestHelper {
 
         BoardCreateRequest boardCreateRequest = BoardCreateRequest.builder()
                 .userId(testUserId)
-                .title("testTitle")
-                .textColor("testColor")
-                .bgColor("testColor")
+                .title(TEST_TITLE)
+                .textColor(TEST_TEXT_COLOR)
+                .bgColor(TEST_BG_COLOR)
                 .build();
 
         return boardService.createBoard(boardCreateRequest);
