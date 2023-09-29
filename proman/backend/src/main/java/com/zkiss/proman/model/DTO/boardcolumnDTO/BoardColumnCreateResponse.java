@@ -12,7 +12,7 @@ public class BoardColumnCreateResponse {
     private BoardColumn boardColumn;
 
     public BoardColumnCreateResponse(BoardColumn boardColumn) {
-        this.boardId = boardColumn.getBoard().getId();
+        this.boardId = boardColumn.getBoardId();
         this.boardColumn = boardColumn;
     }
 }
