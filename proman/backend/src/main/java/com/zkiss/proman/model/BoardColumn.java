@@ -74,6 +74,10 @@ public class BoardColumn {
         cards.add(card);
     }
 
+    public Long getBoardId() {
+        return board.getId();
+    }
+
     @Override
     public String toString() {
         return "BoardColumn{" +
