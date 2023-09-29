@@ -12,23 +12,21 @@ import com.zkiss.proman.model.RoleType;
 import com.zkiss.proman.repository.UserRepository;
 import com.zkiss.proman.service.BoardService;
 import com.zkiss.proman.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class TestHelper {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private BoardService boardService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final BoardService boardService;
+    private final BoardColumnService boardColumnService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final UserRegisterRequest registerRequest = UserRegisterRequest.builder()
