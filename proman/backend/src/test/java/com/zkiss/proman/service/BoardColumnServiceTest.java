@@ -3,7 +3,6 @@ package com.zkiss.proman.service;
 import com.zkiss.proman.model.Board;
 import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
-import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateResponse;
 import com.zkiss.proman.repository.BoardColumnRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
