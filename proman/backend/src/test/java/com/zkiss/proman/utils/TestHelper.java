@@ -5,11 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zkiss.proman.auth.AuthenticationResponse;
 import com.zkiss.proman.model.AppUser;
 import com.zkiss.proman.model.Board;
+import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
+import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
 import com.zkiss.proman.model.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
 import com.zkiss.proman.model.RoleType;
 import com.zkiss.proman.repository.UserRepository;
+import com.zkiss.proman.service.BoardColumnService;
 import com.zkiss.proman.service.BoardService;
 import com.zkiss.proman.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -91,11 +94,46 @@ public class TestHelper {
                 .textColor(TEST_TEXT_COLOR)
                 .bgColor(TEST_BG_COLOR)
                 .build();
-
-        return boardService.createBoard(boardCreateRequest);
     }
 
-    private String toJson(Object obj) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(obj);
+    public String getBoardCreateRequestAsJson() {
+        return toJson(this.getBoardCreateRequest());
+    }
+
+    public Board createTestBoard() {
+        return boardService.createBoard(this.getBoardCreateRequest());
+    }
+
+    public BoardColumnCreateRequest getBoardColumnCreateRequest() {
+        Board testBoard = this.createTestBoard();
+
+        return BoardColumnCreateRequest.builder()
+                .boardId(testBoard.getId())
+                .textColor(TEST_TEXT_COLOR)
+                .bgColor(TEST_BG_COLOR)
+                .title(TEST_TITLE)
+                .build();
+    }
+
+    public String getBoardColumnCreateRequestAsJson() {
+        return toJson(this.getBoardColumnCreateRequest());
+    }
+
+    public BoardColumn createTestBoardColumn() {
+        return boardColumnService.creatBoardColumn(this.getBoardColumnCreateRequest());
+    }
+
+    public String createTestBoardColumnAsJson(){
+        return toJson(createTestBoardColumn());
+    }
+
+    private String toJson(Object obj) {
+        try {
+            return objectMapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+
     }
 }
