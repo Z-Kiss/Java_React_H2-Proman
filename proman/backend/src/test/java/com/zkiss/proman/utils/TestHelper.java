@@ -49,11 +49,11 @@ public class TestHelper {
             .build();
 
 
-    public String getRegisterRequest() throws JsonProcessingException {
+    public String getRegisterRequestAsJson() {
         return toJson(registerRequest);
     }
 
-    public String getLoginRequest() throws JsonProcessingException {
+    public String getLoginRequestAsJson() {
         return toJson(loginRequest);
     }
 

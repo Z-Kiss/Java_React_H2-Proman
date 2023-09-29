@@ -1,5 +1,6 @@
 package com.zkiss.proman.controller;
 
+import com.zkiss.proman.utils.TestHelper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ class UserControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders
                 .post("/user/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(testHelper.getRegisterRequest())
+                .content(testHelper.getRegisterRequestAsJson())
         ).andExpect(status().isCreated());
     }
 
@@ -44,10 +45,9 @@ class UserControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders
                 .post("/user/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(testHelper.getLoginRequest())
+                .content(testHelper.getLoginRequestAsJson())
         ).andExpect(status().is2xxSuccessful());
     }
-
 
     @Test
     @Transactional
@@ -60,6 +60,4 @@ class UserControllerTest {
         ).andExpect(status().is2xxSuccessful());
 
     }
-
-
 }
