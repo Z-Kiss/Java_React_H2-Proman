@@ -23,7 +23,8 @@ public class BoardColumnService {
         this.updateBoardWithBoardColumn(board, savedBoardColumn);
         return savedBoardColumn;
     }
-    private void updateBoardWithBoardColumn(Board board, BoardColumn boardColumn){
+
+    private void updateBoardWithBoardColumn(Board board, BoardColumn boardColumn) {
         board.addBoardColumn(boardColumn);
         boardService.updateBoard(board);
     }
@@ -31,17 +32,19 @@ public class BoardColumnService {
     @Transactional
     public void updateBoardColumn(BoardColumn updatedBoardColumn) {
         BoardColumn boardColumn = boardColumnRepository.findById(updatedBoardColumn.getId())
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("There is no BoardColumn with that ID"));
         boardColumn.update(updatedBoardColumn);
         boardColumnRepository.save(boardColumn);
     }
+
     @Transactional
     public Integer deleteBoardColum(Long id) {
         return boardColumnRepository.deleteBoardColumnById(id);
     }
+
     @Transactional
     public BoardColumn getBoardColumnById(Long boardColumnId) {
-        return boardColumnRepository.findById(boardColumnId).orElseThrow(EntityNotFoundException::new);
+        return boardColumnRepository.findById(boardColumnId).orElseThrow(() -> new EntityNotFoundException("There is no BoardColumn with that ID"));
     }
 
 
