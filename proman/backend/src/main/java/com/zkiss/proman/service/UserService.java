@@ -69,11 +69,25 @@ public class UserService {
     }
 
     public AppUser getAppUserById(UUID userId) {
-        return userRepository.getAppUserById(userId);
+        return userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
     }
 
     public AppUser getAppUserByEmail(String email) {
         return userRepository.getAppUserByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("No user with this email: " + email));
+    }
+
+    public void deleteUser(UUID id, String emailOfRequest) {
+        AppUser userToDelete = userRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("User to Delete not found"));
+        AppUser userOfRequest = userRepository.getAppUserByEmail(emailOfRequest).orElseThrow(()-> new EntityNotFoundException("Current user not found"));
+        if(hasAuthorization(userToDelete, userOfRequest)){
+            userRepository.deleteById(id);
+        }else{
+            throw new BadCredentialsException("Don't have authorization");
+        }
+    }
+
+    private boolean hasAuthorization(AppUser userToDelete, AppUser userOfRequest){
+        return userOfRequest.getRole() != RoleType.GUEST && (userToDelete.getId() == userOfRequest.getId() || userOfRequest.getRole().equals(RoleType.ADMIN));
     }
 }

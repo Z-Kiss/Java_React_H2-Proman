@@ -13,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -26,17 +25,12 @@ public class BoardController {
     private final JwtService jwtService;
     private final UserService userService;
 
-    @GetMapping()
-    public List<Board> getAllBoards() {
-        return boardService.getAllBoards();
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> getAllBoardsByUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String header, @PathVariable("id") UUID id) {
         if (hasAuthorization(header, id)) {
             return ResponseEntity.ok().body(boardService.getAllBoardsByUserId(id));
         } else {
-            return ResponseEntity.status(403).body("Not authorized");
+            return ResponseEntity.badRequest().body("Not authorized");
         }
     }
 
@@ -52,11 +46,11 @@ public class BoardController {
         if (deletedRecords > 0) {
             return ResponseEntity.ok().build();
         } else {
-            return ResponseEntity.status(403).body("Nothing deleted");
+            return ResponseEntity.badRequest().body("Nothing deleted");
         }
     }
 
-    private boolean hasAuthorization(String header, UUID id) {
+    protected boolean hasAuthorization(String header, UUID id) {
         String token = jwtService.extractToken(header);
         AppUser currentUser = userService.getAppUserByEmail(jwtService.extractEmail(token));
         return currentUser.getId().equals(id);

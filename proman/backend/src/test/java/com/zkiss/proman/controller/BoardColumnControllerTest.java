@@ -1,5 +1,6 @@
 package com.zkiss.proman.controller;
 
+import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.utils.TestHelper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -18,46 +19,48 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @AutoConfigureMockMvc
-class UserControllerTest {
+class BoardColumnControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private TestHelper testHelper;
 
     @Test
     @Transactional
-    void test_registerUser_method_working() throws Exception {
+    void test_createNewBoardColumn_method_is_working() throws Exception {
+        String token = testHelper.getTokenForAuthorizationHeader();
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                .post("/user/register")
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/board-column")
+                .header(HttpHeaders.AUTHORIZATION,"Bearer "+ token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(testHelper.getRegisterRequestAsJson())
+                .content(testHelper.getBoardColumnCreateRequestAsJson())
         ).andExpect(status().isCreated());
     }
 
     @Test
     @Transactional
-    void test_loginUser_method_working() throws Exception {
-        testHelper.registerTestUser();
+    void test_updateBoardColumn_method_is_working() throws Exception {
+        String token = testHelper.getTokenForAuthorizationHeader();
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                .post("/user/login")
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/board-column")
+                .header(HttpHeaders.AUTHORIZATION,"Bearer "+ token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(testHelper.getLoginRequestAsJson())
+                .content(testHelper.createTestBoardColumnAsJson())
         ).andExpect(status().is2xxSuccessful());
     }
 
     @Test
     @Transactional
-    void test_checkOnMe_method_working() throws Exception {
+    void test_deleteBoardColumn_method_is_working() throws Exception {
         String token = testHelper.getTokenForAuthorizationHeader();
+        BoardColumn testBoardColumn = testHelper.createTestBoardColumn();
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                .get("/user/me")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+        mockMvc.perform(MockMvcRequestBuilders
+                .delete("/board-column/" + testBoardColumn.getId())
+                .header(HttpHeaders.AUTHORIZATION,"Bearer "+ token)
         ).andExpect(status().is2xxSuccessful());
-
     }
 }

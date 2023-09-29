@@ -1,17 +1,18 @@
 package com.zkiss.proman.model.DTO.boardcolumnDTO;
 
 import com.zkiss.proman.model.BoardColumn;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 
-
+//TODO modify Response to only send BoardColumn and Frontend to accept it
 @Data
-@AllArgsConstructor
-@Builder
 public class BoardColumnCreateResponse {
 
     private Long boardId;
 
     private BoardColumn boardColumn;
+
+    public BoardColumnCreateResponse(BoardColumn boardColumn) {
+        this.boardId = boardColumn.getBoard().getId();
+        this.boardColumn = boardColumn;
+    }
 }

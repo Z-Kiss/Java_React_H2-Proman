@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class UserController {
             userService.registerUser(userRequest);
             return ResponseEntity.status(201).build();
         } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(403).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -40,19 +42,34 @@ public class UserController {
             AuthenticationResponse authResponse = userService.loginUser(loginRequest);
             return ResponseEntity.ok(authResponse);
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/me")
     public ResponseEntity<UserInfo> checkOnMe(@RequestHeader(HttpHeaders.AUTHORIZATION) String header) {
-        String token = jwtService.extractToken(header);
-        String email = jwtService.extractEmail(token);
+        String email = this.extractEmailFromHeader(header);
         try {
             AppUser user = userService.getAppUserByEmail(email);
             return ResponseEntity.ok(new UserInfo(user));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    private String extractEmailFromHeader(String header) {
+        String token = jwtService.extractToken(header);
+        return jwtService.extractEmail(token);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String header, @PathVariable UUID id) {
+        String emailOfSender = this.extractEmailFromHeader(header);
+        try {
+            userService.deleteUser(id, emailOfSender);
+            return ResponseEntity.ok().build();
+        } catch (BadCredentialsException | EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

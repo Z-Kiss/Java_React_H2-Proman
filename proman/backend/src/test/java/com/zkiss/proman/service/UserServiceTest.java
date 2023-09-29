@@ -77,11 +77,11 @@ class UserServiceTest {
 
     @Test
     void test_getAppUserById_method_working() {
-        when(userRepository.getAppUserById(any(UUID.class))).thenReturn(appUserTest);
+        when(userRepository.findById(any(UUID.class))).thenReturn(Optional.of(appUserTest));
 
         AppUser appUserFromService = userService.getAppUserById(appUserTest.getId());
 
-        verify(userRepository,times(1)).getAppUserById(any(UUID.class));
+        verify(userRepository,times(1)).findById(any(UUID.class));
         Assertions.assertNotNull(appUserFromService);
         Assertions.assertEquals(appUserFromService.getName(), appUserTest.getName());
     }

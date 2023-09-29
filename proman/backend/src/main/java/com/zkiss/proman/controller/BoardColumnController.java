@@ -6,24 +6,23 @@ import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateResponse;
 import com.zkiss.proman.service.BoardColumnService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/board-column")
+@RequiredArgsConstructor
 public class BoardColumnController {
 
     private final BoardColumnService boardColumnService;
 
-    public BoardColumnController(BoardColumnService boardColumnService) {
-        this.boardColumnService = boardColumnService;
-    }
 
     @PostMapping()
     public ResponseEntity<BoardColumnCreateResponse> createNewBoardColumn(@Valid @RequestBody BoardColumnCreateRequest createRequest) {
         try {
-            BoardColumnCreateResponse response = boardColumnService.creatBoardColumn(createRequest);
-            return ResponseEntity.ok().body(response);
+            BoardColumn savedBoardColumn = boardColumnService.creatBoardColumn(createRequest);
+            return ResponseEntity.status(201).body(new BoardColumnCreateResponse(savedBoardColumn));
         } catch (EntityNotFoundException error) {
             return ResponseEntity.badRequest().build();
         }
@@ -35,8 +34,8 @@ public class BoardColumnController {
         try {
             boardColumnService.updateBoardColumn(boardColumn);
             return ResponseEntity.ok().build();
-        } catch (EntityNotFoundException error) {
-            return ResponseEntity.badRequest().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

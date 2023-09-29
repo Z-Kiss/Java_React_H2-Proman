@@ -3,7 +3,6 @@ package com.zkiss.proman.service;
 import com.zkiss.proman.model.Board;
 import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
-import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateResponse;
 import com.zkiss.proman.repository.BoardColumnRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -18,11 +17,11 @@ public class BoardColumnService {
     private final BoardColumnRepository boardColumnRepository;
 
     @Transactional
-    public BoardColumnCreateResponse creatBoardColumn(BoardColumnCreateRequest createRequest) {
+    public BoardColumn creatBoardColumn(BoardColumnCreateRequest createRequest) {
         Board board = boardService.getBoardById(createRequest.getBoardId());
         BoardColumn savedBoardColumn = boardColumnRepository.save(new BoardColumn(createRequest, board));
         this.updateBoardWithBoardColumn(board, savedBoardColumn);
-        return new BoardColumnCreateResponse(board.getId(), savedBoardColumn);
+        return savedBoardColumn;
     }
     private void updateBoardWithBoardColumn(Board board, BoardColumn boardColumn){
         board.addBoardColumn(boardColumn);
