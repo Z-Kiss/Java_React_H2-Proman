@@ -1,5 +1,6 @@
 package com.zkiss.proman.controller;
 
+import com.zkiss.proman.auth.AuthenticationResponse;
 import com.zkiss.proman.auth.JwtService;
 import com.zkiss.proman.model.AppUser;
 import com.zkiss.proman.model.DTO.userDTO.UserInfo;
@@ -9,6 +10,7 @@ import com.zkiss.proman.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,7 +31,7 @@ public class UserController {
         try {
             userService.registerUser(userRequest);
             return ResponseEntity.status(201).build();
-        } catch (Exception e) {
+        } catch (DataIntegrityViolationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -37,7 +39,8 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginRequest loginRequest) {
         try {
-            return ResponseEntity.ok(userService.loginUser(loginRequest));
+            AuthenticationResponse authResponse = userService.loginUser(loginRequest);
+            return ResponseEntity.ok(authResponse);
         } catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
