@@ -19,8 +19,11 @@ import java.util.UUID;
 public class TestObjectSupplier {
 
     private final String TEST_EMAIL = "test@test.com";
+    private final String TEST_GUEST_EMAIL = "guest@guest.com";
     private final String TEST_PASSWORD = "testPassword";
+    private final String TEST_GUEST_PASSWORD = "guestguest";
     private final String TEST_NAME = "testName";
+    private final String TEST_GUEST_NAME = "Guest";
     private final String TEST_TITLE = "testTitle";
     private final String TEST_TEXT_COLOR = "testTextColor";
     private final String TEST_BG_COLOR = "testBgColor";
@@ -46,11 +49,16 @@ public class TestObjectSupplier {
             .role(RoleType.USER)
             .build();
 
+    private final UserLoginRequest guestLoginRequest = UserLoginRequest.builder()
+            .email(TEST_GUEST_EMAIL)
+            .password(TEST_GUEST_PASSWORD)
+            .build();
+
     private final AppUser guestAppUserTest = AppUser.builder()
             .id(UUID.randomUUID())
-            .email("guest@guest.com")
-            .name("Guest")
-            .password("guestguest")
+            .email(TEST_GUEST_EMAIL)
+            .name(TEST_GUEST_NAME)
+            .password(TEST_GUEST_PASSWORD)
             .role(RoleType.GUEST)
             .build();
 
