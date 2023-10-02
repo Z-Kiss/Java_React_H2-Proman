@@ -32,7 +32,7 @@ public class BoardColumnService {
     @Transactional
     public void updateBoardColumn(BoardColumn updatedBoardColumn) {
         BoardColumn boardColumn = boardColumnRepository.findById(updatedBoardColumn.getId())
-                .orElseThrow(() -> new EntityNotFoundException("There is no BoardColumn with that ID"));
+                .orElseThrow(() -> new EntityNotFoundException("There is no BoardColumn with that Id " + updatedBoardColumn.getId()));
         boardColumn.update(updatedBoardColumn);
         boardColumnRepository.save(boardColumn);
     }
@@ -44,7 +44,7 @@ public class BoardColumnService {
 
     @Transactional
     public BoardColumn getBoardColumnById(Long boardColumnId) {
-        return boardColumnRepository.findById(boardColumnId).orElseThrow(() -> new EntityNotFoundException("There is no BoardColumn with that ID"));
+        return boardColumnRepository.findById(boardColumnId).orElseThrow(() -> new EntityNotFoundException("There is no BoardColumn with that Id " + boardColumnId));
     }
 
 
