@@ -4,6 +4,7 @@ import com.zkiss.proman.model.Board;
 import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.DTO.boardcolumnDTO.BoardColumnCreateRequest;
 import com.zkiss.proman.repository.BoardColumnRepository;
+import com.zkiss.proman.utils.TestObjectSupplier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,26 +22,20 @@ class BoardColumnServiceTest {
 
     @Mock
     private BoardService boardService;
-
     @Mock
     private BoardColumnRepository boardColumnRepository;
-
     @InjectMocks
     private BoardColumnService boardColumnService;
 
+    private final TestObjectSupplier testObjectSupplier = new TestObjectSupplier();
     @Test
     void test_creatBoardColumn_method_working() {
         Board board = mock(Board.class);
-
         when(boardService.getBoardById(any())).thenReturn(board);
         when(boardColumnRepository.save(any())).thenReturn(mock(BoardColumn.class));
 
-        BoardColumnCreateRequest request = BoardColumnCreateRequest.builder()
-                .boardId(1L)
-                .title("test")
-                .bgColor("testBgColor")
-                .textColor("testColor")
-                .build();
+        BoardColumnCreateRequest request = testObjectSupplier.getBoardColumnCreateRequest();
+        request.setBoardId(1L);
 
         BoardColumn boardColumnFromService = boardColumnService.creatBoardColumn(request);
 

@@ -4,8 +4,8 @@ import com.zkiss.proman.model.BoardColumn;
 import com.zkiss.proman.model.Card;
 import com.zkiss.proman.model.DTO.cardDTO.CardBoardColumnUpdateRequest;
 import com.zkiss.proman.model.DTO.cardDTO.CardCreateRequest;
-import com.zkiss.proman.model.DTO.cardDTO.CardCreateResponse;
 import com.zkiss.proman.repository.CardRepository;
+import com.zkiss.proman.utils.TestObjectSupplier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,21 +24,18 @@ class CardServiceTest {
     private BoardColumnService boardColumnService;
     @Mock
     private CardRepository cardRepository;
-
     @InjectMocks
     private CardService cardService;
+
+    private final TestObjectSupplier testObjectSupplier = new TestObjectSupplier();
 
     @Test
     void test_registerCard_method_working() {
         BoardColumn mockBoardColumn = mock(BoardColumn.class);
         when(mockBoardColumn.getId()).thenReturn(1L);
 
-        CardCreateRequest request = CardCreateRequest.builder()
-                .boardColumnId(1L)
-                .title("test")
-                .textColor("testColor")
-                .bgColor("test")
-                .build();
+        CardCreateRequest request = this.testObjectSupplier.getCardCreateRequest();
+        request.setBoardColumnId(1L);
 
         when(boardColumnService.getBoardColumnById(any())).thenReturn(mockBoardColumn);
         when(cardRepository.save(any())).thenReturn(mock(Card.class));

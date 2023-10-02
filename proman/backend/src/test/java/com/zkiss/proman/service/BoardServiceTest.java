@@ -3,8 +3,8 @@ package com.zkiss.proman.service;
 import com.zkiss.proman.model.AppUser;
 import com.zkiss.proman.model.Board;
 import com.zkiss.proman.model.DTO.boardDTO.BoardCreateRequest;
-import com.zkiss.proman.model.RoleType;
 import com.zkiss.proman.repository.BoardRepository;
+import com.zkiss.proman.utils.TestObjectSupplier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,40 +28,29 @@ class BoardServiceTest {
     @InjectMocks
     private BoardService boardService;
 
-    private final AppUser appUserTest = AppUser.builder()
-            .id(UUID.randomUUID())
-            .email("test@test.com")
-            .password("test")
-            .name("test")
-            .role(RoleType.USER)
-            .build();
-
+    private final TestObjectSupplier testObjectSupplier = new TestObjectSupplier();
 
     @Test
     void test_createBoard_method_working() {
-        BoardCreateRequest request = BoardCreateRequest.builder()
-                .userId(appUserTest.getId())
-                .bgColor("testBgColor")
-                .textColor("testTestColor")
-                .title("test")
-                .build();
-
+        AppUser appUserTest = this.testObjectSupplier.getGuestAppUserTest();
+        BoardCreateRequest request = this.testObjectSupplier.getBoardCreateRequest();
+        request.setUserId(appUserTest.getId());
         when(boardRepository.save(any(Board.class))).thenReturn(new Board());
 
         Board boardFromService = boardService.createBoard(request);
 
-        verify(userService,times(1)).getAppUserById(any(UUID.class));
+        verify(userService, times(1)).getAppUserById(any(UUID.class));
         Assertions.assertNotNull(boardFromService);
-
     }
 
     @Test
     void test_getAllBoardsByUserId_method_working() {
+        AppUser appUserTest = this.testObjectSupplier.getAppUserTest();
         when(boardRepository.getBoardsByAppUser_Id(any(UUID.class))).thenReturn(List.of(mock(Board.class)));
 
         List<Board> boardsFromService = boardService.getAllBoardsByUserId(appUserTest.getId());
 
-        verify(boardRepository,times(1)).getBoardsByAppUser_Id(any(UUID.class));
+        verify(boardRepository, times(1)).getBoardsByAppUser_Id(any(UUID.class));
         Assertions.assertNotNull(boardsFromService);
     }
 
@@ -71,7 +60,7 @@ class BoardServiceTest {
 
         List<Board> boardsFromService = boardRepository.findAll();
 
-        verify(boardRepository,times(1)).findAll();
+        verify(boardRepository, times(1)).findAll();
         Assertions.assertNotNull(boardsFromService);
     }
 
@@ -91,7 +80,7 @@ class BoardServiceTest {
 
         int deletedRecords = boardService.deleteBoard(1L);
 
-        verify(boardRepository,times(1)).deleteBoardById(any(Long.class));
-        Assertions.assertEquals(deletedRecords,1);
+        verify(boardRepository, times(1)).deleteBoardById(any(Long.class));
+        Assertions.assertEquals(deletedRecords, 1);
     }
 }
