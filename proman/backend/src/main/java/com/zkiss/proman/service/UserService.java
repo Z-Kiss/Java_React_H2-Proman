@@ -68,7 +68,7 @@ public class UserService {
     }
 
     public AppUser getAppUserById(UUID userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("No user with this Id: " + userId));
+        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("No user with Id: " + userId));
     }
 
     public AppUser getAppUserByEmail(String email) {

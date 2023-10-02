@@ -32,7 +32,7 @@ public class CardService {
     }
     @Transactional
     public void updateCard(Card updatedCard) {
-        Card card = cardRepository.findById(updatedCard.getId()).orElseThrow(EntityNotFoundException::new);
+        Card card = cardRepository.findById(updatedCard.getId()).orElseThrow(()-> new EntityNotFoundException("There is no Card with id: "+ updatedCard.getId()));
         card.update(updatedCard);
         cardRepository.save(card);
     }
@@ -41,7 +41,7 @@ public class CardService {
         BoardColumn boardColumn = boardColumnService.getBoardColumnById(updateRequest.getBoardColumnId());
         Card updatedCard = updateRequest.getCard();
         updatedCard.setBoardColumn(boardColumn);
-        Card card = cardRepository.findById(updatedCard.getId()).orElseThrow(EntityNotFoundException::new);
+        Card card = cardRepository.findById(updatedCard.getId()).orElseThrow(()-> new EntityNotFoundException("There is no Card with id: "+ updatedCard.getId()));
         card.update(updatedCard);
         cardRepository.save(card);
     }

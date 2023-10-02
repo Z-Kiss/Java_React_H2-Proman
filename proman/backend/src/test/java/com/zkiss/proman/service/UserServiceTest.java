@@ -5,6 +5,7 @@ import com.zkiss.proman.auth.JwtService;
 import com.zkiss.proman.model.AppUser;
 import com.zkiss.proman.model.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
+import com.zkiss.proman.model.RoleType;
 import com.zkiss.proman.repository.UserRepository;
 import com.zkiss.proman.utils.TestObjectSupplier;
 import jakarta.persistence.EntityNotFoundException;
@@ -44,7 +45,7 @@ class UserServiceTest {
         UserRegisterRequest request = this.testObjectSupplier.getRegisterRequest();
 
         Assertions.assertDoesNotThrow(() -> this.userService.registerUser(request));
-        verify(userRepository,times(1)).save(any());
+        verify(userRepository, times(1)).save(any());
     }
 
     @Test
@@ -55,9 +56,9 @@ class UserServiceTest {
 
         AuthenticationResponse authenticationResponse = this.userService.loginUser(userLoginRequest);
 
-        verify(userRepository,times(1)).getAppUserByEmail(any());
-        verify(authenticationManager,times(1)).authenticate(any());
-        verify(jwtService,times(1)).generateToken(any());
+        verify(userRepository, times(1)).getAppUserByEmail(any());
+        verify(authenticationManager, times(1)).authenticate(any());
+        verify(jwtService, times(1)).generateToken(any());
         Assertions.assertNotNull(authenticationResponse);
     }
 
@@ -69,9 +70,9 @@ class UserServiceTest {
 
         AuthenticationResponse authenticationResponse = this.userService.loginUser(guestLoginRequest);
 
-        verify(userRepository,times(2)).getAppUserByEmail(any());
-        verify(authenticationManager,times(1)).authenticate(any());
-        verify(jwtService,times(1)).generateToken(any());
+        verify(userRepository, times(2)).getAppUserByEmail(any());
+        verify(authenticationManager, times(1)).authenticate(any());
+        verify(jwtService, times(1)).generateToken(any());
         Assertions.assertNotNull(authenticationResponse);
     }
 
@@ -80,11 +81,11 @@ class UserServiceTest {
         UserLoginRequest userLoginRequest = this.testObjectSupplier.getLoginRequest();
         when(userRepository.getAppUserByEmail(any())).thenReturn(Optional.empty());
 
-        Exception e =Assertions.assertThrows(BadCredentialsException.class,()->this.userService.loginUser(userLoginRequest));
-        verify(userRepository,times(1)).getAppUserByEmail(any());
-        verify(authenticationManager,times(0)).authenticate(any());
-        verify(jwtService,times(0)).generateToken(any());
-        Assertions.assertEquals(e.getMessage(),"Username/Password mismatch");
+        Exception e = Assertions.assertThrows(BadCredentialsException.class, () -> this.userService.loginUser(userLoginRequest));
+        verify(userRepository, times(1)).getAppUserByEmail(any());
+        verify(authenticationManager, times(0)).authenticate(any());
+        verify(jwtService, times(0)).generateToken(any());
+        Assertions.assertEquals(e.getMessage(), "Username/Password mismatch");
 
     }
 
@@ -95,18 +96,19 @@ class UserServiceTest {
 
         AppUser appUserFromService = userService.getAppUserById(appUserTest.getId());
 
-        verify(userRepository,times(1)).findById(any(UUID.class));
+        verify(userRepository, times(1)).findById(any(UUID.class));
         Assertions.assertNotNull(appUserFromService);
         Assertions.assertEquals(appUserFromService.getName(), appUserTest.getName());
     }
+
     @Test
     void test_getAppUserById_method_throw_exception_when_user_not_found_by_id() {
         when(userRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
         UUID testUUID = UUID.randomUUID();
 
-        Exception e = Assertions.assertThrows(EntityNotFoundException.class,()->this.userService.getAppUserById(testUUID));
-        verify(userRepository,times(1)).findById(any(UUID.class));
-        Assertions.assertEquals(e.getMessage(),"No user with this Id: " + testUUID);
+        Exception e = Assertions.assertThrows(EntityNotFoundException.class, () -> this.userService.getAppUserById(testUUID));
+        verify(userRepository, times(1)).findById(any(UUID.class));
+        Assertions.assertEquals(e.getMessage(), "No user with Id: " + testUUID);
     }
 
     @Test
@@ -116,7 +118,7 @@ class UserServiceTest {
 
         AppUser appUserFromService = userService.getAppUserByEmail(appUserTest.getEmail());
 
-        verify(userRepository,times(1)).getAppUserByEmail(any());
+        verify(userRepository, times(1)).getAppUserByEmail(any());
         Assertions.assertNotNull(appUserFromService);
         Assertions.assertEquals(appUserFromService.getId(), appUserTest.getId());
     }
@@ -126,9 +128,71 @@ class UserServiceTest {
         when(userRepository.getAppUserByEmail(any())).thenReturn(Optional.empty());
         String testEmail = "test1@test1.com";
 
-        Exception e = Assertions.assertThrows(EntityNotFoundException.class,()->userService.getAppUserByEmail(testEmail));
+        Exception e = Assertions.assertThrows(EntityNotFoundException.class, () -> userService.getAppUserByEmail(testEmail));
 
-        verify(userRepository,times(1)).getAppUserByEmail(any());
-        Assertions.assertEquals(e.getMessage(),"No user with this email: " + testEmail);
+        verify(userRepository, times(1)).getAppUserByEmail(any());
+        Assertions.assertEquals(e.getMessage(), "No user with this email: " + testEmail);
+    }
+
+    @Test
+    void test_deleteUser_method_working_when_the_user_has_same_id() {
+        UUID testId = UUID.randomUUID();
+        AppUser userOfRequestMock = mock(AppUser.class);
+        when(userOfRequestMock.getRole()).thenReturn(RoleType.USER);
+        when(userOfRequestMock.getId()).thenReturn(testId);
+        AppUser userToDeleteMock = mock(AppUser.class);
+        when(userToDeleteMock.getId()).thenReturn(testId);
+        when(userRepository.findById(any(UUID.class))).thenReturn(Optional.of(userToDeleteMock));
+        when(userRepository.getAppUserByEmail(any())).thenReturn(Optional.of(userOfRequestMock));
+
+        Assertions.assertDoesNotThrow(()-> userService.deleteUser(testId,any(String.class)));
+        verify(userRepository,times(1)).deleteById(any(UUID.class));
+    }
+
+    @Test
+    void test_deleteUser_method_working_when_the_user_has_admin_role_but_different_id() {
+        UUID testId = UUID.randomUUID();
+        AppUser userOfRequestMock = mock(AppUser.class);
+        when(userOfRequestMock.getRole()).thenReturn(RoleType.ADMIN);
+        when(userOfRequestMock.getId()).thenReturn(UUID.randomUUID());
+        AppUser userToDeleteMock = mock(AppUser.class);
+        when(userToDeleteMock.getId()).thenReturn(testId);
+        when(userRepository.findById(any(UUID.class))).thenReturn(Optional.of(userToDeleteMock));
+        when(userRepository.getAppUserByEmail(any())).thenReturn(Optional.of(userOfRequestMock));
+
+        Assertions.assertDoesNotThrow(()-> userService.deleteUser(testId,any(String.class)));
+        verify(userRepository,times(1)).deleteById(any(UUID.class));
+    }
+
+    @Test
+    void test_deleteUser_method_throw_bad_credentials_exception_when_user_has_guest_role_but_same_id() {
+        UUID testId = UUID.randomUUID();
+        AppUser userOfRequestMock = mock(AppUser.class);
+        when(userOfRequestMock.getRole()).thenReturn(RoleType.GUEST);
+        AppUser userToDeleteMock = mock(AppUser.class);
+        when(userRepository.findById(any(UUID.class))).thenReturn(Optional.of(userToDeleteMock));
+        when(userRepository.getAppUserByEmail(any())).thenReturn(Optional.of(userOfRequestMock));
+
+        Exception e = Assertions.assertThrows(BadCredentialsException.class,()-> userService.deleteUser(testId,any(String.class)));
+
+        Assertions.assertEquals(e.getMessage(),"Don't have authorization");
+        verify(userRepository,times(0)).deleteById(any(UUID.class));
+    }
+
+    @Test
+    void test_deleteUser_method_throw_bad_credentials_exception_when_user_has_user_role_but_different_id() {
+        UUID testId = UUID.randomUUID();
+        AppUser userOfRequestMock = mock(AppUser.class);
+        when(userOfRequestMock.getRole()).thenReturn(RoleType.USER);
+        when(userOfRequestMock.getId()).thenReturn(UUID.randomUUID());
+        AppUser userToDeleteMock = mock(AppUser.class);
+        when(userToDeleteMock.getId()).thenReturn(testId);
+        when(userRepository.findById(any(UUID.class))).thenReturn(Optional.of(userToDeleteMock));
+        when(userRepository.getAppUserByEmail(any())).thenReturn(Optional.of(userOfRequestMock));
+
+        Exception e = Assertions.assertThrows(BadCredentialsException.class,()-> userService.deleteUser(testId,any(String.class)));
+
+        Assertions.assertEquals(e.getMessage(),"Don't have authorization");
+        verify(userRepository,times(0)).deleteById(any(UUID.class));
     }
 }
