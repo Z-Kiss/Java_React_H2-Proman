@@ -44,15 +44,14 @@ public class UserService {
                 initGuest();
             }
         }
+        AppUser appUser = userRepository.getAppUserByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("Username/Password mismatch"));
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
                         loginRequest.getPassword()
                 )
         );
-        AppUser appUser = userRepository.getAppUserByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new BadCredentialsException("Username/Password mismatch"));
-
         String jwToken = jwtService.generateToken(appUser);
         return AuthenticationResponse.builder()
                 .token(jwToken)
@@ -69,7 +68,7 @@ public class UserService {
     }
 
     public AppUser getAppUserById(UUID userId) {
-        return userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("No user with this Id: " + userId));
     }
 
     public AppUser getAppUserByEmail(String email) {
