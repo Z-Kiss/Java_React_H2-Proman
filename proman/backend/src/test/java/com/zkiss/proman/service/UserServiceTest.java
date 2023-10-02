@@ -5,8 +5,8 @@ import com.zkiss.proman.auth.JwtService;
 import com.zkiss.proman.model.AppUser;
 import com.zkiss.proman.model.DTO.userDTO.UserLoginRequest;
 import com.zkiss.proman.model.DTO.userDTO.UserRegisterRequest;
-import com.zkiss.proman.model.RoleType;
 import com.zkiss.proman.repository.UserRepository;
+import com.zkiss.proman.utils.TestObjectSupplier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -27,31 +26,17 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
-    private PasswordEncoder passwordEncoder;
-    @Mock
     private AuthenticationManager authenticationManager;
     @Mock
     private JwtService jwtService;
     @InjectMocks
     private UserService userService;
 
-    private final AppUser appUserTest = AppUser.builder()
-            .id(UUID.randomUUID())
-            .email("test@test.com")
-            .password("test")
-            .name("test")
-            .role(RoleType.USER)
-            .build();
-
+    private final TestObjectSupplier testObjectSupplier = new TestObjectSupplier();
 
     @Test
     void test_registerUser_method_working() {
-        UserRegisterRequest request = UserRegisterRequest.builder()
-                .email("test@test.com")
-                .name("test")
-                .password("test")
-                .role(RoleType.USER)
-                .build();
+        UserRegisterRequest request = this.testObjectSupplier.getRegisterRequest();
 
         Assertions.assertDoesNotThrow(() -> this.userService.registerUser(request));
         verify(userRepository,times(1)).save(any());
@@ -59,15 +44,11 @@ class UserServiceTest {
 
     @Test
     void test_loginUser_method_working() {
+        AppUser appUserTest = this.testObjectSupplier.getGuestAppUserTest();
+        UserLoginRequest userLoginRequest = this.testObjectSupplier.getLoginRequest();
         when(userRepository.getAppUserByEmail(any())).thenReturn(Optional.of(appUserTest));
 
-        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
-                .email("test@test.com")
-                .password("test")
-                .build();
-
         AuthenticationResponse authenticationResponse = this.userService.loginUser(userLoginRequest);
-
 
         verify(userRepository,times(1)).getAppUserByEmail(any());
         verify(authenticationManager,times(1)).authenticate(any());
@@ -77,6 +58,7 @@ class UserServiceTest {
 
     @Test
     void test_getAppUserById_method_working() {
+        AppUser appUserTest = this.testObjectSupplier.getAppUserTest();
         when(userRepository.findById(any(UUID.class))).thenReturn(Optional.of(appUserTest));
 
         AppUser appUserFromService = userService.getAppUserById(appUserTest.getId());
@@ -88,6 +70,7 @@ class UserServiceTest {
 
     @Test
     void test_getAppUserByEmail_method_working() {
+        AppUser appUserTest = this.testObjectSupplier.getAppUserTest();
         when(userRepository.getAppUserByEmail(any())).thenReturn(Optional.of(appUserTest));
 
         AppUser appUserFromService = userService.getAppUserByEmail(appUserTest.getEmail());
