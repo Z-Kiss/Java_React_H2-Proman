@@ -30,10 +30,6 @@ public class BoardService {
         return boardRepository.getBoardsByAppUser_Id(userId);
     }
 
-    public List<Board> getAllBoards() {
-        return boardRepository.findAll();
-    }
-
     public void updateBoard(Board updatedBoard) {
         Board board = getBoardById(updatedBoard.getId());
         board.update(updatedBoard);
@@ -41,7 +37,7 @@ public class BoardService {
     }
 
     public Board getBoardById(Long boardId) {
-        return boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
+        return boardRepository.findById(boardId).orElseThrow(() -> new EntityNotFoundException("There is no Board with id: " + boardId));
     }
 
     @Transactional
