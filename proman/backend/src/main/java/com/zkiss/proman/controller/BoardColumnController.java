@@ -41,7 +41,7 @@ public class BoardColumnController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBoardColumn(@PathVariable("id") Long id) {
-        Integer deletedRecords = boardColumnService.deleteBoardColum(id);
+        Integer deletedRecords = boardColumnService.deleteBoardColumn(id);
         if (deletedRecords > 0) {
             return ResponseEntity.ok().build();
         } else {

@@ -38,7 +38,7 @@ public class BoardColumnService {
     }
 
     @Transactional
-    public Integer deleteBoardColum(Long id) {
+    public Integer deleteBoardColumn(Long id) {
         return boardColumnRepository.deleteBoardColumnById(id);
     }
 
