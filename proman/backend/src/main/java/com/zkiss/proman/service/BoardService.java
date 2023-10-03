@@ -30,10 +30,6 @@ public class BoardService {
         return boardRepository.getBoardsByAppUser_Id(userId);
     }
 
-    public List<Board> getAllBoards() {
-        return boardRepository.findAll();
-    }
-
     public void updateBoard(Board updatedBoard) {
         Board board = getBoardById(updatedBoard.getId());
         board.update(updatedBoard);
