@@ -37,7 +37,7 @@ public class BoardService {
     }
 
     public Board getBoardById(Long boardId) {
-        return boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
+        return boardRepository.findById(boardId).orElseThrow(() -> new EntityNotFoundException("There is no Board with id: " + boardId));
     }
 
     @Transactional
