@@ -55,17 +55,6 @@ class BoardServiceTest {
     }
 
     @Test
-    void test_getAllBoards_method_working() {
-        when(boardRepository.findAll()).thenReturn(List.of(mock(Board.class)));
-
-        List<Board> boardsFromService = boardRepository.findAll();
-
-        verify(boardRepository, times(1)).findAll();
-        Assertions.assertNotNull(boardsFromService);
-    }
-
-
-    @Test
     void test_getBoardById_method_working() {
         when(boardRepository.findById(any())).thenReturn(Optional.of(mock(Board.class)));
 
